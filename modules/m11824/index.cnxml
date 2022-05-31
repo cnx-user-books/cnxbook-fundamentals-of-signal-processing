@@ -1,0 +1,737 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Practical Issues in Wiener Filter Implementation</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>473aff5b-3d74-4577-bd70-a66bc31ea418</md:uuid>
+</metadata>
+
+  <content>
+    <para id="para1">
+       The weiner-filter, 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:ci type="vector">
+	    <m:msub>
+	      <m:mi>W</m:mi>
+	      <m:mi>opt</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:apply>	
+    <m:times/>
+	    <m:apply>
+	      <m:inverse/>
+	      <m:ci>R</m:ci>
+	    </m:apply>
+	    <m:ci type="vector">P</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>, is ideal for many applications. But several issues
+    must be addressed to use it in practice.
+    </para>
+    <exercise id="exer1">
+      <problem id="idm6239248">
+	<para id="para2">
+	  In practice one usually won't know exactly the statistics of 
+	  <m:math>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	  </m:math> and 
+	  <m:math>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>d</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	  </m:math> (i.e. <m:math><m:ci>R</m:ci></m:math> and
+	  <m:math><m:ci type="vector">P</m:ci></m:math>) needed to
+	  compute the Weiner filter.
+	</para>
+	<para id="ques1para">
+	  How do we surmount this problem?
+	</para>
+      </problem>
+      <solution id="idm7291760">
+	<para id="para3">
+	  Estimate the statistics
+	  <m:math display="block">
+	    <m:apply>
+	      <m:approx/>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>l</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:divide/>
+		  <m:cn>1</m:cn>
+		  <m:ci>N</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>k</m:ci>
+		  </m:bvar>
+		  <m:lowlimit>
+		    <m:cn>0</m:cn>
+		  </m:lowlimit>
+		  <m:uplimit>
+		    <m:apply>
+                      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mrow>
+			  <m:mi>k</m:mi>
+			  <m:mo>+</m:mo>
+			  <m:mi>l</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	  <m:math display="block">
+	    <m:apply>
+	      <m:approx/>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xd</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>l</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:divide/>
+		  <m:cn>1</m:cn>
+		  <m:ci>N</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>k</m:ci>
+		  </m:bvar>
+		  <m:lowlimit>
+		    <m:cn>0</m:cn>
+		  </m:lowlimit>
+		  <m:uplimit>
+		    <m:apply>
+                      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>d</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mrow>
+			  <m:mi>k</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>l</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	  then solve
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>W</m:mi>
+		    <m:mi>opt</m:mi>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		  <m:apply>
+		    <m:inverse/>
+		    <m:ci>R</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		<m:ci>P</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</para>
+      </solution>
+    </exercise>
+
+    <exercise id="exer2">
+      <problem id="idp319744">
+	<para id="para4">
+	  In many applications, the statistics of 
+	  <m:math>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	  </m:math>,
+	  <m:math>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>d</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	  </m:math> vary slowly with time.
+	</para>
+	<para id="ques2para">
+	  How does one develop an <term>adaptive</term> system which
+	  tracks these changes over time to keep the system near
+	  optimal at all times?
+	</para>
+      </problem>
+      <solution id="idm1158480">
+	<para id="para5">
+	  Use short-time windowed estiamtes of the correlation
+	  functions.
+	  <note type="Equation in Question" id="idm1157408"><label>Equation in Question</label>
+	  <m:math display="block">
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:power/>
+		<m:apply>
+		  <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>r</m:mi>
+			<m:mi>xx</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>l</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:ci>k</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:divide/>
+		  <m:cn>1</m:cn>
+		  <m:ci>N</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>m</m:ci>
+		  </m:bvar>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:lowlimit>
+		    <m:cn>0</m:cn>
+		  </m:lowlimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mrow>
+			  <m:mi>k</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>m</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mrow>
+			  <m:mi>k</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>m</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>l</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	  </note>
+	  <m:math display="block">
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:power/>
+		<m:apply>
+		  <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>r</m:mi>
+			<m:mi>dx</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>l</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:ci>k</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:divide/>
+		  <m:cn>1</m:cn>
+		  <m:ci>N</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>m</m:ci>
+		  </m:bvar>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>N</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:lowlimit>
+		    <m:cn>0</m:cn>
+		  </m:lowlimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mrow>
+			  <m:mi>k</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>m</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>l</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>d</m:mi>
+			<m:mrow>
+			  <m:mi>k</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>m</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	  and
+	  <m:math>
+	    <m:apply>
+	      <m:approx/>
+	      <m:apply>
+		<m:power/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>W</m:mi>
+		    <m:mi>opt</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>k</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:inverse/>
+		  <m:apply>
+		    <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>R</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msub>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>P</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msub>
+		  </m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</para>
+      </solution>
+    </exercise>
+    <exercise id="exer3">
+      <problem id="idm1052928">
+	<para id="quest3para">
+	  How can
+	  <m:math>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msubsup>
+		    <m:mi>r</m:mi>
+		    <m:mi>xx</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msubsup>
+		</m:ci>
+		<m:ci>l</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:math> be computed efficiently?
+	</para>
+      </problem>
+      <solution id="idp1719088">
+	<para id="answer3para">
+	  Recursively!
+	  <m:math display="block">
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">
+		  <m:msubsup>
+		    <m:mi>r</m:mi>
+		    <m:mi>xx</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msubsup>
+		</m:ci>
+		<m:ci>l</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msubsup>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		      <m:mrow>
+			<m:mi>k</m:mi>
+			<m:mo>-</m:mo>
+			<m:mn>1</m:mn>
+		      </m:mrow>
+		    </m:msubsup>
+		  </m:ci>
+		  <m:ci>l</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:minus/>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mrow>
+			  <m:mi>k</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>l</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mrow>
+			  <m:mi>k</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>N</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mrow>
+			  <m:mi>k</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>N</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>l</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math> This is critically stable, so people usually do
+	  <m:math display="block">
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:minus/>
+		<m:cn>1</m:cn>
+		<m:ci>α</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>r</m:mi>
+			<m:mi>xx</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>l</m:ci>
+		  </m:apply>
+		  <m:ci>k</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:plus/>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>α</m:ci>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msubsup>
+			  <m:mi>r</m:mi>
+			  <m:mi>xx</m:mi>
+			  <m:mrow>
+			    <m:mi>k</m:mi>
+			    <m:mo>-</m:mo>
+			    <m:mn>1</m:mn>
+			  </m:mrow>
+			</m:msubsup>
+		      </m:ci>
+		      <m:ci>l</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>x</m:mi>
+			<m:mrow>
+			  <m:mi>k</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mi>l</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</para>
+      </solution>
+    </exercise>
+
+    <exercise id="exer4">
+      <problem id="idm6453760">
+	<para id="quest4para">
+	  how does one choose N?
+	</para>
+      </problem>
+    </exercise>
+    <section id="tradeoffs">
+      <title>Tradeoffs</title>
+      <para id="tradepara">
+	Larger <m:math><m:ci>N</m:ci></m:math> → more
+	accurate estimates of the correlation values →
+	better
+	<m:math>
+	    <m:apply>
+	    <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>W</m:mi>
+		<m:mi>opt</m:mi>
+	      </m:msub>
+	    </m:ci>
+	  </m:apply>
+	</m:math>. However, larger <m:math><m:ci>N</m:ci></m:math>
+	leads to slower adaptation.
+      </para>
+      <note id="idp1142480">The success of adaptive systems depends on
+	<m:math><m:ci>x</m:ci></m:math>,
+	<m:math><m:ci>d</m:ci></m:math> being roughly stationary over
+	at least <m:math><m:ci>N</m:ci></m:math> samples,
+	<m:math>
+	  <m:apply>
+	    <m:gt/>
+	    <m:ci>N</m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math>. That is, all adaptive filtering algorithms
+	require that the underlying system varies slowly with
+	respect to the sampling rate and the filter length (although
+	they can tolerate occasional step discontinuities in the
+	underlying system).
+      </note>
+    </section>
+    
+    <section id="cc">
+      <title>Computational Considerations</title>
+      <para id="comppara">
+	As presented here, an adaptive filter requires computing a
+	matrix inverse at each sample. Actually, since the matrix
+	<m:math><m:ci>R</m:ci></m:math> is Toeplitz, the linear system
+	of equations can be sovled with
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">O</m:ci>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>M</m:ci>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math> computations using Levinson's algorithm, where
+	<m:math><m:ci>M</m:ci></m:math> is the filter length. However,
+	in many applications this may be too expensive, especially
+	since computing the filter output itself requires
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">O</m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math> computations. There are two main approaches to
+	resolving the computation problem
+	<list id="list" list-type="enumerated">
+	  <item>Take advantage of the fact that 
+	    <m:math>
+	      <m:apply>
+		<m:power/>
+		<m:ci>R</m:ci>
+		<m:apply>
+		  <m:plus/>
+		  <m:ci>k</m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:math> is only slightly changed from
+	    <m:math>
+	      <m:apply>
+		<m:power/>
+		<m:ci>R</m:ci>
+		<m:ci>k</m:ci>
+	      </m:apply>
+	    </m:math> to reduce the computation to
+	    <m:math>
+	      <m:apply>
+		<m:ci type="fn">O</m:ci>
+		<m:ci>M</m:ci>
+	      </m:apply>
+	    </m:math>; these algorithms are called Fast Recursive
+	    Least Squareds algorithms; all methods proposed so far
+	    have stability problems and are dangerous to use.
+	  </item>
+	  <item>
+	    Find a different approach to solving the optimization
+	    problem that doesn't require explicit inversion of the
+	    correlation matrix.
+	  </item>
+	</list>
+      </para>
+      
+      <note id="idm6951920">Adaptive algorithms involving the correlation matrix are
+      called <term>Recursive least Squares</term> (RLS)
+      algorithms. Historically, they were developed after the LMS
+      algorithm, which is the slimplest and most widely used approach
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">O</m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math>.
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">O</m:ci>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>M</m:ci>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math> RLS algorithms are used in applications requiring
+	very fast adaptation.
+      </note>
+    </section>
+
+	    
+  </content>
+  
+</document>

@@ -1,0 +1,197 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Computational Savings of Polyphase Interpolation/Decimation</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>ccac4e69-0a70-44d1-9a8a-421a3c0d3e97</md:uuid>
+</metadata>
+
+
+  <content>
+
+    <section id="section2">
+      <title>Computational Savings of Polyphase Interpolation/Decimation</title>
+
+      <para id="para5">
+	Assume that we design FIR LPF 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math>
+	with <m:math><m:ci>N</m:ci></m:math> taps, requiring
+	<m:math><m:ci>N</m:ci></m:math> multiplies per output.  For
+	standard decimation by factor <m:math><m:ci>M</m:ci></m:math>,
+	we have <m:math><m:ci>N</m:ci></m:math> multiplies per
+	intermediate sample and <m:math><m:ci>M</m:ci></m:math>
+	intermediate samples per output, giving
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:ci>N</m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math>
+	multiplies per output.
+      </para>
+
+      <para id="para6">
+	For polyphase decimation, we have
+	<m:math>
+	  <m:apply>
+	    <m:divide/>
+	    <m:ci>N</m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math> multiplies per branch and
+	<m:math><m:ci>M</m:ci></m:math> branches, giving a total of
+	<m:math><m:ci>N</m:ci></m:math> multiplies per output.  The
+	assumption of
+	<m:math>
+	  <m:apply>
+	    <m:divide/>
+	    <m:ci>N</m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math>
+	multiplies per branch follows from the fact that
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">h</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math> is downsampled by <m:math><m:ci>M</m:ci></m:math> to
+	create each polyphase filter. Thus, we conclude that the
+	standard implementation requires
+	<m:math><m:ci>M</m:ci></m:math> times as many operations as
+	its polyphase counterpart. (For decimation, we count multiples
+	per output, rather than per input, to avoid confusion, since
+	only every
+	<m:math><m:ci><m:msup><m:mi>M</m:mi><m:mo>th</m:mo></m:msup></m:ci></m:math>
+	input produces an output.)
+      </para>
+
+      <para id="para7">
+	From this result, it appears that the number of
+	multiplications required by polyphase decimation is
+	independent of the decimation rate
+	<m:math><m:ci>M</m:ci></m:math>.  However, it should be
+	remembered that the length <m:math><m:ci>N</m:ci></m:math> of
+	the
+	<m:math>
+	  <m:apply>
+	    <m:divide/>
+	    <m:pi/>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math>-lowpass FIR filter
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> will typically be proportional to
+	<m:math><m:ci>M</m:ci></m:math>.  This is suggested,
+	<foreign>e.g.</foreign>, by the Kaiser FIR-length
+	approximation formula
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:approx/>
+	    <m:ci>N</m:ci>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>-10</m:cn>
+		  <m:apply>
+		    <m:log/>
+		    <m:logbase><m:cn>10</m:cn></m:logbase>
+		    <m:apply>
+		      <m:times/>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>δ</m:mi>
+			  <m:mi>p</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>δ</m:mi>
+			  <m:mi>s</m:mi>
+			</m:msub>
+		      </m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:cn>13</m:cn>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2.324</m:cn>
+		<m:apply>
+		  <m:ci><m:mo>Δ</m:mo></m:ci>
+		  <m:ci>ω</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	where <m:math>
+	  <m:apply>
+	    <m:ci><m:mo>Δ</m:mo></m:ci>
+	    <m:ci>ω</m:ci>
+	  </m:apply>
+	</m:math> in the transition bandwidth in radians, and 
+	<m:math>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>δ</m:mi>
+	      <m:mi>p</m:mi>
+	    </m:msub>
+	  </m:ci>
+	</m:math> and <m:math>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>δ</m:mi>
+	      <m:mi>s</m:mi>
+	    </m:msub>
+	  </m:ci>
+	</m:math> are the passband and stopband ripple levels. Recall
+	that, to preserve a fixed signal bandwidth, the transition
+	bandwidth
+	<m:math>
+	  <m:apply>
+	    <m:ci><m:mo>Δ</m:mo></m:ci>
+	    <m:ci>ω</m:ci>
+	  </m:apply>
+	</m:math> will be linearly proportional to the cutoff
+	<m:math><m:apply><m:divide/><m:pi/><m:ci>M</m:ci></m:apply></m:math>,
+	so that <m:math><m:ci>N</m:ci></m:math> will be linearly
+	proportional to <m:math><m:ci>M</m:ci></m:math>. In summary,
+	polyphase decimation by factor <m:math><m:ci>M</m:ci></m:math>
+	requires <m:math><m:ci>N</m:ci></m:math> multiplies per
+	output, where <m:math><m:ci>N</m:ci></m:math> is the filter
+	length, and where <m:math><m:ci>N</m:ci></m:math> is linearly
+	proportional to <m:math><m:ci>M</m:ci></m:math>.
+      </para>
+
+      <para id="para8">
+	Using similar arguments for polyphase interpolation, we could
+	find essentially the same result. Polyphase interpolation by
+	factor <m:math><m:ci>L</m:ci></m:math> requires
+	<m:math><m:ci>N</m:ci></m:math> multiplies per input, where
+	<m:math><m:ci>N</m:ci></m:math> is the filter length, and
+	where <m:math><m:ci>N</m:ci></m:math> is linearly proportional
+	to the interpolation factor <m:math><m:ci>L</m:ci></m:math>.
+	(For interpolation we count multiplies per input, rather than
+	per output, to avoid confusion, since
+	<m:math><m:ci>M</m:ci></m:math> outputs are generated in
+	parallel.)
+      </para>
+
+    </section>
+  </content>
+  
+</document>

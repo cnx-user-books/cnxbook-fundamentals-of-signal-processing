@@ -1,0 +1,67 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>DWT Application - De-noising</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>6532fd8c-d531-4ac8-bae0-18a9e70e851e</md:uuid>
+</metadata>
+
+
+
+  <content>
+   <para id="para18">
+	Say that the DWT for a particular choice of wavelet yields an
+	efficient representation of a particular signal class.  In
+	other words, signals in the class are well-described using a
+	few large transform coefficients.
+      </para>
+
+      <para id="para19">
+	Now consider unstructured <emphasis>noise</emphasis>, which
+	cannot be eifficiently represented by any transform, including
+	the DWT.  Due to the orthogonality of the DWT, such noise
+	sequences make, on average, equal contributions to all
+	transform coefficients.  Any given noise sequence is expected
+	to yield many small-valued transform coefficients.
+      </para>
+
+      <para id="para20">
+	Together, these two ideas suggest a means of
+	<term>de-noising</term> a signal.  Say that we perform a DWT
+	on a signal from our <term>well-matched</term> signal class
+	that has been corrupted by additive noise.  We expect that
+	large transform coefficients are composed mostly of signal
+	content, while small transform coefficients should be composed
+	mostly of noise content.  Hence, throwing away the transform
+	coefficients whose magnitude is less than some small threshold
+	should improve the signal-to-noise ratio.  The de-noising
+	procedure is illustrated in <link target-id="fig5" strength="3"/>.
+      </para>
+
+      <figure id="fig5">
+	<media id="idm2005968" alt=""><image src="../../media/denoising.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="para21">
+	Now we give an example of denoising a step-like waveform using
+	the Haar DWT.  In <link target-id="fig6" strength="3"/>, the top
+	right subplot shows the noisy signal and the top left shows it
+	DWT coefficients.  Note the presence of a few large DWT
+	coefficients, expected to contain mostly signal components, as
+	well as the presence of many small-valued coefficients,
+	expected to contain noise.  (The bottom left subplot shows the
+	DWT for the original signal before any noise was added, which
+	confirms that all signal energy is contained within a few
+	large coefficients.)  If we throw away all DWT coefficients
+	whose magnitude is less than 0.1, we are left with only the
+	large coefficients (shown in the middle left plot) which
+	correspond to the de-noised time-domain signal shown in the
+	middle right plot.  The difference between the de-noised signal and the original noiseless signal is shown in the bottom right.  Non-zero error results
+	from noise contributions to the large coefficients; there is
+	no way of distinguishing these noise components from signal
+	components.
+      </para>
+
+      <figure id="fig6">
+	<media id="idm9008992" alt=""><image src="../../media/denoising_step.png" mime-type="image/png"/></media>
+      </figure> 
+  </content>
+  
+</document>

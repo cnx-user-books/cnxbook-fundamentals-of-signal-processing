@@ -1,0 +1,499 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML">
+
+  <title>Downsampling</title>
+
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m10441</md:content-id>
+  <md:title>Downsampling</md:title>
+  <md:abstract>(Blank Abstract)</md:abstract>
+  <md:uuid>b46b17f5-9605-4523-9df4-5a47e8d896e3</md:uuid>
+</metadata>
+
+
+  <content>
+
+    <para id="para3">
+      The operation of <term>downsampling</term> by factor
+      <m:math><m:apply><m:in/><m:ci>M</m:ci><m:naturalnumbers/></m:apply></m:math>
+      describes the process of keeping every
+      <m:math>
+	<m:ci>
+	  <m:msup>
+	    <m:mi>M</m:mi>
+	    <m:mrow>
+	      <m:mi>t</m:mi>
+	      <m:mi>h</m:mi>
+	    </m:mrow>
+	  </m:msup>
+	</m:ci>
+      </m:math>
+      sample and discarding the rest.  This is denoted by "
+      <m:math>
+	<m:apply>
+	  <m:ci><m:mo>↓</m:mo></m:ci>
+	  <m:ci>M</m:ci>
+	</m:apply>
+      </m:math>" in block diagrams, as in <link target-id="figure3" strength="3"/>.
+    </para>
+
+    <figure id="figure3">
+      <media id="id1170853661931" alt=""><image src="../../media/m10441fig1.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para4">Formally, downsampling can be written as
+
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">y</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">x</m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci>n</m:ci>
+	      <m:ci>M</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      In the <m:math><m:ci>z</m:ci></m:math> domain,
+
+      <equation id="eq1">
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">Y</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar><m:ci>n</m:ci></m:bvar>
+	      <m:condition><m:ci>n</m:ci></m:condition>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">y</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>z</m:ci>
+                  <m:apply>
+      		    <m:minus/>
+      		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+      	    <m:apply>
+      	      <m:sum/>
+      	      <m:bvar><m:ci>n</m:ci></m:bvar>
+      	      <m:condition><m:ci>n</m:ci></m:condition>
+      	      <m:apply>
+      		<m:times/>
+      		<m:apply>
+      		  <m:ci type="fn" class="discrete">x</m:ci>
+      		  <m:apply>
+      		    <m:times/>
+      		    <m:ci>n</m:ci>
+      		    <m:ci>M</m:ci>
+      		  </m:apply>
+      		</m:apply>
+      		<m:apply>
+      		  <m:power/>
+      		  <m:ci>z</m:ci>
+      		  <m:apply>
+      		    <m:minus/>
+      		    <m:ci>n</m:ci>
+      		  </m:apply>
+      		</m:apply>
+      	      </m:apply>
+      	    </m:apply>
+
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar><m:ci>m</m:ci></m:bvar>
+	      <m:condition><m:ci>m</m:ci></m:condition>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">x</m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+		    <m:ci>M</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>p</m:ci></m:bvar>
+		    <m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		    <m:uplimit>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>M</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:uplimit>
+		    <m:apply>
+		      <m:exp/>
+		      <m:apply>
+			<m:times/>
+			<m:imaginaryi/>
+			<m:apply>
+			  <m:divide/>
+			  <m:apply>
+			    <m:times/>
+     			    <m:cn>2</m:cn>
+     			    <m:pi/>
+			  </m:apply>
+			  <m:ci>M</m:ci>
+			</m:apply>
+			<m:ci>p</m:ci>
+			<m:ci>m</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>z</m:ci>
+		  <m:apply>
+		    <m:divide/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>m</m:ci>
+		    </m:apply>
+		    <m:ci>M</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+
+	</m:math>
+      </equation>
+
+      where
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+<m:apply>
+ <m:times/>
+  <m:apply>
+   <m:divide/>
+   <m:cn>1</m:cn>
+   <m:ci>M</m:ci>
+  </m:apply>
+          <m:apply>
+	    <m:sum/>
+	    <m:bvar><m:ci>p</m:ci></m:bvar>
+	    <m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+	    <m:uplimit>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>M</m:ci>
+		<m:cn>1</m:cn>
+	      </m:apply>
+	    </m:uplimit>
+	    <m:apply>
+	      <m:exp/>
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>
+		<m:apply>
+		  <m:divide/>
+		  <m:apply>
+		    <m:times/>
+		    <m:cn>2</m:cn>
+		    <m:pi/>
+		  </m:apply>
+		  <m:ci>M</m:ci>
+		</m:apply>
+		<m:ci>p</m:ci>
+		<m:ci>m</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+</m:apply>
+
+     	  <m:piecewise>
+    	    <m:piece>
+     	      <m:cn>1</m:cn>
+     	      <m:mrow><m:mi>m</m:mi><m:mtext> is a multiple of </m:mtext><m:mi>M</m:mi></m:mrow>
+     	    </m:piece>
+     	    <m:otherwise>
+     	      <m:cn>0</m:cn>
+     	    </m:otherwise>
+    	  </m:piecewise>
+	</m:apply>
+      </m:math>
+
+      <equation id="eq1.5">
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">Y</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+     	    <m:apply>
+     	      <m:times/>
+     	      <m:apply>
+     		<m:divide/>
+     		<m:cn>1</m:cn>
+     		<m:ci>M</m:ci>
+     	      </m:apply>
+     	      <m:apply>
+     		<m:sum/>
+     		<m:bvar><m:ci>p</m:ci></m:bvar>
+     		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+     		<m:uplimit>
+     		  <m:apply>
+     		    <m:minus/>
+     		    <m:ci>M</m:ci>
+     		    <m:cn>1</m:cn>
+     		  </m:apply>
+     		</m:uplimit>
+     		<m:apply>
+     		  <m:sum/>
+     		  <m:bvar><m:ci>m</m:ci></m:bvar>
+     		  <m:condition><m:ci>m</m:ci></m:condition>
+     		  <m:apply>
+     		    <m:times/>
+    		    <m:apply>
+    		      <m:ci type="fn" class="discrete">x</m:ci>
+    		      <m:ci>m</m:ci>
+    		    </m:apply>
+     		    <m:apply>
+     		      <m:power/>
+     		      <m:apply>
+     			<m:times/>
+     			<m:apply>
+     			  <m:exp/>
+     			  <m:apply>
+     			    <m:minus/>
+     			    <m:apply>
+     			      <m:times/>
+     			      <m:imaginaryi/>
+     			      <m:apply>
+     				<m:divide/>
+     				<m:apply>
+     				  <m:times/>
+     				  <m:cn>2</m:cn>
+     				  <m:pi/>
+     				</m:apply>
+     				<m:ci>M</m:ci>
+    			      </m:apply>
+     			      <m:ci>p</m:ci>
+     			    </m:apply>
+     			  </m:apply>
+     			</m:apply>
+     			<m:apply>
+     			  <m:power/>
+     			  <m:ci>z</m:ci>
+     			  <m:apply>
+     			    <m:divide/>
+     			    <m:cn>1</m:cn>
+     			    <m:ci>M</m:ci>
+     			  </m:apply>
+     			</m:apply>
+    		      </m:apply>
+     		      <m:apply>
+     			<m:minus/>
+     			<m:ci>m</m:ci>
+     		      </m:apply>
+     		    </m:apply>
+     		  </m:apply>
+     		</m:apply>
+     	      </m:apply>
+     	    </m:apply>
+
+     	    <m:apply>
+     	      <m:times/>
+     	      <m:apply>
+     		<m:divide/>
+     		<m:cn>1</m:cn>
+     		<m:ci>M</m:ci>
+     	      </m:apply>
+     	      <m:apply>
+     		<m:sum/>
+     		<m:bvar><m:ci>p</m:ci></m:bvar>
+     		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+     		<m:uplimit>
+     		  <m:apply>
+     		    <m:minus/>
+     		    <m:ci>M</m:ci>
+     		    <m:cn>1</m:cn>
+     		  </m:apply>
+     		</m:uplimit>
+     		<m:apply>
+     		  <m:ci type="fn">X</m:ci>
+     		  <m:apply>
+     		    <m:times/>
+     		    <m:apply>
+     		      <m:exp/>
+     		      <m:apply>
+     			<m:minus/>
+     			<m:apply>
+     			  <m:times/>
+    			  <m:imaginaryi/>
+     			  <m:apply>
+     			    <m:divide/>
+     			    <m:apply>
+     			      <m:times/>
+     			      <m:cn>2</m:cn>
+     			      <m:pi/>
+     			    </m:apply>
+     			    <m:ci>M</m:ci>
+     			  </m:apply>
+     			  <m:ci>p</m:ci>
+     			</m:apply>
+     		      </m:apply>
+     		    </m:apply>
+     		    <m:apply>
+     		      <m:power/>
+     		      <m:ci>z</m:ci>
+     		      <m:apply>
+     			<m:divide/>
+     			<m:cn>1</m:cn>
+     			<m:ci>M</m:ci>
+     		      </m:apply>
+     		    </m:apply>
+     		  </m:apply>
+     		</m:apply>
+     	      </m:apply>
+     	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+      
+      Translating to the frequency domain,
+      
+      <equation id="eq2">
+     	<m:math>
+     	  <m:apply>
+     	    <m:eq/>
+     	    <m:apply>
+     	      <m:ci type="fn">Y</m:ci>
+     	      <m:apply>
+     		<m:exp/>
+     		<m:apply>
+     		  <m:times/>
+     		  <m:imaginaryi/>
+     		  <m:ci>ω</m:ci>
+     		</m:apply>
+     	      </m:apply>
+     	    </m:apply>
+     	    <m:apply>
+     	      <m:times/>
+     	      <m:apply>
+     		<m:divide/>
+     		<m:cn>1</m:cn>
+     		<m:ci>M</m:ci>
+     	      </m:apply>
+     	      <m:apply>
+     		<m:sum/>
+     		<m:bvar><m:ci>p</m:ci></m:bvar>
+     		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+    		<m:uplimit>
+    		  <m:apply>
+     		    <m:minus/>
+     		    <m:ci>M</m:ci>
+     		    <m:cn>1</m:cn>
+     		  </m:apply>
+     		</m:uplimit>
+     		<m:apply>
+     		  <m:ci type="fn">X</m:ci>
+     		  <m:apply>
+     		    <m:exp/>
+     		    <m:apply>
+    		      <m:times/>
+     		      <m:imaginaryi/>
+     		      <m:apply>
+     			<m:divide/>
+     			<m:apply>
+     			  <m:minus/>
+     			  <m:ci>ω</m:ci>
+     			  <m:apply>
+     			    <m:times/>
+     			    <m:cn>2</m:cn>
+     			    <m:pi/>
+     			    <m:ci>p</m:ci>
+     			  </m:apply>
+     			</m:apply>
+     			<m:ci>M</m:ci>
+     		      </m:apply>
+     		    </m:apply>
+     		  </m:apply>
+     		</m:apply>
+     	      </m:apply>
+    	    </m:apply>
+    	  </m:apply>
+    	</m:math>
+      </equation>
+
+    </para>
+
+    <para id="para5">
+      As shown in <link target-id="figure4"/>, downsampling expands each 
+      <m:math><m:apply><m:times/><m:cn>2</m:cn><m:pi/></m:apply></m:math>
+      -periodic repetition of
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">X</m:ci>
+	  <m:apply>
+	    <m:exp/>
+	    <m:apply>
+	      <m:times/>
+	      <m:imaginaryi/>
+	      <m:ci>ω</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+      by a factor of <m:math><m:ci>M</m:ci></m:math> along the
+      <m:math><m:ci>ω</m:ci></m:math> axis, and reduces the gain
+      by a factor of <m:math><m:ci>M</m:ci></m:math>. If
+      <m:math><m:apply><m:ci type="fn" class="discrete">
+      x</m:ci><m:ci>m</m:ci></m:apply></m:math> is not bandlimited to
+      <m:math><m:apply><m:divide/><m:pi/><m:ci>M</m:ci></m:apply></m:math>,
+      aliasing may result from spectral overlap.
+    </para>
+
+    <para id="para6">
+      <note id="id1170851667547" type="note"> When performing a frequency-domain analysis
+	of systems with up/downsamplers, it is strongly recommended to
+	carry out the analysis in the <m:math><m:ci>z</m:ci>
+	</m:math>-domain until the last step, as done above. Working
+	directly in the
+	<m:math>
+	  <m:apply>
+	    <m:exp/>
+	    <m:apply>
+	      <m:times/>
+	      <m:imaginaryi/>
+	      <m:ci>ω</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>-domain can easily lead to errors.
+      </note>
+
+    </para> 
+
+    <figure id="figure4">
+      <media id="id1170864648062" alt=""><image src="../../media/m10441fig2.png" mime-type="image/png"/></media>
+    </figure>
+    
+
+  </content>
+</document>

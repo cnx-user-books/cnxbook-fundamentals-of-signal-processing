@@ -1,0 +1,159 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Filter Structures</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>4c40c5f0-0cc6-4585-946e-856a00703634</md:uuid>
+</metadata>
+
+  <content>
+    <para id="para1">
+      A realizable filter must require only a finite number of
+    computations per output sample. For linear, causal, time-Invariant filters,
+    this restricts one to rational transfer functions of the form
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:divide/>
+	    <m:apply>
+	      <m:plus/>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>b</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>b</m:mi>
+		    <m:mn>1</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:inverse/>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:ci>…</m:ci>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>b</m:mi>
+		    <m:mi>m</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>z</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>m</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:cn>1</m:cn>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>a</m:mi>
+		    <m:mn>1</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:inverse/>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>a</m:mi>
+		    <m:mn>2</m:mn>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>z</m:ci>
+		  <m:cn>-2</m:cn>
+		</m:apply>
+	      </m:apply> 
+	      <m:ci>…</m:ci>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>a</m:mi>
+		    <m:mi>n</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>z</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+      Assuming no pole-zero cancellations, 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">H</m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math> is FIR if
+      <m:math>
+	<m:apply>
+	  <m:forall/>
+	  <m:bvar>
+	    <m:ci>i</m:ci>
+	  </m:bvar>
+	  <m:condition>
+	    <m:apply>
+	      <m:gt/>
+	      <m:ci>i</m:ci>
+	      <m:cn>0</m:cn>
+	    </m:apply>
+	  </m:condition>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>a</m:mi>
+		<m:mi>i</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>0</m:cn>
+	  </m:apply>
+	</m:apply>
+      </m:math>, and IIR otherwise. Filter structures usually implement
+      rational transfer functions as difference equations.
+    </para>
+    <para id="para2">
+      Whether FIR or IIR, a given transfer function can be implemented with
+    many different filter structures.  With infinite-precision data,  
+    coefficients, and arithmetic, all filter structures implementing the
+    same transfer function produce the same output.  However, different
+    filter strucures may produce very different errors with quantized
+    data and finite-precision or fixed-point arithmetic.  The computational
+    expense and memory usage may also differ greatly.  Knowledge of different
+    filter structures allows DSP engineers to trade off these factors to create
+    the best implementation.
+    </para>
+  </content>
+  
+</document>

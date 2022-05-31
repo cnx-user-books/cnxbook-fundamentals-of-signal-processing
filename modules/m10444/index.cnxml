@@ -1,0 +1,450 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+  <title>Interpolation</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>beab7cdf-920a-47b9-80ae-f4019ef2d799</md:uuid>
+</metadata>
+
+
+
+
+  <content>
+    <section id="sec1">
+      <title>Interpolation</title>
+
+      <para id="para1">
+Interpolation is the process of upsampling and filtering a signal to increase its effective sampling rate. To be more specific, say that
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">x</m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	</m:math>
+is an (unaliased) <m:math><m:ci>T</m:ci></m:math>-sampled version of 
+	<m:math>
+	  <m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>x</m:mi>
+		      <m:mi>c</m:mi>
+		    </m:msub>
+		  </m:ci>
+	    <m:ci>t</m:ci>
+	  </m:apply>
+	</m:math>
+and
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">v</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math>
+is an <m:math><m:ci>L</m:ci></m:math>-upsampled version version of 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">x</m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	</m:math>.
+If we filter 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">v</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math>
+with an ideal <m:math><m:apply><m:divide/><m:pi/><m:ci>L</m:ci></m:apply></m:math>-bandwidth lowpass filter (with DC gain <m:math><m:ci>L</m:ci></m:math>) to obtain 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">y</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math>, then
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">y</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math>
+will be a <m:math><m:apply><m:divide/> <m:ci>T</m:ci><m:ci>L</m:ci> </m:apply></m:math>-sampled version of 
+	<m:math>
+	  <m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>x</m:mi>
+		      <m:mi>c</m:mi>
+		    </m:msub>
+		  </m:ci>
+	    <m:ci>t</m:ci>
+	  </m:apply>
+	</m:math>. This process is illustrated in <link target-id="fig1" strength="3"/>.
+      </para>
+      <figure id="fig1">
+	<media id="idp8377392" alt=""><image src="../../media/m10444fig1.png" mime-type="image/png"/></media>
+      </figure>
+
+
+
+      <para id="para2">
+
+We justify our claims about interpolation using frequency-domain arguments. 
+From the sampling theorem, we know that <m:math><m:ci>T</m:ci></m:math>-
+sampling 	<m:math>
+	  <m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>x</m:mi>
+		      <m:mi>c</m:mi>
+		    </m:msub>
+		  </m:ci>
+	    <m:ci>t</m:ci>
+	  </m:apply>
+	</m:math> to create
+ 	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">x</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math> yields
+
+<equation id="eq1">
+	  <m:math>
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn">X</m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+		    <m:ci>T</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>k</m:ci></m:bvar>
+		    <m:condition><m:ci>k</m:ci></m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>c</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>ω</m:ci>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			    <m:ci>k</m:ci>
+			  </m:apply>
+			</m:apply>
+			<m:ci>T</m:ci>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	  </m:math>
+</equation>
+
+After upsampling by factor <m:math><m:ci>L</m:ci></m:math>, 
+<link target-id="eq1" strength="3"/> implies
+
+	  <m:math display="block">
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn">V</m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+		    <m:ci>T</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>k</m:ci></m:bvar>
+		    <m:condition><m:ci>k</m:ci></m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>c</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+                      <m:apply>
+                      <m:times/>
+                        <m:ci>ω</m:ci>
+                        <m:ci>L</m:ci>
+                      </m:apply> 
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			    <m:ci>k</m:ci>
+			  </m:apply>
+			</m:apply>
+			<m:ci>T</m:ci>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+
+         	<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+		    <m:ci>T</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>k</m:ci></m:bvar>
+		    <m:condition><m:ci>k</m:ci></m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>c</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>ω</m:ci>
+			  <m:apply>
+			    <m:times/>
+                    <m:apply>
+                      <m:divide/>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+                    </m:apply>
+                     <m:ci>L</m:ci>
+                     </m:apply> 
+			    <m:ci>k</m:ci>
+			  </m:apply>
+			</m:apply>
+                 <m:apply>
+                  <m:divide/>
+			<m:ci>T</m:ci>
+                  <m:ci>L</m:ci>
+                 </m:apply>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		</m:apply>
+	  </m:math>
+
+Lowpass filtering with cutoff <m:math><m:apply><m:divide/>
+<m:pi/><m:ci>L</m:ci></m:apply></m:math> and gain
+<m:math><m:ci>L</m:ci></m:math> yields
+
+
+	  <m:math display="block">
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn">Y</m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+         	<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>L</m:ci>
+		    <m:ci>T</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		  <m:bvar>
+	    <m:apply>
+	    <m:eq/>
+            <m:apply>
+            <m:in/>
+		  <m:apply>
+	        <m:divide/>
+		    <m:ci>k</m:ci><m:ci>L</m:ci>
+	        </m:apply>
+		   <m:integers/>
+	      </m:apply>
+	    </m:apply>
+	  </m:bvar>
+	  <m:condition>
+		<m:apply><m:in/>
+		  <m:apply>
+        	  <m:divide/>
+                <m:ci>k</m:ci>
+                <m:ci>L</m:ci>
+		  </m:apply>
+		  <m:integers/>
+	    </m:apply>
+	  </m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>c</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>ω</m:ci>
+			  <m:apply>
+			    <m:times/>
+                    <m:apply>
+                      <m:divide/>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+                    </m:apply>
+                     <m:ci>L</m:ci>
+                     </m:apply> 
+			    <m:ci>k</m:ci>
+			  </m:apply>
+			</m:apply>
+                 <m:apply>
+                  <m:divide/>
+			<m:ci>T</m:ci>
+                  <m:ci>L</m:ci>
+                 </m:apply>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+
+          	<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>L</m:ci>
+		    <m:ci>T</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>l</m:ci></m:bvar>
+	         <m:condition><m:ci>l</m:ci></m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>c</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>ω</m:ci>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			    <m:ci>l</m:ci>
+			  </m:apply>
+			</m:apply>
+                 <m:apply>
+                  <m:divide/>
+			<m:ci>T</m:ci>
+                  <m:ci>L</m:ci>
+                 </m:apply>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		</m:apply>
+	  </m:math>
+
+since the spectral copies with indices other than <m:math><m:apply>
+<m:eq/><m:ci>k</m:ci><m:apply><m:times/><m:ci>l</m:ci><m:ci>L</m:ci>
+</m:apply></m:apply></m:math> (for <m:math><m:apply><m:in/><m:ci>
+l</m:ci><m:integers/></m:apply></m:math>) are removed. 
+Clearly, this process yields a <m:math><m:apply><m:divide/><m:ci>
+T</m:ci><m:ci>L</m:ci></m:apply></m:math>-shaped version of
+ 	<m:math>
+	  <m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>x</m:mi>
+		      <m:mi>c</m:mi>
+		    </m:msub>
+		  </m:ci>
+	    <m:ci>t</m:ci>
+	  </m:apply>
+	</m:math>.
+<link target-id="fig2" strength="3"/> illustrates these frequency-domain arguments for 
+<m:math><m:apply><m:eq/><m:ci>L</m:ci><m:cn>2</m:cn></m:apply></m:math>.
+
+      </para>
+      <figure id="fig2">
+	<media id="idp7919744" alt=""><image src="../../media/m10444fig2.png" mime-type="image/png"/></media>
+      </figure>
+
+
+    </section>
+
+   
+
+  </content>
+</document>

@@ -1,0 +1,353 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+  <title>Polyphase Interpolation</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>584f87c2-fbb5-4315-bc5e-0a82a3e28bf5</md:uuid>
+</metadata>
+
+
+  <content>
+    <section id="implement">
+      <title>Polyphase Interpolation Filter</title>
+      <para id="para1">
+	Recall the standard interpolation procedure illustrated in
+	<link target-id="fig1" strength="3"/>.
+
+      </para>
+      <figure id="fig1">
+	<media id="idp7844704" alt=""><image src="../../media/m10431fig1.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="parafix1">
+	Note that this procedure is computationally inefficient
+	because the lowpass filter operates on a sequence that is
+	mostly composed of zeros.  Through the use of the Noble
+	identities, it is possible to rearrange the preceding block
+	diagram so that operations on zero-valued samples are avoided.
+      </para>
+      
+      <para id="para1.5">
+	In order to apply the <link document="m10432" target-id="fig1" strength="3">Noble identity for interpolation</link>, we must
+	transform <m:math>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:ci>z</m:ci>
+	  </m:apply>
+	</m:math> into its upsampled polyphase components
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>H</m:mi>
+		<m:mi>p</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>z</m:ci>
+	      <m:ci>L</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>, 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>p</m:ci>
+	    <m:set>
+	      <m:cn>0</m:cn>
+	      <m:ci>…</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>L</m:ci>
+		<m:cn>1</m:cn>
+	      </m:apply>
+	    </m:set>
+	  </m:apply>
+	</m:math>.
+
+	<equation id="eq1">
+	  <m:math display="block">
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">H</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication><m:ci>n</m:ci></m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">h</m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>k</m:ci></m:bvar>
+		<m:domainofapplication><m:ci>k</m:ci></m:domainofapplication>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar><m:ci>p</m:ci></m:bvar>
+		  <m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>L</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">h</m:ci>
+		      <m:apply>
+			<m:plus/>
+			<m:apply>
+			  <m:times/>
+			  <m:ci>k</m:ci>
+			  <m:ci>L</m:ci>
+			</m:apply>
+			<m:ci>p</m:ci>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:apply>
+			  <m:plus/>
+			  <m:apply>
+			    <m:times/>
+			    <m:ci>k</m:ci>
+			    <m:ci>L</m:ci>
+			  </m:apply>
+			  <m:ci>p</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+	via <m:math>
+	  <m:apply>
+	    <m:ci><m:mo>≔</m:mo></m:ci>
+	    <m:ci>k</m:ci>
+	    <m:apply>
+	      <m:floor/>
+	      <m:apply>
+		<m:divide/>
+		<m:ci>n</m:ci>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>, <m:math>
+	  <m:apply>
+	    <m:ci><m:mo>≔</m:mo></m:ci>
+	    <m:ci>p</m:ci>
+	    <m:apply>
+	      <m:rem/>
+	      <m:ci>n</m:ci>
+	      <m:ci>L</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	<equation id="eq1.5">
+	  <m:math display="block">
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">H</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>p</m:ci></m:bvar>
+		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		<m:uplimit><m:apply><m:minus/><m:ci>L</m:ci><m:cn>1</m:cn></m:apply></m:uplimit>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>k</m:ci></m:bvar>
+		    <m:domainofapplication>
+		      <m:ci>k</m:ci>
+		    </m:domainofapplication>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:ci type="fn" class="discrete">
+			  <m:msub>
+			    <m:mi>h</m:mi>
+			    <m:mi>p</m:mi>
+			  </m:msub>
+			</m:ci>
+			<m:ci>k</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:power/>
+			<m:ci>z</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:apply>
+			    <m:times/>
+			    <m:ci>k</m:ci>
+			    <m:ci>L</m:ci>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>p</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	via
+	<m:math>
+	  <m:apply>
+	    <m:ci><m:mo>≔</m:mo></m:ci>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>h</m:mi>
+		  <m:mi>p</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>k</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">h</m:ci>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:times/>
+		  <m:ci>k</m:ci>
+		  <m:ci>L</m:ci>
+		</m:apply>
+		<m:ci>p</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	<equation id="eq1.6">
+	  <m:math display="block">
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">H</m:ci>
+		<m:ci>z</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>p</m:ci></m:bvar>
+		<m:lowlimit><m:cn>0</m:cn></m:lowlimit>
+		<m:uplimit><m:apply><m:minus/><m:ci>L</m:ci><m:cn>1</m:cn></m:apply></m:uplimit>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>H</m:mi>
+			<m:mi>p</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:ci>L</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>p</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+
+	Above, <m:math><m:apply><m:floor/><m:ci>·</m:ci></m:apply></m:math>
+	denotes the floor operator and  
+	<m:math>
+	  <m:apply>
+	    <m:rem/>
+	    <m:ci>·</m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math>
+	the modulo-<m:math><m:ci>M</m:ci></m:math> operator. Note that the 
+	<m:math><m:msup><m:mi>p</m:mi><m:mo>th</m:mo></m:msup></m:math>
+	polyphase filter 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete"><m:msub>
+		<m:mi>h</m:mi>
+		<m:mi>p</m:mi>
+	      </m:msub></m:ci>
+	    <m:ci>k</m:ci>
+	  </m:apply>
+	</m:math> is 
+	constructed by downsampling the "master filter"
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">h</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math> at offset <m:math><m:ci>p</m:ci></m:math>. Using the
+	unsampled polyphase components, the <link target-id="fig1" strength="3"/> diagram can be redrawn as in <link target-id="fig3" strength="3"/>.
+      </para>
+
+      <figure id="fig3">
+	<media id="idp104240" alt=""><image src="../../media/m10431fig2.png" mime-type="image/png"/></media>
+	
+      </figure>
+
+      <para id="para5">
+	Applying the Noble identity for interpolation to <link target-id="fig2" strength="3"/> yields <link target-id="fig3" strength="3"/>. The ladder of upsamplers and delays on the
+	right <link target-id="fig3">below</link> accomplishes a form of
+	parallel-to-serial conversion.
+      </para>
+
+      <figure id="fig2">
+	<media id="idp7939600" alt=""><image src="../../media/m10431fig3.png" mime-type="image/png"/></media>
+	
+      </figure>
+
+    </section>
+  </content>
+</document>

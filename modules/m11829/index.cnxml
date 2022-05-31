@@ -1,0 +1,1098 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>The LMS Adaptive Filter Algorithm</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>b2ccf7a2-7d88-4cab-9ddf-37d53eda173f</md:uuid>
+</metadata>
+
+  <content>
+    <para id="para1">
+       Recall the Weiner filter problem
+      
+      <figure id="figure1">
+	<media id="idp1807952" alt=""><image src="../../media/Discrete-Timefig1.png" mime-type="image/png"/></media>
+      </figure>
+      
+      <m:math>
+	<m:set>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>x</m:mi>
+	      <m:mi>k</m:mi>
+	    </m:msub>
+	  </m:ci>
+	</m:set>
+      </m:math>,
+      <m:math>
+	<m:set>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>d</m:mi>
+	      <m:mi>k</m:mi>
+	    </m:msub>
+	  </m:ci>
+	</m:set>
+      </m:math> jointly wide sense stationary
+      
+    </para>   
+
+    <para id="para2">
+      Find <m:math><m:ci>W</m:ci></m:math> minimizing
+      <m:math>
+	<m:apply>
+	  <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	  <m:apply>
+	    <m:power/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>ε</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>2</m:cn>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>ε</m:mi>
+	      <m:mi>k</m:mi>
+	    </m:msub>
+	  </m:ci>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>d</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>y</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>d</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar>
+		<m:ci>i</m:ci>
+	      </m:bvar>
+	      <m:uplimit>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>M</m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:uplimit>
+	      <m:lowlimit>
+		<m:cn>0</m:cn>
+	      </m:lowlimit>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>w</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>x</m:mi>
+		    <m:mrow>
+		      <m:mi>k</m:mi>
+		      <m:mo>-</m:mo>
+		      <m:mi>i</m:mi>
+		    </m:mrow>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>d</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:transpose/>
+		<m:ci>
+		  <m:msup>
+		    <m:mi>X</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msup>
+		</m:ci>
+	      </m:apply>
+	      <m:ci>
+		<m:msup>
+		  <m:mi>W</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msup>
+	      </m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>
+	    <m:msup>
+	      <m:mi>X</m:mi>
+	      <m:mi>k</m:mi>
+	    </m:msup>
+	  </m:ci>
+	  <m:matrix>
+	    <m:matrixrow>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>x</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msub>
+	      </m:ci>
+	    </m:matrixrow>
+	    <m:matrixrow>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>x</m:mi>
+		  <m:mrow>
+		    <m:mi>k</m:mi>
+		    <m:mo>-</m:mo>
+		    <m:mn>1</m:mn>
+		  </m:mrow>
+		</m:msub>
+	      </m:ci>
+	    </m:matrixrow>
+	    <m:matrixrow>
+	      <m:ci>⋮</m:ci>
+	    </m:matrixrow>
+	    <m:matrixrow>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>x</m:mi>
+		  <m:mrow>
+		    <m:mi>k</m:mi>
+		    <m:mo>-</m:mo>
+		    <m:mi>M</m:mi>
+		    <m:mo>+</m:mo>
+		    <m:mn>1</m:mn>
+		  </m:mrow>
+		</m:msub>
+	      </m:ci>
+	    </m:matrixrow>
+	  </m:matrix>
+	</m:apply>
+      </m:math>
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>
+	    <m:msup>
+	      <m:mi>W</m:mi>
+	      <m:mi>k</m:mi>
+	    </m:msup>
+	  </m:ci>
+	  <m:matrix>
+	    <m:matrixrow>
+	      <m:ci>
+		<m:msubsup>
+		  <m:mi>w</m:mi>
+		  <m:mn>0</m:mn>
+		  <m:mi>k</m:mi>
+		</m:msubsup>
+	      </m:ci>
+	    </m:matrixrow>
+	    <m:matrixrow>
+	      <m:ci>
+		<m:msubsup>
+		  <m:mi>w</m:mi>
+		  <m:mn>1</m:mn>
+		  <m:mi>k</m:mi>
+		</m:msubsup>
+	      </m:ci>
+	    </m:matrixrow>
+	    <m:matrixrow>
+	      <m:ci>⋮</m:ci>
+	    </m:matrixrow>
+	    <m:matrixrow>
+	      <m:ci>
+		<m:msubsup>
+		  <m:mi>w</m:mi>
+		  <m:mrow>
+		    <m:mi>M</m:mi>
+		    <m:mo>-</m:mo>
+		    <m:mn>1</m:mn>
+		  </m:mrow>
+		  <m:mi>k</m:mi>
+		</m:msubsup>
+	      </m:ci>
+	    </m:matrixrow>
+	  </m:matrix>
+	</m:apply>
+      </m:math>
+
+      The superscript denotes absolute time, and the subscript denotes
+      time or a vector index.
+
+    </para>
+
+    <para id="para3">
+      the solution can be found by setting the gradient 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:cn>0</m:cn>
+	</m:apply>
+      </m:math>
+      <equation id="eq1">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msup>
+		<m:mi>∇</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msup>
+	    </m:ci>
+	    <m:apply>
+	      <m:partialdiff/>
+	      <m:bvar>
+		<m:ci>W</m:ci>
+	      </m:bvar>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>ε</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>ε</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>
+		      <m:msup>
+			<m:mi>X</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msup>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>-2</m:cn>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>d</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:transpose/>
+			<m:ci>
+			  <m:msup>
+			    <m:mi>X</m:mi>
+			    <m:mi>k</m:mi>
+			  </m:msup>
+			</m:ci>
+		      </m:apply>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>W</m:mi>
+			  <m:mi>k</m:mi>
+			</m:msub>
+		      </m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:ci>
+		    <m:msup>
+		      <m:mi>X</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msup>
+		  </m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:minus/>
+		  <m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+		    <m:apply>
+		      <m:times/>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>d</m:mi>
+			  <m:mi>k</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>
+			<m:msup>
+			  <m:mi>X</m:mi>
+			  <m:mi>k</m:mi>
+			</m:msup>
+		      </m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		  <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+		  <m:times/>
+		  <m:ci>
+		    <m:msup>
+		      <m:mi>X</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msup>
+		  </m:ci>
+		  <m:apply>
+		    <m:transpose/>
+		    <m:ci>
+		      <m:msup>
+			<m:mi>X</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msup>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+		  <m:ci>W</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>-2</m:cn>
+		  <m:ci>P</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci>R</m:ci>
+		  <m:ci>W</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	</m:math>
+      </equation>
+
+      <m:math display="block">
+	<m:apply>
+	  <m:mo>⇒</m:mo>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>W</m:mi>
+		<m:mi>opt</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:inverse/>
+		<m:ci>R</m:ci>
+	      </m:apply>
+	      <m:ci>P</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      Alternatively, 
+      <m:math>
+	<m:ci>
+	  <m:msub>
+	    <m:mi>W</m:mi>
+	    <m:mi>opt</m:mi>
+	  </m:msub>
+	</m:ci>
+      </m:math> can be found iteratively using a gradient descent
+      technique
+      
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>
+	    <m:msup>
+	      <m:mi>W</m:mi>
+	      <m:mrow>
+		<m:mi>k</m:mi>
+		<m:mo>+</m:mo>
+		<m:mn>1</m:mn>
+	      </m:mrow>
+	    </m:msup>
+	  </m:ci>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci>
+	      <m:msup>
+		<m:mi>W</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msup>
+	    </m:ci>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci>μ</m:ci>
+	      <m:ci>
+		<m:msup>
+		  <m:mi>∇</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msup>
+	      </m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+      
+      In practice, we don't know <m:math><m:ci>R</m:ci></m:math> and
+      <m:math><m:ci>P</m:ci></m:math> exactly, and in an adaptive
+      context they may be slowly varying with time.
+
+    </para>
+
+    <para id="para4">
+      To find the (approximate) Wiener filter, some approximations are
+      necessary. As always, the key is to make the
+      <emphasis>right</emphasis> approximations!
+
+      <note type="Good idea" id="idm7234416"><label>Good idea</label>Approximate
+      <m:math><m:ci>R</m:ci></m:math> and
+      <m:math><m:ci>P</m:ci></m:math>: ⇒ RLS methods,
+      as discussed last time.
+      </note>
+
+      <note type="Better idea" id="idm6071520"><label>Better idea</label>Approximate the gradient!
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msup>
+		<m:mi>∇</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msup>
+	    </m:ci>
+	    <m:apply>
+	      <m:partialdiff/>
+	      <m:bvar>
+		<m:ci>W</m:ci>
+	      </m:bvar>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>ε</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math> 
+      </note>
+
+      Note that 
+      <m:math>
+	<m:apply>
+	  <m:power/>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>ε</m:mi>
+	      <m:mn>k</m:mn>
+	    </m:msub>
+	  </m:ci>
+	  <m:cn>2</m:cn>
+	</m:apply>
+      </m:math> itself is a very noisy approximation to 
+      <m:math>
+	<m:apply>
+	  <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	  <m:apply>
+	    <m:power/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>ε</m:mi>
+		<m:mn>k</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:cn>2</m:cn>
+	  </m:apply>
+	</m:apply>
+      </m:math>. We can get a noisy approximation to the gradient by
+      finding the gradient of
+      <m:math>
+	<m:apply>
+	  <m:power/>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>ε</m:mi>
+	      <m:mn>k</m:mn>
+	    </m:msub>
+	  </m:ci>
+	  <m:cn>2</m:cn>
+	</m:apply>
+      </m:math>! Widrow and Hoff first published the LMS algorithm,
+      based on this clever idea, in 1960.
+      <m:math display="block">
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+	    <m:ci>
+	      <m:msup>
+		<m:mi>∇</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msup>
+	    </m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:partialdiff/>
+	    <m:bvar>
+	      <m:ci>W</m:ci>
+	    </m:bvar>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>ε</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>2</m:cn>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>ε</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:partialdiff/>
+	      <m:bvar>
+		<m:ci>W</m:ci>
+	      </m:bvar>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>d</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:transpose/>
+		    <m:ci>
+		      <m:msup>
+			<m:mi>W</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msup>
+		    </m:ci>
+		  </m:apply>
+		  <m:ci>
+		    <m:msup>
+		      <m:mi>X</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msup>
+		  </m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>2</m:cn>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>ε</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>
+		<m:msup>
+		  <m:mi>X</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msup>
+	      </m:ci>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:minus/>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>2</m:cn>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>ε</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>
+		<m:msup>
+		  <m:mi>X</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msup>
+	      </m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+      This yields the LMS adaptive filter algorithm
+      </para>
+      <example id="LMSalgorithm">
+      <title>The LMS Adaptive Filter Algorithm</title>
+      <list id="importantlist" list-type="enumerated">
+	<item>
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>y</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:transpose/>
+		  <m:ci>
+		    <m:msup>
+		      <m:mi>W</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msup>
+		  </m:ci>
+		</m:apply>
+		<m:ci>
+		  <m:msup>
+		    <m:mi>X</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msup>
+		</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>i</m:ci></m:bvar>
+		<m:lowlimit>
+		  <m:cn>0</m:cn>
+		</m:lowlimit>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:apply>
+		  <m:times/>
+		  <m:ci>
+		    <m:msubsup>
+		      <m:mi>w</m:mi>
+		      <m:mi>i</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msubsup>  
+		  </m:ci>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>x</m:mi>
+		      <m:mrow>
+			<m:mi>k</m:mi>
+			<m:mo>-</m:mo>
+			<m:mi>i</m:mi>
+		      </m:mrow>
+		    </m:msub>
+		  </m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</item>
+	<item>
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>ε</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>d</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>y</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</item>
+	<item>
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:ci>
+		<m:msup>
+		  <m:mi>W</m:mi>
+		  <m:mrow>
+		    <m:mi>k</m:mi>
+		    <m:mo>+</m:mo>
+		    <m:mn>1</m:mn>
+		  </m:mrow>
+		</m:msup>
+	      </m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>
+		  <m:msup>
+		    <m:mi>W</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msup>
+		</m:ci>
+		<m:apply>
+		  <m:times/>
+		  <m:ci>μ</m:ci>
+		  <m:apply>
+		    <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		    <m:ci>
+		      <m:msup>
+			<m:mi>∇</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msup>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>
+		  <m:msup>
+		    <m:mi>W</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msup>
+		</m:ci>
+		<m:apply>
+		  <m:times/>
+		  <m:ci>μ</m:ci>
+		  <m:apply>
+		    <m:times/>
+		    <m:cn>-2</m:cn>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>ε</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>
+		      <m:msup>
+			<m:mi>X</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msup>
+		    </m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:plus/>
+		<m:ci>
+		  <m:msup>
+		    <m:mi>W</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msup>
+		</m:ci>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci>μ</m:ci>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>ε</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>
+		    <m:msup>
+		      <m:mi>X</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msup>
+		  </m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	  (<m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:msubsup>
+		<m:mi>w</m:mi>
+		<m:mi>i</m:mi>
+		<m:mrow>
+		  <m:mi>k</m:mi>
+		  <m:mo>+</m:mo>
+		  <m:mn>1</m:mn>
+		</m:mrow>
+	      </m:msubsup>
+	      <m:apply>
+		<m:plus/>
+		<m:ci>
+		  <m:msubsup>
+		    <m:mi>w</m:mi>
+		    <m:mi>i</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msubsup>
+		</m:ci>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci>μ</m:ci>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>ε</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>x</m:mi>
+		      <m:mrow>
+			<m:mi>k</m:mi>
+			<m:mo>-</m:mo>
+			<m:mi>i</m:mi>
+		      </m:mrow>
+		    </m:msub>
+		  </m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>)
+	</item>
+      </list>
+      </example>
+    <para id="parasomething">
+      The LMS algorithm is often called a <term>stochastic
+      gradient</term> algorithm, since
+      <m:math>
+	<m:apply>
+	  <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+	  <m:ci>
+	    <m:msup>
+	      <m:mi>∇</m:mi>
+	      <m:mi>k</m:mi>
+	    </m:msup>
+	  </m:ci>
+	</m:apply>
+      </m:math> is a noisy gradient. This is <emphasis>by
+      far</emphasis> the most commonly used adaptive filtering
+      algorithm, because
+      <list list-type="enumerated" id="lastlist">
+	<item>it was the first</item> 
+	<item>it is very simple</item>
+	<item>in practice it works well (except that sometimes it
+	converges slowly)</item>
+	<item>it requires relatively litle computation</item>
+	<item>it updates the tap weights every sample, so it 
+	  continually adapts the filter</item>
+	<item>it tracks slow changes in the signal statistics well</item>
+      </list>
+	
+
+    </para>
+
+    <section id="compsection">
+      <title>Computational Cost of LMS</title>
+      <table id="table" summary="">
+	<tgroup cols="5">
+	  <thead>
+	    <row>
+	      <entry align="left">To Compute ⇒</entry>
+	      <entry align="center">
+		<m:math>
+		  <m:msub>
+		    <m:mi>y</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msub>
+		</m:math>
+	      </entry>
+	     <entry align="center">
+		<m:math>
+		  <m:msub>
+		    <m:mi>ε</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msub>
+		</m:math>
+	      </entry> 
+	      <entry align="center">
+		<m:math>
+		  <m:msup>
+		    <m:mi>W</m:mi>
+		    <m:mrow>
+		      <m:mi>k</m:mi>
+		      <m:mo>+</m:mo>
+		      <m:mn>1</m:mn>
+		    </m:mrow>
+		  </m:msup>
+		</m:math>
+	      </entry> 
+	      <entry align="center">= Total</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry align="left">multiplies</entry>
+	      <entry align="center">
+		<m:math><m:ci>M</m:ci></m:math>
+	      </entry>
+	      <entry align="center">
+		<m:math><m:cn>0</m:cn></m:math>
+	      </entry>
+		<entry align="center">
+		<m:math>
+		  <m:apply>
+		    <m:plus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:math>
+	      </entry>
+	      <entry align="center">
+		<m:math>
+		  <m:apply>
+		    <m:plus/>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:ci>M</m:ci>
+		    </m:apply>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:math>
+	      </entry>
+	    </row>
+	    <row>
+	      <entry align="left">adds</entry>
+	      <entry align="center">
+		<m:math>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:math>
+	      </entry>
+	      <entry align="center">
+		<m:math><m:cn>1</m:cn></m:math>
+	      </entry>
+		<entry align="center">
+		<m:math><m:ci>M</m:ci></m:math>
+	      </entry>
+	      <entry align="center">
+		<m:math>
+		  <m:apply>
+		    <m:times/>
+		    <m:cn>2</m:cn>
+		    <m:ci>M</m:ci>
+		  </m:apply>
+		</m:math>
+	      </entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+      <para id="para5">
+	So the LMS algorithm is 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">O</m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math> per sample. In fact, it is nicely balanced in that
+	the filter computation and the adaptation require the same
+	amount of computation.
+      </para>
+      <para id="para6">
+	Note that the parameter <m:math><m:ci>μ</m:ci></m:math>
+	plays a very important role in the LMS algorithm. It can also
+	be varied with time, but usually a constant
+	<m:math><m:ci>μ</m:ci></m:math> ("convergence weight
+	facor") is used, chosen after experimentation for a given
+	application.
+      </para>
+      <section id="tradeoffs">
+	<title>Tradeoffs</title>
+	<para id="para7">
+	  large <m:math><m:ci>μ</m:ci></m:math>: fast convergence,
+	  fast adaptivity
+	</para>
+	<para id="para8">
+	  small <m:math><m:ci>μ</m:ci></m:math>: accurate
+	  <m:math><m:ci>W</m:ci></m:math> → less
+	  misadjustment error, stability
+	</para>
+      </section>
+    </section>
+  </content>
+  
+</document>

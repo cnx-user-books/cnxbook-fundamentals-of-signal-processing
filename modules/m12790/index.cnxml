@@ -1,0 +1,762 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Window Design Method</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>ad6f6061-5682-4c16-ab54-75bab323dbed</md:uuid>
+</metadata>
+
+  <content>
+    <para id="para1">
+       The truncate-and-delay design procedure is the simplest and
+    most obvious FIR design procedure.
+    </para>   
+    <exercise id="ex1">
+      <problem id="idp214096">
+	<para id="para2">Is it any Good?</para>
+      </problem>
+      <solution id="idm1701424">
+	<para id="para3">
+	  Yes; in fact it's optimal! (in a certain sense)
+	</para>
+      </solution>
+    </exercise>
+    <section id="section1">
+      <title>
+	L2 optimization criterion
+      </title>
+      <para id="para4">
+	find
+	<m:math>
+	  <m:apply>
+	    <m:forall/>
+	    <m:bvar><m:ci>n</m:ci></m:bvar>
+	    <m:condition>
+	      <m:apply>
+		<m:leq/>
+		<m:cn>0</m:cn>
+		<m:apply>
+		  <m:leq/>
+		  <m:ci>n</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:condition>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">h</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>, maximizing the energy difference between the
+	desired response and the actual response: i.e., find
+	<m:math display="block">
+	  <m:apply>
+	    <m:min/>
+	    <m:bvar>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">h</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	    </m:bvar>
+	    <m:apply>
+	      <m:int/>
+	      <m:bvar>
+		<m:ci>ω</m:ci>
+	      </m:bvar>
+	      <m:uplimit>
+		<m:pi/>
+	      </m:uplimit>
+	      <m:lowlimit>
+		<m:apply>
+		  <m:minus/>
+		  <m:pi/>
+		</m:apply>
+	      </m:lowlimit>
+	      <m:apply>
+		<m:power/>
+		<m:apply>
+		  <m:abs/>
+		  <m:apply>
+		    <m:minus/>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mi>d</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn">H</m:ci>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	by <link document="m0047">Parseval's relationship</link>
+	<equation id="eq1">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:min/>
+	      <m:bvar>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">h</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+	      </m:bvar>
+	      <m:apply>
+		<m:int/>
+		<m:bvar>
+		  <m:ci>ω</m:ci>
+		</m:bvar>
+		<m:uplimit>
+		  <m:pi/>
+		</m:uplimit>
+		<m:lowlimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:pi/>
+		  </m:apply>
+		</m:lowlimit>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:apply>
+			<m:ci type="fn">
+			  <m:msub>
+			    <m:mi>H</m:mi>
+			    <m:mi>d</m:mi>
+			  </m:msub>
+			</m:ci>
+			<m:ci>ω</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn">H</m:ci>
+			<m:ci>ω</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>2</m:cn>
+	      <m:pi/>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>n</m:ci>
+		</m:bvar>
+		<m:uplimit>
+		  <m:infinity/>
+		</m:uplimit>
+		<m:lowlimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:infinity/>
+		  </m:apply>
+		</m:lowlimit>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:apply>
+			<m:ci type="fn" class="discrete">
+			  <m:msub>
+			    <m:mi>h</m:mi>
+			    <m:mi>d</m:mi>
+			  </m:msub>
+			</m:ci>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn" class="discrete">h</m:ci>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>2</m:cn>
+	      <m:pi/>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>n</m:ci>
+		  </m:bvar>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:lowlimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:infinity/>
+		    </m:apply>
+		  </m:lowlimit>
+		  <m:apply>
+		    <m:power/>
+		    <m:apply>
+		      <m:abs/>
+		      <m:apply>
+			<m:minus/>
+			<m:apply>
+			  <m:ci type="fn" class="discrete">
+			    <m:msub>
+			      <m:mi>h</m:mi>
+			      <m:mi>d</m:mi>
+			    </m:msub>
+			  </m:ci>
+			  <m:ci>n</m:ci>
+			</m:apply>
+			<m:apply>
+			  <m:ci type="fn" class="discrete">h</m:ci>
+			  <m:ci>n</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>n</m:ci>
+		  </m:bvar>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>M</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:lowlimit>
+		    <m:cn>0</m:cn>
+		  </m:lowlimit>
+		  <m:apply>
+		    <m:power/>
+		    <m:apply>
+		      <m:abs/>
+		      <m:apply>
+			<m:minus/>
+			<m:apply>
+			  <m:ci type="fn" class="discrete">
+			    <m:msub>
+			      <m:mi>h</m:mi>
+			      <m:mi>d</m:mi>
+			    </m:msub>
+			  </m:ci>
+			  <m:ci>n</m:ci>
+			</m:apply>
+			<m:apply>
+			  <m:ci type="fn" class="discrete">h</m:ci>
+			  <m:ci>n</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>n</m:ci>
+		  </m:bvar>
+		  <m:uplimit>
+		    <m:infinity/>
+		  </m:uplimit>
+		  <m:lowlimit>
+		    <m:ci>M</m:ci>
+		  </m:lowlimit>
+		  <m:apply>
+		    <m:power/>
+		    <m:apply>
+		      <m:abs/>
+		      <m:apply>
+			<m:minus/>
+			<m:apply>
+			  <m:ci type="fn" class="discrete">
+			    <m:msub>
+			      <m:mi>h</m:mi>
+			      <m:mi>d</m:mi>
+			    </m:msub>
+			  </m:ci>
+			  <m:ci>n</m:ci>
+			</m:apply>
+			<m:apply>
+			  <m:ci type="fn" class="discrete">h</m:ci>
+			  <m:ci>n</m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	</equation>
+	Since 
+	<m:math>
+	  <m:apply>
+	    <m:forall/>
+	    <m:bvar>
+	      <m:ci>n</m:ci>
+	    </m:bvar>
+	    <m:condition>
+	      <m:or/>
+	      <m:apply>
+		<m:lt/>
+		<m:ci>n</m:ci>
+		<m:cn>0</m:cn>
+	      </m:apply>
+	      <m:apply>
+		<m:geq/>
+		<m:ci>n</m:ci>
+		<m:ci>M</m:ci>
+	      </m:apply>
+	    </m:condition>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">h</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	this becomes
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:min/>
+	      <m:bvar>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">h</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+	      </m:bvar>
+	      <m:apply>
+		<m:int/>
+		<m:bvar>
+		  <m:ci>ω</m:ci>
+		</m:bvar>
+		<m:uplimit>
+		  <m:pi/>
+		</m:uplimit>
+		<m:lowlimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:pi/>
+		  </m:apply>
+		</m:lowlimit>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:apply>
+			<m:ci type="fn">
+			  <m:msub>
+			    <m:mi>H</m:mi>
+			    <m:mi>d</m:mi>
+			  </m:msub>
+			</m:ci>
+			<m:ci>ω</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn">H</m:ci>
+			<m:ci>ω</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>h</m:ci>
+		</m:bvar>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:lowlimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:infinity/>
+		  </m:apply>
+		</m:lowlimit>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">
+			<m:msub>
+			  <m:mi>h</m:mi>
+			  <m:mi>d</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>n</m:ci>
+		</m:bvar>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:lowlimit>
+		  <m:cn>0</m:cn>
+		</m:lowlimit>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:apply>
+			<m:ci type="fn" class="discrete">h</m:ci>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn" class="discrete">
+			  <m:msub>
+			    <m:mi>h</m:mi>
+			    <m:mi>d</m:mi>
+			  </m:msub>
+			</m:ci>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:ci>2</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>n</m:ci>
+		</m:bvar>
+		<m:uplimit>
+		  <m:infinity/>
+		</m:uplimit>
+		<m:lowlimit>
+		  <m:ci>M</m:ci>
+		</m:lowlimit>
+		<m:apply>
+		  <m:power/>
+		  <m:apply>
+		    <m:abs/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">
+			<m:msub>
+			  <m:mi>h</m:mi>
+			  <m:mi>d</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </para>
+      <note id="idp1054016">
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">h</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math>
+	has no influence on the first and last sums.
+      </note>
+      <para id="para5">
+	The best we can do is let
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">h</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:piecewise>
+	      <m:piece>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">
+		    <m:msub>
+		      <m:mi>h</m:mi>
+		      <m:mi>d</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:leq/>
+		  <m:cn>0</m:cn>
+		  <m:apply>
+		    <m:leq/>
+		    <m:ci>n</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>M</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:piece>
+	      <m:piece>
+		<m:cn>0</m:cn>
+		<m:mtext>else</m:mtext>
+	      </m:piece>
+	    </m:piecewise>
+	  </m:apply>
+	</m:math>
+	Thus
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">h</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">
+		  <m:msub>
+		    <m:mi>h</m:mi>
+		    <m:mi>d</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">w</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>,
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">w</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:piecewise>
+	      <m:piece>
+		<m:cn>1</m:cn>
+		<m:apply>
+		  <m:leq/>
+		  <m:cn>0</m:cn>
+		  <m:apply>
+		    <m:ci>n</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>M</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:piece>
+	      <m:piece>
+		<m:cn>0</m:cn>
+		<m:mtext>else</m:mtext>
+	      </m:piece>
+	    </m:piecewise>
+	  </m:apply>
+	</m:math>
+	is <emphasis>optimal</emphasis> in a least-total-sqaured-error
+	(
+	<m:math>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>L</m:mi>
+	      <m:mn>2</m:mn>
+	    </m:msub>
+	  </m:ci>
+	</m:math>, or energy) sense!
+      </para>
+      <exercise id="ex2">
+	<problem id="idm7966560">
+	  <para id="para8">
+	    Why, then, is this design often considered undersirable?
+	  </para>
+	</problem>
+	<solution id="idp470256">
+	  <title>Gibbs Phenomenon</title>
+	  <figure id="figure1">
+	    <subfigure id="fig1a">
+	      <media id="idm1127904" alt=""><image src="../../media/WindowDesignFig2.png" mime-type="image/png"/><image for="pdf" src="../../media/WindowDesignFig2.eps" mime-type="application/postscript"/></media>
+	      <caption>
+		<m:math>
+		  <m:apply>
+		    <m:ci type="fn">A</m:ci>
+		    <m:ci>ω</m:ci>
+		  </m:apply>
+		</m:math>, small M
+	      </caption>
+	    </subfigure>
+	    <subfigure id="fig1b">
+	      <media id="idm1293248" alt=""><image src="../../media/WindowDesignFig1.png" mime-type="image/png"/><image for="pdf" src="../../media/WindowDesignFig1.eps" mime-type="application/postscript"/></media>
+	      <caption>
+		<m:math>
+		  <m:apply>
+		    <m:ci type="fn">A</m:ci>
+		    <m:ci>ω</m:ci>
+		  </m:apply>
+		</m:math>, large M
+	      </caption>
+	    </subfigure>
+	  </figure>
+	</solution>
+      </exercise>
+      <para id="para10">
+	For desired spectra with discontinuities, the least-square
+	designs are poor in a minimax 
+	(worst-case, or <m:math>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>L</m:mi>
+	      <m:mi>∞</m:mi>
+	    </m:msub>
+	  </m:ci>
+	</m:math>) error sense.
+      </para>
+	      
+    </section>
+
+    <section id="section4">
+      <title>Window Design Method</title>
+      <para id="para11">
+	Apply a more gradual truncation to reduce "ringing" (<link document="m10092">Gibb's
+	Phenomenon</link>)
+
+      <m:math display="block">
+	<m:apply>
+	  <m:forall/>
+	  <m:bvar>
+	    <m:ci>n</m:ci>
+	    <m:condition>
+	      <m:apply>
+		<m:leq/>
+		<m:cn>0</m:cn>
+		<m:ci>n</m:ci>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>M</m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:condition>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn" class="discrete">h</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">
+		    <m:msub>
+		      <m:mi>h</m:mi>
+		      <m:mi>d</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">w</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:bvar>
+	</m:apply>
+      </m:math>
+      </para>
+      <note id="idm9771840">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">H</m:ci>
+	      <m:ci>ω</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#convolve"/>
+		<m:apply>
+		<m:ci type="fn">
+		  <m:msub>
+		    <m:mi>H</m:mi>
+		    <m:mi>d</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>ω</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn">W</m:ci>
+		<m:ci>ω</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </note>
+      <para id="para15">
+	The window design procedure (except for the boxcar window) is
+	ad-hoc and not optimal in any usual sense.  However, it is
+	very simple, so it is sometimes used for "quick-and-dirty"
+	designs of if the error criterion is itself heurisitic.
+      </para>
+    </section>
+  </content>
+  	    
+</document>

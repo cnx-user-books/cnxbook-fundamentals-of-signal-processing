@@ -1,0 +1,564 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+  <title>Decimation</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>fcd23162-5ece-472c-9ddb-e9802042f19a</md:uuid>
+</metadata>
+
+
+
+  <content>
+
+    <para id="para1">
+Decimation is the process of filtering and downsampling a signal 
+to decrease its effective sampling rate, as illustrated in <link target-id="figfix" strength="3"/>. The 
+filtering is employed to prevent aliasing that might otherwise 
+result from downsampling.
+    </para>
+
+
+    <figure id="figfix">
+      <media id="idm6312288" alt=""><image src="../../media/m10445fig1.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para2">
+To be more specific, say that
+
+<m:math display="block">
+  <m:apply>
+  <m:eq/>
+    <m:apply>
+	<m:ci type="fn">
+	  <m:msub>
+	    <m:mi>x</m:mi>
+	    <m:mi>c</m:mi>
+	  </m:msub>
+	</m:ci>
+	<m:ci>t</m:ci>
+    </m:apply>
+    <m:apply>
+      <m:plus/>
+        <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+	        <m:mi>x</m:mi>
+	        <m:mi>l</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>t</m:ci>
+        </m:apply>   
+        <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+	        <m:mi>x</m:mi>
+	        <m:mi>b</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>t</m:ci>
+        </m:apply> 
+      </m:apply>
+    </m:apply>
+  </m:math>
+
+where <m:math>
+         <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+	        <m:mi>x</m:mi>
+	        <m:mi>l</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>t</m:ci>
+        </m:apply> 
+      </m:math>
+is a lowpass component bandlimited to
+<m:math><m:apply><m:divide/><m:cn>1</m:cn>
+<m:apply><m:times/><m:cn>2</m:cn><m:ci>M</m:ci>
+<m:ci>T</m:ci></m:apply></m:apply></m:math> Hz and
+<m:math>
+         <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+	        <m:mi>x</m:mi>
+	        <m:mi>b</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>t</m:ci>
+        </m:apply> 
+      </m:math>
+is a bandpass component with energy between
+<m:math><m:apply><m:divide/><m:cn>1</m:cn>
+<m:apply><m:times/><m:cn>2</m:cn><m:ci>M</m:ci>
+<m:ci>T</m:ci></m:apply></m:apply></m:math> and
+<m:math><m:apply><m:times/><m:apply><m:divide/><m:cn>1</m:cn>
+<m:apply><m:times/><m:cn>2</m:cn>
+<m:ci>T</m:ci></m:apply></m:apply><m:ci>Hz</m:ci></m:apply></m:math>.
+If sampling
+<m:math>
+         <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+	        <m:mi>x</m:mi>
+	        <m:mi>c</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>t</m:ci>
+        </m:apply> 
+      </m:math>
+with interval <m:math><m:ci>T</m:ci></m:math>
+yields an unaliased discrete representation
+<m:math><m:apply><m:ci type="fn" class="discrete">x</m:ci>
+<m:ci>m</m:ci></m:apply></m:math>, then decimating
+<m:math><m:apply><m:ci type="fn" class="discrete">x</m:ci>
+<m:ci>m</m:ci></m:apply></m:math> by a factor 
+<m:math><m:ci>M</m:ci></m:math> will yield
+<m:math><m:apply><m:ci type="fn" class="discrete">y</m:ci>
+<m:ci>n</m:ci></m:apply></m:math>, an unaliased 
+<m:math><m:apply><m:times/><m:ci>M</m:ci>
+<m:ci>T</m:ci></m:apply></m:math>-sampled
+representation of lowpass component
+<m:math>
+         <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+	        <m:mi>x</m:mi>
+	        <m:mi>l</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>t</m:ci>
+        </m:apply> 
+      </m:math>.
+
+</para>
+
+
+    <para id="para3">
+
+We offer the following justification of the previously described 
+decimation procedure. From the sampling theorem, we have
+
+	  <m:math display="block">
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn">X</m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+             <m:plus/>
+             <m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+		    <m:ci>T</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>k</m:ci></m:bvar>
+		    <m:condition><m:ci>k</m:ci></m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>ω</m:ci>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			    <m:ci>k</m:ci>
+			  </m:apply>
+			</m:apply>
+			<m:ci>T</m:ci>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+            <m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+		    <m:ci>T</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>k</m:ci></m:bvar>
+		    <m:condition><m:ci>k</m:ci></m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>b</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>ω</m:ci>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			    <m:ci>k</m:ci>
+			  </m:apply>
+			</m:apply>
+			<m:ci>T</m:ci>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+            </m:apply>
+            </m:apply>
+	  </m:math>
+
+    </para>
+
+  <para id="para4">
+
+The bandpass component 
+<m:math>
+         <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+	        <m:mi>X</m:mi>
+	        <m:mi>b</m:mi>
+	      </m:msub>
+	    </m:ci>
+          <m:apply>
+          <m:times/>
+            <m:imaginaryi/>
+            <m:ci>Ω</m:ci>
+          </m:apply>
+        </m:apply> 
+      </m:math>
+is the removed by
+<m:math>
+  <m:apply>
+  <m:divide/>
+    <m:pi/>
+    <m:ci>M</m:ci>
+  </m:apply>
+</m:math>-lowpass
+filtering, giving
+
+	  <m:math display="block">
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn">V</m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+		    <m:ci>T</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>k</m:ci></m:bvar>
+		    <m:condition><m:ci>k</m:ci></m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>ω</m:ci>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			    <m:ci>k</m:ci>
+			  </m:apply>
+			</m:apply>
+			<m:ci>T</m:ci>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	  </m:math>
+
+Finally, downsampling yields
+
+<equation id="eq1">
+	  <m:math display="block">
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn">Y</m:ci>
+		  <m:apply>
+		    <m:exp/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/>
+		      <m:ci>ω</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+                <m:apply>
+                  <m:times/>
+		      <m:ci>M</m:ci>
+                  <m:ci>T</m:ci>
+                </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+                <m:bvar><m:ci>p</m:ci></m:bvar>
+		    <m:lowlimit>
+                      <m:cn>0</m:cn>
+                </m:lowlimit>
+                <m:uplimit>
+                  <m:apply>
+                    <m:minus/>
+                      <m:ci>M</m:ci>
+                      <m:cn>1</m:cn>
+                  </m:apply>
+                </m:uplimit>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>k</m:ci></m:bvar>
+		    <m:condition><m:ci>k</m:ci></m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+                      <m:apply>
+                       <m:divide/>
+                         <m:apply>
+                           <m:minus/>
+              	           <m:ci>ω</m:ci>
+                             <m:apply>
+                              <m:times/>
+                                <m:cn>2</m:cn>
+                                <m:pi/>
+                                <m:ci>p</m:ci>
+                             </m:apply>              
+                         </m:apply>
+                         <m:ci>M</m:ci>
+                      </m:apply>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:pi/>
+			    <m:ci>k</m:ci>
+			  </m:apply>
+			</m:apply>
+			<m:ci>T</m:ci>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+            </m:apply>
+
+
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+                <m:apply>
+                  <m:times/>
+		      <m:ci>M</m:ci>
+                  <m:ci>T</m:ci>
+                </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+                <m:bvar><m:ci>p</m:ci></m:bvar>
+		    <m:lowlimit>
+                      <m:cn>0</m:cn>
+                </m:lowlimit>
+                <m:uplimit>
+                  <m:apply>
+                    <m:minus/>
+                      <m:ci>M</m:ci>
+                      <m:cn>1</m:cn>
+                  </m:apply>
+                </m:uplimit>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>k</m:ci></m:bvar>
+		    <m:condition><m:ci>k</m:ci></m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+                      <m:ci>ω</m:ci>
+                      <m:apply>
+                      <m:times/>
+                        <m:apply>
+                        <m:times/>
+                          <m:cn>2</m:cn>
+                          <m:pi/>
+                        </m:apply>
+                        <m:apply>
+                        <m:plus/>
+                          <m:apply>
+                          <m:times/>
+                            <m:ci>k</m:ci>
+                            <m:ci>M</m:ci>
+                          </m:apply>     
+                          <m:ci>p</m:ci>         
+                        </m:apply>
+                      </m:apply>
+			</m:apply>
+                  <m:apply>
+                  <m:times/>
+			  <m:ci>M</m:ci>
+			  <m:ci>T</m:ci>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+            </m:apply>
+	      </m:apply>
+
+
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:cn>1</m:cn>
+                <m:apply>
+                  <m:times/>
+		      <m:ci>M</m:ci>
+                  <m:ci>T</m:ci>
+                </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>l</m:ci></m:bvar>
+		    <m:condition><m:ci>l</m:ci></m:condition>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>X</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+                  <m:times/>
+                  <m:imaginaryi/>
+                  <m:apply>
+			<m:divide/>
+			<m:apply>
+			  <m:minus/>
+                      <m:ci>ω</m:ci>
+                      <m:apply>
+                      <m:times/>
+                          <m:cn>2</m:cn>
+                          <m:pi/>
+                          <m:ci>l</m:ci>
+                      </m:apply>
+			</m:apply>
+                  <m:apply>
+                  <m:times/>
+			  <m:ci>M</m:ci>
+			  <m:ci>T</m:ci>
+		      </m:apply>
+                 </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+            </m:apply>
+	      </m:apply>
+	  </m:math>
+</equation>
+
+which is clearly a <m:math><m:apply><m:times/><m:ci>M</m:ci>
+<m:ci>T</m:ci></m:apply></m:math>-sampled version of
+<m:math>
+         <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+	        <m:mi>x</m:mi>
+	        <m:mi>l</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>t</m:ci>
+        </m:apply> 
+      </m:math>.
+A frequency-domain illustration for
+<m:math><m:apply><m:eq/><m:ci>M</m:ci><m:cn>2</m:cn></m:apply></m:math>
+appears in <link target-id="fig3" strength="3"/>.
+
+    </para>
+
+
+    <figure id="fig3">
+     <media id="idp2125600" alt=""><image src="../../media/m10445fig2.png" mime-type="image/png"/></media>
+    </figure>
+
+
+  </content>
+</document>

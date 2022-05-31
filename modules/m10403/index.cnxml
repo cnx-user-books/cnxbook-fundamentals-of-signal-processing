@@ -1,0 +1,244 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+  <title>Upsampling</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>1ffc00d7-aadf-4a59-93d7-11e3bd174454</md:uuid>
+</metadata>
+
+  <content>
+    <section id="sec1">
+      <title>Upsampling</title>
+      <para id="para1">
+	The operation of <term>upsampling</term> by factor
+	<m:math>
+	  <m:apply>
+	    <m:in/>
+	    <m:ci>L</m:ci>
+	    <m:naturalnumbers/>
+	  </m:apply>
+	</m:math>
+	describes the insertion of 
+	<m:math>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci>L</m:ci>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	</m:math>
+	zeros between every sample of the input signal. This is
+	denoted by
+	"<m:math>
+	  <m:apply>
+	    <m:ci><m:mo>↑</m:mo></m:ci>
+	    <m:ci>L</m:ci>
+	  </m:apply>
+	</m:math>" in block diagrams, as in <link target-id="figure1" strength="3"/>.
+
+      </para>
+
+      <figure id="figure1">
+	<media id="idm6063216" alt=""><image src="../../media/m10403fig1.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="para2">
+	Formally, upsampling can be expressed in the time domain as
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/> 
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">y</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:piecewise>
+	      <m:piece>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">x</m:ci>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>n</m:ci>
+		    <m:ci>L</m:ci>
+		  </m:apply>
+		</m:apply>
+
+		<m:apply>
+		  <m:in/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>n</m:ci>
+		    <m:ci>L</m:ci>
+		  </m:apply>
+		  <m:integers/>
+		</m:apply>
+	      </m:piece>
+	      <m:otherwise>
+		<m:cn>0</m:cn>
+	      </m:otherwise>
+	    </m:piecewise>
+	  </m:apply>
+	</m:math>
+
+	In the <m:math><m:ci>z</m:ci></m:math>-domain,
+
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">Y</m:ci>
+	      <m:ci>z</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:sum/>
+	      <m:domainofapplication>
+		<m:ci>n</m:ci>
+	      </m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">y</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>z</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:sum/>
+	      <m:domainofapplication><m:ci>n</m:ci></m:domainofapplication>
+	      <m:condition>
+		<m:apply>
+		  <m:in/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>n</m:ci><m:ci>L</m:ci>
+		  </m:apply>
+		  <m:integers/>
+		</m:apply>
+	      </m:condition>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">x</m:ci>
+		  <m:apply>
+		    <m:divide/>
+		    <m:ci>n</m:ci>
+		    <m:ci>L</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>z</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:sum/>
+	      <m:domainofapplication>
+		<m:ci>k</m:ci>
+	      </m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">x</m:ci>
+		  <m:ci>k</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>z</m:ci>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>k</m:ci>
+		    </m:apply>
+		    <m:ci>L</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:ci type="fn">X</m:ci>
+	      <m:apply>
+		<m:power/>
+		<m:ci>z</m:ci>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	
+	and substituting 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>z</m:ci>
+	    <m:apply>
+	      <m:exp/>
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>
+		<m:ci>ω</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+
+	for the DTFT,
+
+	<equation id="eq1">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">Y</m:ci>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>
+		    <m:ci>ω</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn">X</m:ci>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>
+		    <m:ci>ω</m:ci>
+		    <m:ci>L</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	As shown in <link target-id="figure2" strength="3"/>, upsampling
+	compresses the DTFT by a factor of
+	<m:math><m:ci>L</m:ci></m:math> along with the
+	<m:math><m:ci>ω</m:ci></m:math> axis.
+      </para>
+
+      <figure id="figure2">
+	<media id="idm6084640" alt=""><image src="../../media/m10403fig2.png" mime-type="image/png"/></media>
+      </figure>
+     
+    </section> 
+
+  </content>
+</document>

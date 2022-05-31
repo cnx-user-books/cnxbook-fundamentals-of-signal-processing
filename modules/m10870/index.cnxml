@@ -1,0 +1,349 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Digital Filter Design for Interpolation and Decimation</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>5cc7c692-2b2b-419a-b47e-147f30e87861</md:uuid>
+</metadata>
+
+
+  <content>
+    <para id="para1">
+      First we treat filter design for interpolation.
+      Consider an input signal
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn" class="discrete">x</m:ci>
+	  <m:ci>n</m:ci>
+	</m:apply>
+      </m:math>
+      that is 
+      <m:math>
+	<m:ci>
+	  <m:msub>
+	    <m:mi>ω</m:mi>
+	    <m:mn>0</m:mn>
+	  </m:msub>
+	</m:ci>
+      </m:math>-bandlimited in the DTFT domain.
+      If we upsample by factor <m:math><m:ci>
+	  L</m:ci></m:math> to get
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn" class="discrete">v</m:ci>
+	  <m:ci>m</m:ci>
+	</m:apply>
+      </m:math>, the desired portion of
+
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">V</m:ci>
+	  <m:apply>
+	    <m:exp/>
+	    <m:apply>
+	      <m:times/>
+	      <m:imaginaryi/>
+	      <m:ci>ω</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math> 
+      is the spectrum in
+      <m:math>
+	<m:interval closure="closed-open">
+	  <m:apply>
+	    <m:divide/>
+	    <m:apply>
+	      <m:minus/>
+	      <m:pi/>
+	    </m:apply>
+	    <m:ci>L</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:divide/>
+	    <m:pi/>
+	    <m:ci>L</m:ci>
+	  </m:apply>
+	</m:interval>
+      </m:math>, 
+      while the undesired portion is the remainder of 
+      <m:math>
+	<m:interval closure="closed-open">
+	  <m:apply>
+	    <m:minus/>
+	    <m:pi/>
+	  </m:apply>
+	  <m:pi/>
+	</m:interval>
+      </m:math>.
+      Noting from <link target-id="fig1" strength="1"/> that 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">V</m:ci>
+	  <m:apply>
+	    <m:exp/>
+	    <m:apply>
+	      <m:times/>
+	      <m:imaginaryi/>
+	      <m:ci>ω</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math> has zero energy in the regions
+      <equation id="eq1">
+	<m:math display="block">
+	  <m:mrow>
+	    <m:interval closure="closed-open">
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:plus/>
+		  <m:apply>
+		    <m:times/>
+		    <m:cn>2</m:cn>
+		    <m:ci>k</m:ci>
+		    <m:pi/>
+		  </m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>ω</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		</m:apply>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:minus/>
+		  <m:apply>
+		    <m:times/>
+		    <m:cn>2</m:cn>
+		    <m:apply>
+		      <m:plus/>
+		      <m:ci>k</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		    <m:pi/>
+		  </m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>ω</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub>
+		  </m:ci>
+		</m:apply>
+		<m:ci>L</m:ci>
+	      </m:apply>
+	    </m:interval>
+	    <m:mo>,</m:mo>
+	    <m:apply>
+	      <m:in/>
+	      <m:ci>k</m:ci>
+	      <m:integers/>
+	    </m:apply>
+	  </m:mrow>
+	</m:math>
+      </equation>
+
+      the anti-imaging filter can be designed with transition bands in
+      these regions (rather than passbands or stopbands).  For a given
+      number of taps, the additional degrees of freedom offered by
+      these transition bands allows for better responses in the
+      passbands and stopbands. The resulting filter design
+      specifications are shown in the <link target-id="fig1" strength="1">bottom subplot below</link>.
+    </para>
+
+    <figure id="fig1">
+      <media id="idp7736816" alt=""><image src="../../media/m10870fig1.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para2">
+
+      Next we treat filter design for decimation. Say that the
+      <emphasis>desired</emphasis> spectral component of the input
+      signal is bandlimited to
+      <m:math>
+	<m:apply>
+	  <m:lt/>
+	  <m:apply>
+	    <m:divide/>
+	    <m:ci><m:msub>
+		<m:mi>ω</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:divide/>
+	    <m:pi/>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+      and we have decided to downsample by <m:math><m:ci>M</m:ci></m:math>.
+      The goal is to minimally distort the input spectrum over 
+      <m:math>
+	<m:interval closure="closed-open">
+	  <m:apply>
+	    <m:divide/>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci><m:msub>
+		  <m:mi>ω</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub></m:ci>
+	    </m:apply>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:divide/>
+	    <m:ci><m:msub>
+		<m:mi>ω</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:interval>
+      </m:math>, <foreign>i.e.</foreign>, the post-decimation
+      spectrum over 
+      <m:math>
+	<m:interval closure="closed-open">
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci><m:msub>
+		<m:mi>ω</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub></m:ci>
+	  </m:apply>
+	  <m:ci><m:msub>
+	      <m:mi>ω</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	</m:interval>
+      </m:math>. 
+      Thus, we must not allow any aliased signals to enter
+      <m:math>
+	<m:interval closure="closed-open">
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci><m:msub>
+		<m:mi>ω</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub></m:ci>
+	  </m:apply>
+	  <m:ci><m:msub>
+	      <m:mi>ω</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	</m:interval>
+      </m:math>. 
+      To allow for extra degrees of freedom in the filter design, 
+      we <emphasis>do</emphasis> allow aliasing to enter the
+      post-decimation spectrum outside of
+      <m:math>
+	<m:interval closure="closed-open">
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci><m:msub>
+		<m:mi>ω</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub></m:ci>
+	  </m:apply>
+	  <m:ci><m:msub>
+	      <m:mi>ω</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	</m:interval>
+      </m:math> within
+      <m:math>
+	<m:interval closure="closed-open">
+	  <m:apply>
+	    <m:minus/>
+	    <m:pi/>
+	  </m:apply>
+	  <m:pi/>
+	</m:interval>
+      </m:math>. 
+      Since the input spectral regions which alias outside of 
+      <m:math>
+	<m:interval closure="closed-open">
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci><m:msub>
+		<m:mi>ω</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub></m:ci>
+	  </m:apply>
+	  <m:ci><m:msub>
+	      <m:mi>ω</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	</m:interval>
+      </m:math> 
+      are given by
+      <equation id="eq2">
+	<m:math display="block">
+	  <m:interval closure="closed-open">
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci>k</m:ci>
+		  <m:pi/>
+		</m:apply>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>ω</m:mi>
+		    <m:mn>0</m:mn>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	      <m:ci>L</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:apply>
+		    <m:plus/>
+		    <m:ci>k</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		  <m:pi/>
+		</m:apply>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>ω</m:mi>
+		    <m:mn>0</m:mn>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	      <m:ci>L</m:ci>
+	    </m:apply>
+	  </m:interval>
+	  <m:mo>,</m:mo>
+	  <m:apply>
+	    <m:in/>
+	    <m:ci>k</m:ci>
+	    <m:integers/>
+	  </m:apply>
+	</m:math>
+      </equation>
+      (as shown in <link target-id="fig2" strength="3"/>), we can
+      treat these regions as transition bands in the filter design.
+      The resulting filter design specifications are illustrated in
+      the middle subplot (<link target-id="fig2" strength="3"/>).
+    </para>
+
+    <figure id="fig2">
+      <media id="idp7777888" alt=""><image src="../../media/m10870fig2.png" mime-type="image/png"/></media>
+    </figure>
+    
+  </content>
+  
+</document>

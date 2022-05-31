@@ -1,0 +1,39 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Introduction to Adaptive Filters</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>9b420167-2db3-4982-8376-c2e552b5ef54</md:uuid>
+</metadata>
+
+  <content>
+    <para id="para1">
+      In many applications requiring filtering, the necessary
+    frequency response may not be known beforehand, or it may vary with
+    time. (Example; suppression of engine harmonics in a car stereo.)
+    In such applications, an adaptive filter which can automatically
+    design itself and which can track system variations in time is
+    extremely useful. Adaptive filters are used extensively in a wide
+    variety of applications, particularly in telecommunications.
+    </para>
+    
+    <list id="list1" list-type="enumerated">
+      <title>Outline of adaptive filter material</title>
+      <item><label>Wiener Filters</label> 
+	<m:math>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>L</m:mi>
+	      <m:mn>2</m:mn>
+	    </m:msub>
+	  </m:ci>
+	</m:math> optimal (FIR) filter design in a statistical context
+      </item>
+      <item><label>LMS algorithm</label> simplest and
+      by-far-the-most-commonly-used adaptive filter algorithm</item>
+      <item><label>Stability and performance of the LMS algorithm</label> When and how well it works</item>
+      <item><label>Applications of adaptive filters</label> Overview of important applications</item>
+      <item><label>Introduction to advanced adaptive filter algorithms</label>
+      Techniques for special situations or faster convergence</item>
+    </list>
+
+  </content>
+  
+</document>

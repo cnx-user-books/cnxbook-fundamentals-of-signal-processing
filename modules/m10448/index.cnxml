@@ -1,0 +1,37 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+
+  <title>Resampling with Rational Factor</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>b715a727-ae88-405a-98d9-30416573f511</md:uuid>
+</metadata>
+
+
+
+  <content>
+
+    <para id="para1">
+      Interpolation by <m:math><m:ci>L</m:ci></m:math> and decimation
+      by <m:math><m:ci>M</m:ci></m:math> can be combined to change the
+      effective sampling rate of a signal by the rational factor
+      <m:math><m:apply><m:divide/><m:ci>L</m:ci><m:ci>M</m:ci></m:apply></m:math>
+      . This process is called <term>resampling</term> or
+      <term>sample-rate conversion</term>. Rather than cascading an
+      anti-imaging filter for interpolation with an anti-aliasing
+      filter for decimation, we implement one filter with the minimum
+      of the two cutoffs
+      <m:math><m:interval><m:apply><m:divide/><m:pi/><m:ci>L</m:ci></m:apply>
+      <m:apply><m:divide/><m:pi/><m:ci>M</m:ci></m:apply></m:interval></m:math>
+      and the multiplication of the two DC gains
+      (<m:math><m:ci>L</m:ci></m:math> and
+      <m:math><m:cn>1</m:cn></m:math>), as illustrated in <link target-id="fig1" strength="3"/>.
+    </para>
+
+    <figure id="fig1">
+      <media id="idp3223056" alt=""><image src="../../media/m10448fig1.png" mime-type="image/png"/></media>
+      
+    </figure>
+
+
+  </content>
+</document>

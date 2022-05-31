@@ -1,0 +1,2233 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  
+  <title>Filterbanks Interpretation of the Discrete Wavelet Transform</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>89e89f59-e537-419b-90c3-3dba46843253</md:uuid>
+</metadata>
+
+  <content>
+    <para id="para1">
+      Assume that we start with a signal
+      <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:apply>
+	    <m:ci type="fn">x</m:ci>
+	    <m:ci>t</m:ci>
+	  </m:apply>
+	  <m:ci><m:msub>
+	      <m:mi>ℒ</m:mi>
+	      <m:mn>2</m:mn>
+	    </m:msub></m:ci>
+	</m:apply>
+      </m:math>.  Denote the best approximation at the
+      <m:math>
+	<m:ci type="fn"><m:msup>
+	    <m:mn>0</m:mn>
+	    <m:mi>th</m:mi>
+	  </m:msup></m:ci>
+      </m:math>
+      level of coarseness by
+      <m:math>
+	  <m:apply>
+	    <m:ci type="fn"><m:msub>
+	      <m:mi>x</m:mi><m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	  <m:ci>t</m:ci>
+	</m:apply>
+      </m:math>.  (Recall that 
+      <m:math>
+	  <m:apply>
+	    <m:ci type="fn"><m:msub>
+	      <m:mi>x</m:mi><m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	  <m:ci>t</m:ci>
+	</m:apply>
+      </m:math> is the orthogonal projection of
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">x</m:ci>
+	  <m:ci>t</m:ci>
+	</m:apply>
+      </m:math> onto 
+      <m:math>
+	<m:ci><m:msub>
+	    <m:mi>V</m:mi>
+	    <m:mn>0</m:mn>
+	  </m:msub></m:ci>
+      </m:math>
+      .)  Our goal, for the moment, is to decompose 
+      <m:math>
+	  <m:apply>
+	    <m:ci type="fn"><m:msub>
+	      <m:mi>x</m:mi><m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	  <m:ci>t</m:ci>
+	</m:apply>
+      </m:math>
+      into scaling coefficients and wavelet coefficients at higher
+      levels.  Since 
+      <m:math>
+	<m:apply>
+	  <m:in/>
+	  <m:apply>
+	    <m:ci type="fn"><m:msub>
+		<m:mi>x</m:mi><m:mn>0</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>t</m:ci>
+	  </m:apply>
+	  <m:ci><m:msub>
+	      <m:mi>V</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	</m:apply>
+      </m:math> and 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:ci><m:msub><m:mi>V</m:mi><m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	  <m:apply>
+	    <m:xor/>
+	    <m:ci><m:msub>
+		<m:mi>V</m:mi><m:mn>1</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci><m:msub>
+		<m:mi>W</m:mi><m:mn>1</m:mn>
+	      </m:msub></m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>, there exist coefficients 
+      <m:math>
+	<m:set>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete"><m:msub>
+		<m:mi>c</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:set>
+      </m:math>, 
+      <m:math>
+	<m:set>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete"><m:msub>
+		<m:mi>c</m:mi>
+		<m:mn>1</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:set>
+      </m:math>, and 
+      <m:math>
+	<m:set>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete"><m:msub>
+		<m:mi>d</m:mi>
+		<m:mn>1</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:set>
+      </m:math> such that 
+
+      <equation id="eqn1">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn"><m:msub>
+		  <m:mi>x</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub></m:ci>
+	      <m:ci>t</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar><m:ci>n</m:ci></m:bvar>
+	      <m:domainofapplication><m:ci>n</m:ci></m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete"><m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn"><m:msub>
+		      <m:mi>φ</m:mi>
+		      <m:mrow>
+			<m:mn>0</m:mn>
+			<m:mo>,</m:mo>
+			<m:mi>n</m:mi>
+		      </m:mrow>
+		    </m:msub></m:ci>
+		  <m:ci>t</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication><m:ci>n</m:ci></m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>c</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>φ</m:mi>
+			<m:mrow>
+			  <m:mn>1</m:mn>
+			  <m:mo>,</m:mo>
+			  <m:mi>n</m:mi>
+			</m:mrow>
+		      </m:msub></m:ci>
+		    <m:ci>t</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication><m:ci>n</m:ci></m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>d</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>ψ</m:mi>
+			<m:mrow>
+			  <m:mn>1</m:mn>
+			  <m:mo>,</m:mo>
+			  <m:mi>n</m:mi>
+			</m:mrow>
+		      </m:msub></m:ci>
+		    <m:ci>t</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+
+      Using the fact that
+      <m:math>
+	<m:set>
+	  <m:bvar>
+	  <m:apply>
+	    <m:ci type="fn"><m:msub>
+		<m:mi>φ</m:mi>
+		<m:mrow>
+		  <m:mn>1</m:mn>
+		  <m:mo>,</m:mo>
+		  <m:mi>n</m:mi>
+		</m:mrow>
+	      </m:msub></m:ci>
+	    <m:ci>t</m:ci>
+	  </m:apply>
+	  </m:bvar>
+	  <m:condition>
+	    <m:apply>
+	      <m:in/>
+	      <m:ci>n</m:ci>
+	      <m:integers/>
+	    </m:apply>
+	  </m:condition>
+	</m:set>
+      </m:math> is an orthonormal basis for 
+      <m:math>
+	<m:ci><m:msub>
+	    <m:mi>V</m:mi>
+	    <m:mn>1</m:mn>
+	  </m:msub></m:ci>
+      </m:math>
+      , in conjunction with the scaling equation, 
+
+      <equation id="eqn2">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete"><m:msub>
+		  <m:mi>c</m:mi>
+		  <m:mn>1</m:mn>
+		</m:msub></m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:scalarproduct/>
+	      <m:apply>
+		<m:ci type="fn"><m:msub>
+		    <m:mi>x</m:mi>
+		    <m:mn>0</m:mn>
+		  </m:msub></m:ci>
+		<m:ci>t</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn"><m:msub>
+		    <m:mi>φ</m:mi>
+		    <m:mrow>
+		      <m:mn>1</m:mn>
+		      <m:mo>,</m:mo>
+		      <m:mi>n</m:mi>
+		    </m:mrow>
+		  </m:msub></m:ci>
+		<m:ci>t</m:ci>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:scalarproduct/>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>m</m:ci></m:bvar>
+		<m:domainofapplication><m:ci>m</m:ci></m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>c</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>m</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn"><m:msub>
+			<m:mi>φ</m:mi>
+			<m:mrow>
+			  <m:mn>0</m:mn>
+			  <m:mo>,</m:mo>
+			  <m:mi>m</m:mi>
+			</m:mrow>
+		      </m:msub></m:ci>
+		    <m:ci>t</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn"><m:msub>
+		    <m:mi>φ</m:mi>
+		    <m:mrow>
+		      <m:mn>1</m:mn>
+		      <m:mo>,</m:mo>
+		      <m:mi>n</m:mi>
+		    </m:mrow>
+		  </m:msub></m:ci>
+		<m:ci>t</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar><m:ci>m</m:ci></m:bvar>
+	      <m:domainofapplication><m:ci>m</m:ci></m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete"><m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:scalarproduct/>
+		  <m:apply>
+		    <m:ci type="fn"><m:msub>
+			<m:mi>φ</m:mi>
+			<m:mrow>
+			  <m:mn>0</m:mn>
+			  <m:mo>,</m:mo>
+			  <m:mi>m</m:mi>
+			</m:mrow>
+		      </m:msub></m:ci>
+		    <m:ci>t</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn"><m:msub>
+			<m:mi>φ</m:mi>
+			<m:mrow>
+			  <m:mn>1</m:mn>
+			  <m:mo>,</m:mo>
+			  <m:mi>n</m:mi>
+			</m:mrow>
+		      </m:msub></m:ci>
+		    <m:ci>t</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar><m:ci>m</m:ci></m:bvar>
+	      <m:domainofapplication><m:ci>m</m:ci></m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete"><m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:scalarproduct/>
+		  <m:apply>
+		    <m:ci type="fn">φ</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>t</m:ci>
+		      <m:ci>m</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar><m:ci>ℓ</m:ci></m:bvar>
+		    <m:domainofapplication>
+		      <m:ci>ℓ</m:ci>
+		    </m:domainofapplication>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:ci type="fn" class="discrete">h</m:ci>
+			<m:ci>ℓ</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn">φ</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:apply>
+			    <m:minus/>
+			    <m:ci>t</m:ci>
+			    <m:ci>ℓ</m:ci>
+			  </m:apply>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:ci>n</m:ci>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar><m:ci>m</m:ci></m:bvar>
+	      <m:domainofapplication><m:ci>m</m:ci></m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete"><m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>ℓ</m:ci>
+		  </m:bvar>
+		  <m:domainofapplication>
+		    <m:ci>ℓ</m:ci>
+		  </m:domainofapplication>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">h</m:ci>
+		      <m:ci>ℓ</m:ci>
+		    </m:apply>
+		  
+		    <m:apply>
+		      <m:scalarproduct/>
+		      <m:apply>
+			<m:ci type="fn">φ</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>t</m:ci>
+			  <m:ci>m</m:ci>
+			</m:apply>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn">φ</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:apply>
+			    <m:minus/>
+			    <m:ci>t</m:ci>
+			    <m:ci>ℓ</m:ci>
+			  </m:apply>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:ci>n</m:ci>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar>
+		<m:ci>m</m:ci>
+	      </m:bvar>
+	      <m:domainofapplication>
+		<m:ci>m</m:ci>
+	      </m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete"><m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">h</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>m</m:ci>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+      where 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">δ</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>t</m:ci>
+		<m:ci>ℓ</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:scalarproduct/>
+	    <m:apply>
+	      <m:ci type="fn">φ</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>t</m:ci>
+		<m:ci>m</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">φ</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>t</m:ci>
+		  <m:ci>ℓ</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci>n</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>.  The previous expression (<link target-id="eqn2" strength="3"/>) indicates that
+      <m:math>
+	<m:set>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete"><m:msub>
+		<m:mi>c</m:mi>
+		<m:mn>1</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:set>
+      </m:math> results from convolving 
+      <m:math>
+	<m:set>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete"><m:msub>
+		<m:mi>c</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	</m:set>
+      </m:math> with a time-reversed version of 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn" class="discrete">h</m:ci>
+	  <m:ci>m</m:ci>
+	</m:apply>
+      </m:math> then downsampling by factor two (<link target-id="fig1" strength="3"/>).
+    </para>
+
+    <figure id="fig1">
+      <media id="idp713488" alt=""><image src="../../media/downsampling1.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para2">
+      Using the fact that 
+      <m:math display="inline">
+	<m:set>
+	  <m:bvar>
+	    <m:apply>
+	      <m:ci type="fn"><m:msub>
+		  <m:mi>ψ</m:mi>
+		  <m:mrow>
+		    <m:mn>1</m:mn>
+		    <m:mo>,</m:mo>
+		    <m:mi>n</m:mi>
+		  </m:mrow>
+		</m:msub></m:ci>
+	      <m:ci>t</m:ci>
+	    </m:apply>
+	  </m:bvar>
+	  <m:condition>
+	    <m:apply>
+	      <m:in/>
+	      <m:ci>n</m:ci>
+	      <m:integers/>
+	    </m:apply>
+	  </m:condition>
+	</m:set>
+      </m:math> is an orthonormal basis for 
+      <m:math>
+	<m:ci><m:msub>
+	    <m:mi>W</m:mi>
+	    <m:mn>1</m:mn>
+	  </m:msub></m:ci>
+      </m:math>
+      , in conjunction with the wavelet scaling equation, 
+      <equation id="eqn3">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete"><m:msub>
+		  <m:mi>d</m:mi>
+		  <m:mn>1</m:mn>
+		</m:msub></m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:scalarproduct/>
+	      <m:apply>
+		<m:ci type="fn"><m:msub>
+		    <m:mi>x</m:mi><m:mn>0</m:mn>
+		  </m:msub></m:ci>
+		<m:ci>t</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn"><m:msub>
+		    <m:mi>ψ</m:mi>
+		    <m:mrow>
+		      <m:mn>1</m:mn>
+		      <m:mo>,</m:mo>
+		      <m:mi>n</m:mi>
+		    </m:mrow>
+		  </m:msub></m:ci>
+		<m:ci>t</m:ci>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:scalarproduct/>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>m</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>m</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">
+		      <m:msub>
+			<m:mi>c</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>m</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn"><m:msub>
+			<m:mi>φ</m:mi>
+			<m:mrow>
+			  <m:mn>0</m:mn>
+			  <m:mo>,</m:mo>
+			  <m:mi>m</m:mi>
+			</m:mrow>
+		      </m:msub></m:ci>
+		    <m:ci>t</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn"><m:msub>
+		    <m:mi>ψ</m:mi>
+		    <m:mrow>
+		      <m:mn>1</m:mn>
+		      <m:mo>,</m:mo>
+		      <m:mi>n</m:mi>
+		    </m:mrow>
+		  </m:msub></m:ci>
+		<m:ci>t</m:ci>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar>
+		<m:ci>m</m:ci>
+	      </m:bvar>
+	      <m:domainofapplication>
+		<m:ci>m</m:ci>
+		</m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">
+		    <m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:scalarproduct/>
+		  <m:apply>
+		    <m:ci type="fn"><m:msub>
+			<m:mi>φ</m:mi>
+			<m:mrow>
+			  <m:mn>0</m:mn>
+			  <m:mo>,</m:mo>
+			  <m:mi>m</m:mi>
+			</m:mrow>
+		      </m:msub></m:ci>
+		    <m:ci>t</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn"><m:msub>
+			<m:mi>ψ</m:mi>
+			<m:mrow>
+			  <m:mn>1</m:mn>
+			  <m:mo>,</m:mo>
+			  <m:mi>n</m:mi>
+			</m:mrow>
+		      </m:msub></m:ci>
+		    <m:ci>t</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar>
+		<m:ci>m</m:ci>
+	      </m:bvar>
+	      <m:domainofapplication>
+		<m:ci>m</m:ci>
+		</m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">
+		    <m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:scalarproduct/>
+		  <m:apply>
+		    <m:ci type="fn">φ</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>t</m:ci>
+		      <m:ci>m</m:ci>
+		    </m:apply>
+		  </m:apply>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar>
+		      <m:ci>ℓ</m:ci>
+		    </m:bvar>
+		    <m:domainofapplication>
+		      <m:ci>ℓ</m:ci>
+		    </m:domainofapplication>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:ci type="fn" class="discrete">g</m:ci>
+			<m:ci>ℓ</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn">φ</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:apply>
+			    <m:minus/>
+			    <m:ci>t</m:ci>
+			    <m:ci>ℓ</m:ci>
+			  </m:apply>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:ci>n</m:ci>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar>
+		<m:ci>m</m:ci>
+	      </m:bvar>
+	      <m:domainofapplication>
+		<m:ci>m</m:ci>
+		</m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">
+		    <m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>ℓ</m:ci>
+		  </m:bvar>
+		  <m:domainofapplication>
+		    <m:ci>ℓ</m:ci>
+		  </m:domainofapplication>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete">g</m:ci>
+		      <m:ci>ℓ</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:scalarproduct/>
+		      <m:apply>
+			<m:ci type="fn">φ</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>t</m:ci>
+			  <m:ci>m</m:ci>
+			</m:apply>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn">φ</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:apply>
+			    <m:minus/>
+			    <m:ci>t</m:ci>
+			    <m:ci>ℓ</m:ci>
+			  </m:apply>
+			  <m:apply>
+			    <m:times/>
+			    <m:cn>2</m:cn>
+			    <m:ci>n</m:ci>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar>
+		<m:ci>m</m:ci>
+	      </m:bvar>
+	      <m:domainofapplication>
+		<m:ci>m</m:ci>
+		</m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">
+		    <m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">g</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>m</m:ci>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+      where 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">δ</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>t</m:ci>
+		<m:ci>ℓ</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:scalarproduct/>
+	    <m:apply>
+	      <m:ci type="fn">φ</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>t</m:ci>
+		<m:ci>m</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">φ</m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>t</m:ci>
+		  <m:ci>ℓ</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci>n</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>.
+    </para>
+
+    <para id="para3">
+      The previous expression (<link target-id="eqn3" strength="3"/>) indicates that
+      <m:math>
+	<m:set>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete"><m:msub>
+		<m:mi>d</m:mi>
+		<m:mn>1</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:set>
+      </m:math> results from convolving 
+      <m:math>
+	<m:set>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete"><m:msub>
+		<m:mi>c</m:mi>
+		<m:mn>0</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	</m:set>
+      </m:math> with a time-reversed version of 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn" class="discrete">g</m:ci>
+	  <m:ci>m</m:ci>
+	</m:apply>
+      </m:math> then downsampling by factor two (<link target-id="fig2" strength="3"/>).
+    </para>
+
+    <figure id="fig2">
+      <media id="idp828896" alt=""><image src="../../media/downsampling3.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para4">
+      Putting these two operations together, we arrive at what looks
+      like the analysis portion of an FIR filterbank (<link target-id="fig3" strength="3"/>):
+    </para>
+
+    <figure id="fig3">
+      <media id="idp956160" alt=""><image src="../../media/downsampling2.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para5">
+      We can repeat this process at the next higher level.  Since 
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:ci><m:msub>
+	      <m:mi>V</m:mi>
+	      <m:mn>1</m:mn>
+	    </m:msub></m:ci>
+	  <m:apply>
+	    <m:xor/>
+	    <m:ci><m:msub>
+		<m:mi>W</m:mi>
+		<m:mn>2</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci><m:msub>
+		<m:mi>V</m:mi>
+		<m:mn>2</m:mn>
+	      </m:msub></m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>, there exist coefficients 
+      <m:math>
+	<m:set>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete"><m:msub>
+		<m:mi>c</m:mi>
+		<m:mn>2</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:set>
+      </m:math> and 
+      <m:math>
+	<m:set>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete"><m:msub>
+		<m:mi>d</m:mi>
+		<m:mn>2</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:set>
+      </m:math> such that
+
+      <equation id="eq3">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn"><m:msub>
+		<m:mi>x</m:mi>
+		<m:mn>1</m:mn>
+	      </m:msub></m:ci>
+	      <m:ci>t</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar><m:ci>n</m:ci></m:bvar>
+	      <m:domainofapplication>
+		<m:ci>n</m:ci>
+	      </m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete"><m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn"><m:msub>
+		      <m:mi>φ</m:mi>
+		      <m:mrow>
+			<m:mn>1</m:mn>
+			<m:mo>,</m:mo>
+			<m:mi>n</m:mi>
+		      </m:mrow>
+		    </m:msub></m:ci>
+		  <m:ci>t</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>n</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>d</m:mi>
+			<m:mn>2</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn"><m:msub>
+			<m:mi>ψ</m:mi>
+			<m:mrow>
+			  <m:mn>2</m:mn>
+			  <m:mo>,</m:mo>
+			  <m:mi>n</m:mi>
+			</m:mrow>
+		      </m:msub></m:ci>
+		    <m:ci>t</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>n</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>c</m:mi>
+			<m:mn>2</m:mn>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">
+		      <m:msub>
+			<m:mi>φ</m:mi>
+			<m:mrow>
+			  <m:mn>2</m:mn>
+			  <m:mo>,</m:mo>
+			  <m:mi>n</m:mi>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>t</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>  
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+
+     Using the same steps as before we find that
+      
+      <equation id="eq4">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete"><m:msub>
+		  <m:mi>c</m:mi>
+		  <m:mn>2</m:mn>
+		</m:msub></m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar><m:ci>m</m:ci></m:bvar>
+	      <m:domainofapplication>
+		<m:ci>m</m:ci>
+	      </m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete"><m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">h</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>m</m:ci>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+      
+      <equation id="eq5">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete"><m:msub>
+		  <m:mi>d</m:mi>
+		  <m:mn>2</m:mn>
+		</m:msub></m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar><m:ci>m</m:ci></m:bvar>
+	      <m:domainofapplication>
+		<m:ci>m</m:ci>
+	      </m:domainofapplication>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:ci type="fn" class="discrete"><m:msub>
+		      <m:mi>c</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>m</m:ci>
+		</m:apply>
+		<m:apply>
+		  <m:ci type="fn" class="discrete">g</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>m</m:ci>
+		    <m:apply>
+		      <m:times/>
+		      <m:cn>2</m:cn>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+      which gives a cascaded analysis filterbank (<link target-id="fig4" strength="3"/>):
+    </para>
+
+    <figure id="fig4">
+      <media id="idm8016688" alt=""><image src="../../media/cascade_filterbank.png" mime-type="image/png"/></media>
+    </figure>
+   
+    <para id="para6">
+      If we use
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:ci><m:msub>
+	      <m:mi>V</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	  <m:apply>
+	    <m:xor/>
+	    <m:ci><m:msub>
+		<m:mi>W</m:mi>
+		<m:mn>1</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci><m:msub>
+		<m:mi>W</m:mi>
+		<m:mn>2</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci><m:msub>
+		<m:mi>W</m:mi>
+		<m:mn>3</m:mn>
+	      </m:msub></m:ci>
+	    <m:ci>⋯</m:ci>
+	    <m:ci><m:msub>
+		<m:mi>W</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub></m:ci>
+	    <m:ci><m:msub>
+		<m:mi>V</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub></m:ci>				     
+	  </m:apply>
+	</m:apply>
+      </m:math> to repeat this process up to the 
+      <m:math>
+	<m:ci><m:msup>
+	    <m:mi>k</m:mi>
+	    <m:mi>th</m:mi>
+	  </m:msup></m:ci>
+      </m:math>
+      level, we get the iterated analysis filterbank (<link target-id="fig5" strength="3"/>).
+    </para>
+
+    <figure id="fig5">
+      <media id="idp241744" alt=""><image src="../../media/iterated_a_filterbank.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para7">
+      As we might expect, signal reconstruction can be accomplished
+      using cascaded two-channel synthesis filterbanks.  Using the
+      same assumptions as before, we have:
+      <equation id="eqn6">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete"><m:msub>
+		  <m:mi>c</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub></m:ci>
+	      <m:ci>m</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:scalarproduct/>
+	      <m:apply>
+		<m:ci type="fn"><m:msub>
+		    <m:mi>x</m:mi>
+		    <m:mn>0</m:mn>
+		  </m:msub></m:ci>
+		<m:ci>t</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn"><m:msub>
+		    <m:mi>φ</m:mi>
+		    <m:mrow>
+		      <m:mn>0</m:mn>
+		      <m:mo>,</m:mo>
+		      <m:mi>m</m:mi>
+		    </m:mrow>
+		  </m:msub></m:ci>
+		<m:ci>t</m:ci>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:scalarproduct/>
+	      <m:apply>
+		<m:plus/>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar><m:ci>n</m:ci></m:bvar>
+		  <m:domainofapplication>
+		    <m:ci>n</m:ci>
+		  </m:domainofapplication>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete"><m:msub>
+			  <m:mi>c</m:mi>
+			  <m:mn>1</m:mn>
+			</m:msub></m:ci>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn"><m:msub>
+			  <m:mi>φ</m:mi>
+			  <m:mrow>
+			    <m:mn>1</m:mn>
+			    <m:mo>,</m:mo>
+			    <m:mi>n</m:mi>
+			  </m:mrow>
+			</m:msub></m:ci>
+		      <m:ci>t</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar><m:ci>n</m:ci></m:bvar>
+		  <m:domainofapplication>
+		    <m:ci>n</m:ci>
+		  </m:domainofapplication>
+		  <m:apply>
+		    <m:times/>
+		    <m:apply>
+		      <m:ci type="fn" class="discrete"><m:msub>
+			  <m:mi>d</m:mi>
+			  <m:mn>1</m:mn>
+			</m:msub></m:ci>
+		      <m:ci>n</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn"><m:msub>
+			  <m:mi>ψ</m:mi>
+			  <m:mrow>
+			    <m:mn>1</m:mn>
+			    <m:mo>,</m:mo>
+			    <m:mi>n</m:mi>
+			  </m:mrow>
+			</m:msub></m:ci>
+		      <m:ci>t</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn"><m:msub>
+		    <m:mi>φ</m:mi>
+		    <m:mrow>
+		      <m:mn>0</m:mn>
+		      <m:mo>,</m:mo>
+		      <m:mi>m</m:mi>
+		    </m:mrow>
+		  </m:msub></m:ci>
+		<m:ci>t</m:ci>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>n</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>c</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:scalarproduct/>
+		    <m:apply>
+		      <m:ci type="fn"><m:msub>
+			  <m:mi>φ</m:mi>
+			  <m:mrow>
+			    <m:mn>1</m:mn>
+			    <m:mi>,</m:mi>
+			    <m:mi>n</m:mi>
+			  </m:mrow>
+			</m:msub></m:ci>
+		      <m:ci>t</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn"><m:msub>
+			  <m:mi>φ</m:mi>
+			  <m:mrow>
+			    <m:mn>0</m:mn>
+			    <m:mo>,</m:mo>
+			    <m:mi>m</m:mi>
+			  </m:mrow>
+			</m:msub></m:ci>
+		      <m:ci>t</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>n</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>d</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:scalarproduct/>
+		    <m:apply>
+		      <m:ci type="fn"><m:msub>
+			  <m:mi>ψ</m:mi>
+			  <m:mrow>
+			    <m:mn>1</m:mn>
+			    <m:mo>,</m:mo>
+			    <m:mi>n</m:mi>
+			  </m:mrow>
+			</m:msub></m:ci>
+		      <m:ci>t</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn"><m:msub>
+			  <m:mi>φ</m:mi>
+			  <m:mrow>
+			    <m:mn>0</m:mn>
+			    <m:mo>,</m:mo>
+			    <m:mi>m</m:mi>
+			  </m:mrow>
+			</m:msub></m:ci>
+		      <m:ci>t</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>n</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>c</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">h</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>m</m:ci>
+		      <m:apply>
+			<m:times/>
+			<m:cn>2</m:cn>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>n</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>d</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">g</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>m</m:ci>
+		      <m:apply>
+			<m:times/>
+			<m:cn>2</m:cn>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+      <m:math display="block">
+	<m:mtext>where   </m:mtext>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">h</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>m</m:ci>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:scalarproduct/>
+	    <m:apply>
+	      <m:ci type="fn"><m:msub>
+		  <m:mi>φ</m:mi>
+		  <m:mrow>
+		    <m:mn>1</m:mn>
+		    <m:mo>,</m:mo>
+		    <m:mi>n</m:mi>
+		  </m:mrow>
+		</m:msub></m:ci>
+	      <m:ci>t</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn"><m:msub>
+		  <m:mi>φ</m:mi>
+		  <m:mrow>
+		    <m:mn>0</m:mn>
+		    <m:mo>,</m:mo>
+		    <m:mi>m</m:mi>
+		  </m:mrow>
+		</m:msub></m:ci>
+	      <m:ci>t</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+
+      <m:math display="block">
+	<m:mtext>and   </m:mtext>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn" class="discrete">g</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>m</m:ci>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:scalarproduct/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>ψ</m:mi>
+		  <m:mrow>
+		    <m:mn>1</m:mn>
+		    <m:mo>,</m:mo>
+		    <m:mi>n</m:mi>
+		  </m:mrow>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>t</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>φ</m:mi>
+		  <m:mrow>
+		    <m:mn>0</m:mn>
+		    <m:mo>,</m:mo>
+		    <m:mi>m</m:mi>
+		  </m:mrow>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>t</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+      which can be implemented using the block diagram in <link target-id="fig6" strength="3"/>.
+    </para>
+
+    <figure id="fig6">
+      <media id="idm9105216" alt=""><image src="../../media/filterbanks_block1.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para8">
+      The same procedure can be used to derive
+
+      <equation id="eq10">
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn" class="discrete">
+		<m:msub>
+		  <m:mi>c</m:mi>
+		  <m:mn>1</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>m</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>n</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>c</m:mi>
+			<m:mn>2</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">h</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>m</m:ci>
+		      <m:apply>
+			<m:times/>
+			<m:cn>2</m:cn>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>  
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar><m:ci>n</m:ci></m:bvar>
+		<m:domainofapplication>
+		  <m:ci>n</m:ci>
+		</m:domainofapplication>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete"><m:msub>
+			<m:mi>d</m:mi>
+			<m:mn>2</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">g</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>m</m:ci>
+		      <m:apply>
+			<m:times/>
+			<m:cn>2</m:cn>
+			<m:ci>n</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+      from which we get the diagram in <link target-id="fig7" strength="3"/>.
+    </para>
+
+    <figure id="fig7">
+      <media id="idm689200" alt=""><image src="../../media/filterbanks_block2.png" mime-type="image/png"/></media>
+    </figure>
+
+    <para id="para9">
+      To reconstruct from the 
+      <m:math>
+	<m:ci><m:msup>
+	    <m:mi>k</m:mi>
+	    <m:mi>th</m:mi>
+	  </m:msup></m:ci>
+      </m:math>
+      level, we can use the iterated synthesis filterbank (<link target-id="fig8" strength="3"/>).
+    </para> 
+
+    <figure id="fig8">
+      <media id="idm7715440" alt=""><image src="../../media/iterated_syn_filterbank.png" mime-type="image/png"/></media>
+    </figure>	 
+
+    <para id="para10">
+      The <link target-id="table1" strength="3">table</link> makes a
+      direct comparison between wavelets and the two-channel
+      orthogonal PR-FIR filterbanks.
+    </para>
+
+    <table frame="all" id="table1" summary="">
+      <tgroup cols="3" align="left" colsep="1" rowsep="1">
+	<thead valign="top">
+	  <row>
+	    <entry>
+
+	    </entry>
+	    <entry>
+	      Discrete Wavelet Transform
+	    </entry>
+	    <entry>
+	      2-Channel Orthogonal PR-FIR Filterbank
+	    </entry>
+	  </row>
+	</thead>
+	<tbody valign="top">
+	  <row>
+	    <entry>
+	      Analysis-LPF
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">H</m:ci>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:cn>-1</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:math>
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn"><m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>0</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math>	    
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>
+	      Power Symmetry
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:ci type="fn">H</m:ci>
+			<m:ci>z</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn">H</m:ci>
+			<m:apply>
+			  <m:power/>
+			  <m:ci>z</m:ci>
+			  <m:cn>-1</m:cn>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:ci type="fn">H</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>z</m:ci>
+			</m:apply>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn">H</m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:apply>
+			    <m:power/>
+			    <m:ci>z</m:ci>
+			    <m:cn>-1</m:cn>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>2</m:cn>	  
+		</m:apply>
+	      </m:math>
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:ci type="fn"><m:msub>
+			    <m:mi>H</m:mi>
+			    <m:mn>0</m:mn>
+			  </m:msub></m:ci>
+			<m:ci>z</m:ci>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn"><m:msub>
+			    <m:mi>H</m:mi>
+			    <m:mn>0</m:mn>
+			  </m:msub></m:ci>
+			<m:apply>
+			  <m:power/>
+			  <m:ci>z</m:ci>
+			  <m:cn>-1</m:cn>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:times/>
+		      <m:apply>
+			<m:ci type="fn"><m:msub>
+			    <m:mi>H</m:mi>
+			    <m:mn>0</m:mn>
+			  </m:msub></m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>z</m:ci>
+			</m:apply>
+		      </m:apply>
+		      <m:apply>
+			<m:ci type="fn"><m:msub>
+			    <m:mi>H</m:mi>
+			    <m:mn>0</m:mn>
+			  </m:msub></m:ci>
+			<m:apply>
+			  <m:minus/>
+			  <m:apply>
+			    <m:power/>
+			    <m:ci>z</m:ci>
+			    <m:cn>-1</m:cn>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:math>
+	    </entry>
+	  </row>
+
+	  <row>
+	    <entry>
+	      Analysis HPF
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">G</m:ci>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>z</m:ci>
+		    <m:cn>-1</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:math>
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn"><m:msub>
+		      <m:mi>H</m:mi>
+		      <m:mn>1</m:mn>
+		    </m:msub></m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math>
+	    </entry>
+	  </row>
+	  <row>
+	    <entry>Spectral Reverse</entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:forall/>
+		  <m:bvar><m:ci>P</m:ci></m:bvar>
+		  <m:condition>
+		    <m:mtext>P is odd</m:mtext>
+		  </m:condition>
+		  <m:apply>
+		    <m:eq/>
+		    <m:apply>
+		      <m:ci type="fn">G</m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci><m:mo>±</m:mo></m:ci>
+		      <m:apply>
+			<m:times/>
+			<m:apply>
+			  <m:power/>
+			  <m:ci>z</m:ci>
+			  <m:apply>
+			    <m:minus/>
+			    <m:ci>P</m:ci>
+			  </m:apply>
+			</m:apply>
+			<m:apply>
+			  <m:ci type="fn">H</m:ci>
+			  <m:apply>
+			    <m:minus/>
+			    <m:apply>
+			      <m:power/>
+			      <m:ci>z</m:ci>			
+			      <m:cn>-1</m:cn>	
+			    </m:apply>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:math>
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:forall/>
+		  <m:bvar><m:ci>N</m:ci></m:bvar>
+		  <m:condition>
+		    <m:mtext>N is even</m:mtext>
+		  </m:condition>
+		  <m:apply>
+		    <m:eq/>
+		    <m:apply>		    
+		      <m:ci type="fn"><m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>1</m:mn>
+			</m:msub></m:ci>
+		      <m:ci>z</m:ci>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci><m:mo>±</m:mo></m:ci>
+		      <m:apply>
+			<m:times/>
+			<m:apply>
+			  <m:power/>
+			  <m:ci>z</m:ci>
+			  <m:apply>
+			    <m:minus/>
+			    <m:apply>
+			      <m:minus/>
+			      <m:ci>N</m:ci>
+			      <m:cn>1</m:cn>
+			    </m:apply>
+			  </m:apply>
+			</m:apply>
+			<m:apply>
+			  <m:ci type="fn"><m:msub>
+			      <m:mi>H</m:mi>
+			      <m:mn>0</m:mn>
+			    </m:msub></m:ci>
+			  <m:apply>
+			    <m:minus/>
+			    <m:apply>
+			      <m:power/>
+			      <m:ci>z</m:ci>
+			      <m:cn>-1</m:cn>
+			    </m:apply>
+			  </m:apply>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:math>
+	    </entry>
+	  </row>
+
+	  <row>
+	    <entry>
+	      Synthesis LPF
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">H</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math>
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:ci type="fn"><m:msub>
+			<m:mi>G</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:times/>
+		    <m:cn>2</m:cn>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>N</m:ci>
+			  <m:cn>1</m:cn>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn"><m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>0</m:mn>
+			</m:msub></m:ci>
+		      <m:apply>
+			<m:power/>
+			<m:ci>z</m:ci>
+			<m:cn>-1</m:cn>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:math>
+	    </entry>
+	  </row>
+
+	  <row>
+	    <entry>
+	      Synthesis HPF
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:ci type="fn">G</m:ci>
+		  <m:ci>z</m:ci>
+		</m:apply>
+	      </m:math>
+	    </entry>
+	    <entry>
+	      <m:math>
+		<m:apply>
+		  <m:eq/>
+		  <m:apply>
+		    <m:ci type="fn"><m:msub>
+			<m:mi>G</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub></m:ci>
+		    <m:ci>z</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:times/>
+		    <m:cn>2</m:cn>
+		    <m:apply>
+		      <m:power/>
+		      <m:ci>z</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:apply>
+			  <m:minus/>
+			  <m:ci>N</m:ci>
+			  <m:cn>1</m:cn>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		    <m:apply>
+		      <m:ci type="fn"><m:msub>
+			  <m:mi>H</m:mi>
+			  <m:mn>1</m:mn>
+			</m:msub></m:ci>
+		      <m:apply>
+			<m:power/>
+			<m:ci>z</m:ci>
+			<m:cn>-1</m:cn>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:math>
+	    </entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+
+    <para id="para11">
+      From the table, we see that the discrete wavelet transform that
+      we have been developing is identical to two-channel orthogonal
+      PR-FIR filterbanks in all but a couple details.
+      <list id="list1" list-type="enumerated">
+	<item>
+	  Orthogonal PR-FIR filterbanks employ synthesis filters with
+	  twice the gain of the analysis filters, whereas in the DWT
+	  the gains are equal.
+	</item>
+	<item>
+	  Orthogonal PR-FIR filterbanks employ causal filters of length
+	  <m:math><m:ci>N</m:ci></m:math>, whereas the DWT filters are
+	  not constrained to be causal.
+	</item>
+      </list>
+      For convenience, however, the wavelet filters 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">H</m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math> and 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">G</m:ci>
+	  <m:ci>z</m:ci>
+	</m:apply>
+      </m:math> are usually chosen to be causal.  For both to have
+      even impulse response length <m:math><m:ci>N</m:ci></m:math>, we
+      require that
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>P</m:ci>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci>N</m:ci>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	</m:apply>
+      </m:math>.
+    </para>
+  </content>
+</document>

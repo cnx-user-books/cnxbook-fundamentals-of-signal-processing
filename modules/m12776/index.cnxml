@@ -1,0 +1,92 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Overview of Digital Filter Design</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>b531470d-d754-422c-8e4b-e53ca27974a8</md:uuid>
+</metadata>
+
+  <content>
+    <para id="para1">
+      <list id="fir" list-type="enumerated">
+	<title>Advantages of FIR filters</title>
+	<item>
+	  Straight forward conceptually and simple to implement
+	</item>
+	<item>
+	  Can be implemented with fast convolution
+	</item>
+	<item>
+	  Always stable
+	</item>
+	<item>
+	  Relatively insensitive to quantization
+	</item>
+	<item>
+	  Can have linear phase (same time delay of all frequencies)
+	</item>
+      </list>
+      <list id="iir" list-type="enumerated">
+	<title>Advantages of IIR filters</title>
+	<item>
+	  Better for approximating analog systems
+	</item>
+	<item>
+	  For a given magnitude response specification, IIR filters
+	  often require much less computation than an equivalent FIR,
+	  particularly for narrow transition bands
+	</item>
+      </list>
+      Both FIR and IIR filters are very important in applications.
+      <list id="genericdesign" list-type="enumerated">
+	<title>Generic Filter Design Procedure</title>
+	<item>
+	  Choose a desired response, based on application requirements
+	</item>
+	<item>
+	  Choose a filter class
+	</item>
+	<item>
+	  Choose a quality measure
+	</item>
+	<item>
+	  Solve for the filter in class 2 optimizing criterion in 3
+	</item>
+      </list>
+    </para>
+
+    <section id="perspective">
+      <title>Perspective on FIR filtering</title>
+      <para id="para2">
+	Most of the time, people do 
+	<m:math>
+	  <m:ci><m:msup>
+	      <m:mi>L</m:mi>
+	      <m:mi>∞</m:mi>
+	    </m:msup></m:ci>
+	</m:math>
+	optimal design, using the <link document="m12799">Parks-McClellan algorithm</link>.  This is
+	probably the second most important technique in "classical"
+	signal processing (after the Cooley-Tukey (<link document="m12016">radix-2</link>) FFT).
+      </para>
+
+      <para id="para3">
+	Most of the time, FIR filters are designed to have linear
+	phase.  The most important advantage of FIR filters over IIR
+	filters is that they can have exactly linear phase.  There are
+	advanced design techniques for minimum-phase filters,
+	constrained
+	<m:math>
+	  <m:ci><m:msup>
+	      <m:mi>L</m:mi>
+	      <m:mn>2</m:mn>
+	    </m:msup></m:ci>
+	</m:math>
+	optimal designs, <foreign>etc.</foreign> (see chapter 8 of
+	text). <!-- reference here?--> However, if only the
+	<emphasis>magnitude</emphasis> of the response is important,
+	IIR filers usually require much fewer operations and are
+	typically used, so the bulk of FIR filter design work has
+	concentrated on linear phase designs.
+      </para>
+    </section>
+  </content>
+  
+</document>

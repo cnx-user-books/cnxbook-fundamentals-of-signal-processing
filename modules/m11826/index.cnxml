@@ -1,0 +1,370 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Quadratic Minimization and Gradient Descent</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>b36b1612-0e52-4a29-a558-4e8c05edfc49</md:uuid>
+</metadata>
+
+  <content>
+    <section id="sect1">
+      <title>Quadratic minimization problems</title>
+      <para id="para1">
+	The least squares optimal filter design problem is quadratic
+    in the filter coefficients:
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	      
+	      <m:apply>
+		<m:power/>
+		<m:ci>ε</m:ci>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>dd</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>0</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:apply>
+		    <m:transpose/>
+		    <m:ci type="vector">P</m:ci>
+		  </m:apply>
+		  <m:ci type="vector">W</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:transpose/>
+		  <m:ci type="vector">W</m:ci>
+		</m:apply>
+		<m:ci>R</m:ci>
+		<m:ci type="vector">W</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	If <m:math><m:ci>R</m:ci></m:math> is positive definite, the
+	error surface
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	      <m:apply>
+		<m:power/>
+		<m:ci>ε</m:ci>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:mfenced>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>w</m:mi>
+		  <m:mn>0</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>w</m:mi>
+		  <m:mn>1</m:mn>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>…</m:ci>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>w</m:mi>
+		  <m:mrow>
+		    <m:mi>M</m:mi>
+		    <m:mo>-</m:mo>
+		    <m:mn>1</m:mn>
+		  </m:mrow>
+		</m:msub>
+	      </m:ci>
+	    </m:mfenced>
+	  </m:apply>
+	</m:math> is a unimodal "bowl" in
+	<m:math>
+	  <m:apply>
+	    <m:power/>
+	    <m:ci>ℝ</m:ci>
+	    <m:ci>N</m:ci>
+	  </m:apply>
+	</m:math>.
+        <figure id="figure1">
+         <media id="idp3317456" alt=""><image src="../../media/fig1QuadraticMin.png" mime-type="image/png"/></media>
+        </figure>
+	The problem is to find the bottom of the bowl. In an
+	adaptive filter context, the shape and bottom of the bowl may
+	drift slowly with time; hopefully slow enough that the
+	adaptive algorithm can track it.
+      </para>
+		
+      <para id="para2">
+	For a quadratic error surface, the bottom of the bowl can be
+	found in one step by computing
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:inverse/>
+	      <m:ci>R</m:ci>
+	    </m:apply>
+	    <m:ci type="vector">P</m:ci>
+	  </m:apply>
+	</m:math>. Most modern nonlinear optimization methods (which
+	are used, for example, to solve the
+	<m:math>
+	  <m:apply>
+	    <m:power/>
+	    <m:ci>L</m:ci>
+	    <m:ci>P</m:ci>
+	  </m:apply>
+	</m:math> optimal IIR filter design problem!) locally
+	approximate a nonlinear function with a second-order
+	(quadratic) Taylor series approximation and step to the bottom
+	of this quadratic approximation on each iteration. However, an
+	older and simpler appraoch to nonlinear optimaztion exists,
+	based on <term>gradient descent</term>.
+	<figure id="figure2">
+	  <title>Contour plot of ε-squared</title>
+	  <media id="idp3218128" alt=""><image src="../../media/fig2QuadraticMin.png" mime-type="image/png"/></media>
+	</figure> 
+	The idea is to iteratively find the minimizer by computing
+	the gradient of the error function:
+	<m:math>
+		<m:ci type="fn">E</m:ci>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>∇</m:ci>
+	    <m:apply>
+	      <m:partialdiff/>
+	      <m:bvar>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>w</m:mi>
+		    <m:mi>i</m:mi>
+		  </m:msub>
+		</m:ci>
+	      </m:bvar>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>ε</m:ci>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>. The gradient is a vector in
+	<m:math>
+	  <m:apply>
+	    <m:power/>
+	    <m:ci>ℝ</m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math> pointing in the steepest uphill direction on the
+	error surface at a given point
+	<m:math>
+	  <m:apply>
+	    <m:power/>
+	    <m:ci type="vector">W</m:ci>
+	    <m:ci>i</m:ci>
+	  </m:apply>
+	</m:math>, with <m:math><m:ci>∇</m:ci></m:math> having a
+	magnitude proportional to the slope of the error surface in
+	this steepest direction.
+
+      </para> 
+
+      <para id="para3">
+	By updating the coefficient vector by taking a step
+	<emphasis>opposite</emphasis> the gradient direction :
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci type="vector">W</m:ci>
+	      <m:apply>
+		<m:plus/>
+		<m:ci>i</m:ci>
+		<m:cn>1</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:power/>
+		<m:ci type="vector">W</m:ci>
+		<m:ci>i</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:ci>μ</m:ci>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>∇</m:ci>
+		  <m:ci>i</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>, we go (locally) "downhill" in the steepest
+	direction, which seems to be a sensible way to iteratively
+	solve a nonlinear optimization problem. The performance
+	obviously depends on <m:math><m:ci>μ</m:ci></m:math>; if
+	<m:math><m:ci>μ</m:ci></m:math> is too large, the
+	iterations could bounce back and forth up out of the
+	bowl. However, if <m:math><m:ci>μ</m:ci></m:math> is too
+	small, it could take many iterations to approach the
+	bottom. We will determine criteria for choosing
+	<m:math><m:ci>μ</m:ci></m:math> later.
+      </para>
+      
+      <para id="para4">
+	In summary, the gradient descent algorithm for solving the
+	Weiner filter problem is:
+
+	<m:math display="block">
+	  <m:mtext> Guess </m:mtext>
+	  <m:apply>
+	    <m:power/>
+	    <m:ci>W</m:ci>
+	    <m:cn>0</m:cn>
+	  </m:apply>
+	</m:math>
+	<m:math display="block">
+	  <m:mtext>do </m:mtext>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>i</m:ci>
+	    <m:cn>1</m:cn>
+	  </m:apply>
+	  <m:ci>,</m:ci>
+	  <m:infinity/>
+	</m:math>
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>∇</m:ci>
+	      <m:ci>i</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci>P</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:ci>R</m:ci>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>W</m:ci>
+		  <m:ci>i</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>W</m:ci>
+	      <m:apply>
+		<m:plus/>
+		<m:ci>i</m:ci>
+		<m:cn>1</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:power/>
+		<m:ci>W</m:ci>
+		<m:ci>i</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:ci>μ</m:ci>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>∇</m:ci>
+		  <m:ci>i</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	<m:math display="block">
+	  <m:mtext>repeat</m:mtext>
+	</m:math>
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>W</m:mi>
+		<m:mi>opt</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>W</m:ci>
+	      <m:infinity/>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+		 
+
+	The gradient descent idea is used in the LMS adaptive fitler
+	algorithm. As presented, this alogrithm costs
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">O</m:ci>
+	    <m:apply>
+	      <m:power/>
+	      <m:ci>M</m:ci>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	  </m:apply>
+	</m:math> computations per iteration and doesn't appear very
+	attractive, but LMS only requires
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">O</m:ci>
+	    <m:ci>M</m:ci>
+	  </m:apply>
+	</m:math> computations and is stable, so it is very attractive
+	when computation is an issue, even thought it converges more
+	slowly then the RLS algorithms we have discussed so far.
+      </para>
+    </section>
+	
+      
+  </content> 
+  
+</document>

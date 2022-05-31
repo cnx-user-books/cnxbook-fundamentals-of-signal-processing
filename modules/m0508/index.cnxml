@@ -1,0 +1,450 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Systems in the Time-Domain</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>6f47ee29-38e2-4f55-9956-2312bd3d1632</md:uuid>
+</metadata> 
+  
+  <content> 
+    
+    <para id="p1"> A discrete-time signal  
+      <m:math> 
+	<m:apply><m:ci>s</m:ci><m:ci>n</m:ci></m:apply> 
+      </m:math> 
+      is <term>delayed</term> by  
+      <m:math> 
+	<m:ci><m:msub><m:mi>n</m:mi><m:mn>0</m:mn></m:msub></m:ci> 
+      </m:math> 
+      samples when we write  
+      <m:math> 
+	<m:apply>
+	  <m:ci type="fn">s</m:ci> 
+	  <m:apply><m:minus/> 
+	    <m:ci>n</m:ci> 
+	    <m:ci><m:msub><m:mi>n</m:mi><m:mn>0</m:mn></m:msub></m:ci> 
+	  </m:apply> 
+	</m:apply> 
+      </m:math>, with  
+      <m:math> 
+	<m:apply>
+	  <m:gt/>
+	  <m:ci><m:msub><m:mi>n</m:mi><m:mn>0</m:mn></m:msub></m:ci>
+	  <m:cn>0</m:cn> </m:apply> </m:math>.  Choosing <m:math>
+	  <m:ci><m:msub><m:mi>n</m:mi><m:mn>0</m:mn></m:msub></m:ci>
+	  </m:math> to be negative advances the signal along the
+	  integers. As opposed to <link document="m0006" target-id="delay" strength="2">analog delays</link>,
+	  discrete-time delays can <emphasis>only</emphasis> be
+	  integer valued. In the frequency domain, delaying a signal
+	  corresponds to a linear phase shift of the signal's
+	  discrete-time Fourier transform:
+      
+      <m:math>
+	<m:apply> 
+	  <m:ci><m:mo>↔</m:mo></m:ci>
+	  <m:apply> 
+	    <m:ci type="fn">s</m:ci> 
+	    <m:apply> 
+	      <m:minus/> 
+	      <m:ci>n</m:ci> 
+	      <m:ci> 
+		<m:msub> 
+		  <m:mi>n</m:mi> 
+		  <m:mn>0</m:mn> 
+		</m:msub> 
+	      </m:ci> 
+	    </m:apply> 
+	  </m:apply> 
+	  <m:apply> 
+	    <m:times/> 
+	    <m:apply> 
+	      <m:exp/> 
+	      <m:apply> 
+		<m:minus/> 
+		<m:apply> 
+		  <m:times/> 
+		  <m:imaginaryi/> 
+		  <m:cn>2</m:cn> 
+		  <m:pi/> 
+		  <m:ci>f</m:ci> 
+		  <m:ci> 
+		    <m:msub> 
+		      <m:mi>n</m:mi> 
+		      <m:mn>0</m:mn> 
+		    </m:msub> 
+		  </m:ci> 
+		</m:apply> 
+	      </m:apply> 
+	    </m:apply> 
+	    <m:apply> 
+	      <m:ci type="fn">S</m:ci> 
+	      <m:apply> 
+		<m:exp/> 
+		<m:apply> 
+		  <m:times/> 
+		  <m:imaginaryi/> 
+		  <m:cn>2</m:cn> 
+		  <m:pi/> 
+		  <m:ci>f</m:ci> 
+		</m:apply> 
+	      </m:apply> 
+	    </m:apply> 
+	  </m:apply>
+	</m:apply>
+      </m:math>. 
+    </para> 
+    
+    <para id="p2">
+      <term>Linear discrete-time systems</term> have the superposition
+      property.
+      
+      <equation id="eq1"> 
+	<title>Superposition</title> 
+	<m:math> 
+	  <m:apply> 
+	    <m:eq/> 
+	    <m:apply> 
+	      <m:ci type="fn">S</m:ci> 
+	      <m:apply> 
+		<m:plus/> 
+		<m:apply> 
+		  <m:times/> 
+		  <m:ci> 
+		    <m:msub> 
+		      <m:mi>a</m:mi> 
+		      <m:mn>1</m:mn> 
+		    </m:msub> 
+		  </m:ci> 
+		  <m:apply> 
+		    <m:ci type="fn"> 
+		      <m:msub> 
+			<m:mi>x</m:mi> 
+			<m:mn>1</m:mn> 
+		      </m:msub> 
+		    </m:ci> 
+		    <m:ci>n</m:ci> 
+		  </m:apply> 
+		</m:apply> 
+		<m:apply> 
+		  <m:times/> 
+		  <m:ci> 
+		    <m:msub> 
+		      <m:mi>a</m:mi> 
+		      <m:mn>2</m:mn> 
+		    </m:msub> 
+		  </m:ci> 
+		  <m:apply> 
+		    <m:ci type="fn"> 
+		      <m:msub> 
+			<m:mi>x</m:mi> 
+			<m:mn>2</m:mn> 
+		      </m:msub> 
+		    </m:ci> 
+		    <m:ci>n</m:ci> 
+		  </m:apply> 
+		</m:apply> 
+	      </m:apply> 
+	    </m:apply> 
+	    <m:apply> 
+	      <m:plus/> 
+	      <m:apply> 
+		<m:times/> 
+		<m:ci> 
+		  <m:msub> 
+		    <m:mi>a</m:mi> 
+		    <m:mn>1</m:mn> 
+		  </m:msub> 
+		</m:ci> 
+		<m:apply> 
+		  <m:ci type="fn">S</m:ci> 
+		  <m:apply> 
+		    <m:ci type="fn"> 
+		      <m:msub> 
+			<m:mi>x</m:mi> 
+			<m:mn>1</m:mn> 
+		      </m:msub> 
+		    </m:ci> 
+		    <m:ci>n</m:ci> 
+		  </m:apply> 
+		</m:apply> 
+	      </m:apply> 
+	      <m:apply> 
+		<m:times/> 
+		<m:ci> 
+		  <m:msub> 
+		    <m:mi>a</m:mi> 
+		    <m:mn>2</m:mn> 
+		  </m:msub> 
+		</m:ci> 
+		<m:apply> 
+		  <m:ci type="fn">S</m:ci> 
+		  <m:apply> 
+		    <m:ci type="fn"> 
+		      <m:msub> 
+			<m:mi>x</m:mi> 
+			<m:mn>2</m:mn> 
+		      </m:msub> 
+		    </m:ci> 
+		    <m:ci>n</m:ci> 
+		  </m:apply> 
+		</m:apply> 
+	      </m:apply> 
+	    </m:apply> 
+	  </m:apply> 
+	</m:math> 
+      </equation> 
+      
+      A discrete-time system is called <term>shift-invariant 
+      </term>(analogous to <link document="m0007" target-id="timeinv" strength="2"> 
+	time-invariant analog systems</link>) if delaying the input delays the 
+      corresponding output. 
+      
+      <equation id="eq2"> 
+	<title>Shift-Invariant</title> 
+	<m:math> 
+	  <m:mrow> 
+	    <m:mtext>If   </m:mtext> 
+	    <m:apply> 
+	      <m:eq/> 
+	      <m:apply> 
+		<m:ci type="fn">S</m:ci> 
+		<m:apply> 
+		  <m:ci type="fn">x</m:ci> 
+		  <m:ci>n</m:ci> 
+		</m:apply> 
+	      </m:apply> 
+	      <m:apply> 
+		<m:ci type="fn">y</m:ci> 
+		<m:ci>n</m:ci> 
+	      </m:apply> 
+	    </m:apply> 
+	    <m:mtext>, Then   </m:mtext> 
+	    <m:apply> 
+	      <m:eq/> 
+	      <m:apply> 
+		<m:ci type="fn">S</m:ci> 
+		<m:apply> 
+		  <m:ci type="fn">x</m:ci> 
+		  <m:apply> 
+		    <m:minus/> 
+		    <m:ci>n</m:ci> 
+		    <m:ci> 
+		      <m:msub> 
+			<m:mi>n</m:mi> 
+			<m:mn>0</m:mn> 
+		      </m:msub> 
+		    </m:ci> 
+		  </m:apply> 
+		</m:apply> 
+	      </m:apply> 
+	      <m:apply> 
+		<m:ci type="fn">y</m:ci> 
+		<m:apply> 
+		  <m:minus/> 
+		  <m:ci>n</m:ci> 
+		  <m:ci> 
+		    <m:msub> 
+		      <m:mi>n</m:mi> 
+		      <m:mn>0</m:mn> 
+		    </m:msub> 
+		  </m:ci> 
+		</m:apply> 
+	      </m:apply> 
+	    </m:apply> 
+	  </m:mrow> 
+	</m:math>  
+      </equation> 
+      
+      We use the term shift-invariant to emphasize that delays can only have 
+      integer values in discrete-time, while in analog signals, delays can 
+      be arbitrarily valued.   
+    </para>  
+    
+    <para id="p3"> We want to concentrate on systems that are both
+      linear and shift-invariant. It will be these that allow us the
+      full power of frequency-domain analysis and implementations.
+      Because we have no physical constraints in "constructing" such
+      systems, we need only a mathematical specification. In analog
+      systems, the differential equation specifies the input-output
+      relationship in the time-domain. The corresponding discrete-time
+      specification is the <term>difference equation</term>.
+      
+      <equation id="eq3">  
+	<title>The Difference Equation</title> 
+	<m:math> 
+	  <m:apply> 
+	    <m:eq/> 
+	    <m:apply> 
+	      <m:ci type="fn">y</m:ci> 
+	      <m:ci>n</m:ci> 
+	    </m:apply> 
+	    <m:apply> 
+	      <m:plus/> 
+	      <m:apply> 
+		<m:times/> 
+		<m:ci> 
+		  <m:msub> 
+		    <m:mi>a</m:mi> 
+		    <m:mn>1</m:mn> 
+		  </m:msub> 
+		</m:ci> 
+		<m:apply> 
+		  <m:ci type="fn">y</m:ci> 
+		  <m:apply> 
+		    <m:minus/> 
+		    <m:ci>n</m:ci> 
+		    <m:cn>1</m:cn> 
+		  </m:apply> 
+		</m:apply> 
+	      </m:apply> 
+	      <m:ci>…</m:ci> 
+	      <m:apply> 
+		<m:times/> 
+		<m:ci> 
+		  <m:msub> 
+		    <m:mi>a</m:mi> 
+		    <m:mi>p</m:mi> 
+		  </m:msub> 
+		</m:ci> 
+		<m:apply> 
+		  <m:ci type="fn">y</m:ci> 
+		  <m:apply> 
+		    <m:minus/> 
+		    <m:ci>n</m:ci> 
+		    <m:ci>p</m:ci> 
+		  </m:apply> 
+		</m:apply> 
+	      </m:apply> 
+	      <m:apply> 
+		<m:times/> 
+		<m:ci> 
+		  <m:msub> 
+		    <m:mi>b</m:mi> 
+		    <m:mn>0</m:mn> 
+		  </m:msub> 
+		</m:ci> 
+		<m:apply> 
+		  <m:ci type="fn">x</m:ci> 
+		  <m:ci>n</m:ci> 
+		</m:apply> 
+	      </m:apply> 
+	      <m:apply> 
+		<m:times/> 
+		<m:ci> 
+		  <m:msub> 
+		    <m:mi>b</m:mi> 
+		    <m:mn>1</m:mn> 
+		  </m:msub> 
+		</m:ci> 
+		<m:apply> 
+		  <m:ci type="fn">x</m:ci> 
+		  <m:apply> 
+		    <m:minus/> 
+		    <m:ci>n</m:ci> 
+		    <m:cn>1</m:cn> 
+		  </m:apply> 
+		</m:apply> 
+	      </m:apply> 
+	      <m:ci>…</m:ci> 
+	      <m:apply> 
+		<m:times/> 
+		<m:ci> 
+		  <m:msub> 
+		    <m:mi>b</m:mi> 
+		    <m:mi>q</m:mi> 
+		  </m:msub> 
+		</m:ci> 
+		<m:apply> 
+		  <m:ci type="fn">x</m:ci> 
+		  <m:apply> 
+		    <m:minus/> 
+		    <m:ci>n</m:ci> 
+		    <m:ci>q</m:ci> 
+		  </m:apply> 
+		</m:apply> 
+	      </m:apply> 
+	    </m:apply> 
+	  </m:apply> 
+	</m:math> 
+      </equation>
+      
+      Here, the output signal <m:math> 
+	<m:apply><m:ci type="fun">y</m:ci><m:ci>n</m:ci></m:apply> 
+      </m:math> is related to its <emphasis>past</emphasis> values  
+      <m:math> 
+	<m:apply> 
+	  <m:ci type="fn">y</m:ci> 
+	  <m:apply> 
+	    <m:minus/> 
+	    <m:ci>n</m:ci> 
+	    <m:ci>l</m:ci> 
+	  </m:apply> 
+	</m:apply> 
+      </m:math>,  
+      <m:math> 
+	<m:apply> 
+	  <m:eq/> 
+	  <m:ci>l</m:ci> 
+	  <m:set> 
+	    <m:cn>1</m:cn> 
+	    <m:ci>…</m:ci> 
+	    <m:ci>p</m:ci> 
+	  </m:set> 
+	</m:apply> 
+      </m:math>, and to the current and past values of the input signal 
+      <m:math> 
+	<m:apply><m:ci type="fn">x</m:ci><m:ci>n</m:ci></m:apply> 
+      </m:math>.   
+      The system's characteristics are determined by the choices for the 
+      number of coefficients <m:math><m:ci>p</m:ci></m:math> and  
+      <m:math><m:ci>q</m:ci></m:math> and the coefficients' values 
+      <m:math> 
+	<m:set> 
+	  <m:ci><m:msub><m:mi>a</m:mi><m:mn>1</m:mn></m:msub></m:ci> 
+	  <m:ci>…</m:ci> 
+	  <m:ci><m:msub><m:mi>a</m:mi><m:mi>p</m:mi></m:msub></m:ci> 
+	</m:set> 
+      </m:math>  
+      
+      and 
+      <m:math> 
+	<m:set> 
+	  <m:ci><m:msub><m:mi>b</m:mi><m:mn>0</m:mn></m:msub></m:ci> 
+	  <m:ci><m:msub><m:mi>b</m:mi><m:mn>1</m:mn></m:msub></m:ci> 
+	  <m:ci>…</m:ci> 
+	  <m:ci><m:msub><m:mi>b</m:mi><m:mi>q</m:mi></m:msub></m:ci> 
+	</m:set> 
+      </m:math>. 
+      <note type="aside" id="idp2259328">There is an asymmetry in the coefficients: where is  
+	
+	<m:math>
+	  <m:ci><m:msub>
+	      <m:mi>a</m:mi>
+	      <m:mn>0</m:mn>
+	    </m:msub></m:ci>
+	</m:math>
+	?  This coefficient would multiply the 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">y</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math> term in <link target-id="eq3" strength="2">the
+	difference equation</link>.  We have essentially divided the
+	equation by it, which does not change the input-output
+	relationship. We have thus created the convention that
+	<m:math><m:ci><m:msub><m:mi>a</m:mi><m:mn>0</m:mn></m:msub></m:ci></m:math>
+	is always one.
+      </note>
+    </para>
+    
+    <para id="p4"> 
+      As opposed to differential equations, which only provide an 
+      <emphasis>implicit </emphasis>description of a system (we must somehow 
+      solve the differential equation), difference equations provide an 
+      <emphasis>explicit </emphasis>way of computing the output for any 
+      input. We simply express the difference equation by a program that 
+      calculates each output from the previous output values, and the 
+      current and previous inputs. 
+    </para> 
+    
+  </content> 
+</document>

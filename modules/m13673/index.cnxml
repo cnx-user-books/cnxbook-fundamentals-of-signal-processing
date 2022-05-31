@@ -1,0 +1,141 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:md="http://cnx.rice.edu/mdml">
+<title>Introduction to Fundamentals of Signal Processing</title>
+<metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>ff084310-ab2a-41e8-b81e-edeaab09b215</md:uuid>
+</metadata>
+<content>
+<section id="id8648358">
+<title>What is Digital Signal Processing?</title>
+<para id="id10724089">To understand what is <emphasis>Digital Signal Processing (DSP)</emphasis> let’s examine what does each of its words mean. “<emphasis>Signal</emphasis>” is any physical quantity that carries information. “<emphasis>Processing</emphasis>” is a series of steps or operations to achieve a particular end. It is easy to see that <emphasis>Signal Processing</emphasis> is used everywhere to extract information from signals or to convert information-carrying signals from one form to another. For example, our brain and ears
+take input speech signals, and then process and convert them into
+meaningful words. Finally, the word “<emphasis>Digital</emphasis>” in Digital Signal Processing means that the process is done by computers, microprocessors, or
+logic circuits.</para>
+<para id="id10918342">The field DSP has expanded significantly over
+that last few decades as a result of rapid developments in computer
+technology and integrated-circuit fabrication. Consequently, DSP
+has played an increasingly important role in a wide range of
+disciplines in science and technology. Research and development in
+DSP are driving advancements in many high-tech areas including
+telecommunications, multimedia, medical and scientific imaging, and
+human-computer interaction.</para>
+<para id="id10918369">To illustrate the digital revolution and the
+impact of DSP, consider the development of digital cameras.
+Traditional film cameras mainly rely on physical properties of the
+optical lens, where higher quality requires bigger and larger
+system, to obtain good images. When digital cameras were first
+introduced, their quality were inferior compared to film cameras.
+But as microprocessors become more powerful, more sophisticated DSP
+algorithms have been developed for digital cameras to correct
+optical defects and improve the final image quality. Thanks to
+these developments, the quality of consumer-grade digital cameras
+has now surpassed the equivalence in film cameras. As further
+developments for digital cameras attached to cell phones
+(cameraphones), where due to small size requirements of the lenses,
+these cameras rely on DSP power to provide good images.
+Essentially, digital camera technology uses computational power to
+overcome physical limitations. We can find the similar trend
+happens in many other applications of DSP such as digital
+communications, digital imaging, digital television, and so
+on.</para>
+<para id="id10916913">In summary, DSP has foundations on
+Mathematics, Physics, and Computer Science, and can provide the key
+enabling technology in numerous applications.</para>
+</section>
+<section id="id10916954">
+<title>Overview of Key Concepts in Digital Signal Processing</title>
+<para id="id10916981">The two main characters in DSP are 
+<emphasis>signals</emphasis> and 
+<emphasis>systems</emphasis>. A 
+<emphasis>signal</emphasis> is defined as any physical quantity that
+varies with one or more independent variables such as time
+(one-dimensional signal), or space (2-D or 3-D signal). Signals
+exist in several types. In the real-world, most of signals are 
+<emphasis>continuous-time</emphasis> or 
+<emphasis>analog signals</emphasis> that have values continuously at
+every value of time. To be processed by a computer, a
+continuous-time signal has to be first 
+<emphasis>sampled</emphasis> in time into a 
+<emphasis>discrete-time signal</emphasis> so that its values at a
+discrete set of time instants can be stored in computer memory
+locations. Furthermore, in order to be processed by logic circuits,
+these signal values have to be 
+<emphasis>quantized</emphasis> in to a set of discrete values, and
+the final result is called a 
+<emphasis>digital signal</emphasis>. When the quantization effect
+is ignored, the terms discrete-time signal and digital signal can
+be used interchangeability.</para>
+<para id="id10983272">In signal processing, a 
+<emphasis>system</emphasis> is defined as a process whose input and
+output are signals. An important class of systems is the class of
+<emphasis>linear time-invariant </emphasis> (or
+<emphasis>shift-invariant</emphasis>) <emphasis>systems</emphasis>. These systems have a
+remarkable property is that each of them can be completely
+characterized by an 
+<emphasis>impulse response function</emphasis> (sometimes is also
+called as 
+<emphasis>point spread function</emphasis>), and the system is
+defined by a 
+<emphasis>convolution</emphasis> (also referred to as a 
+<emphasis>filtering</emphasis>) operation. Thus, a linear
+time-invariant system is equivalent to a (linear) 
+<emphasis>filter</emphasis>. Linear time-invariant systems are
+classified into two types, those that have 
+<emphasis>finite-duration impulse response (FIR)</emphasis> and
+those that have an
+<emphasis>infinite-duration impulse response
+(IIR)</emphasis>.</para>
+<para id="id10750351">A signal can be viewed as a 
+<emphasis>vector</emphasis> in a 
+<emphasis>vector space</emphasis>. Thus, 
+<emphasis>linear algebra</emphasis> provides a powerful framework to
+study signals and linear systems. In particular, given a vector
+space, each signal can be represented (or expanded) as a 
+<emphasis>linear combination of elementary signals</emphasis>. The
+most important 
+<emphasis>signal expansions</emphasis> are provided by the 
+<emphasis>Fourier transforms</emphasis>. The Fourier transforms, as
+with general transforms, are often used effectively to transform a
+problem from one domain to another domain where it is much easier
+to solve or analyze. The two domains of a Fourier transform have
+physical meaning and are called the 
+<emphasis>time domain</emphasis> and the 
+<emphasis>frequency domain</emphasis>.</para>
+<para id="id10765797"><emphasis>Sampling</emphasis>, or the conversion of 
+<emphasis>continuous-domain real-life signals</emphasis> to 
+<emphasis>discrete numbers</emphasis> that can be processed by
+computers, is the essential bridge between the analog and the
+digital worlds. It is important to understand the connections
+between signals and systems in the real world and inside a
+computer. These connections are convenient to analyze in the
+frequency domain. Moreover, many signals and systems are specified
+by their 
+<emphasis>frequency characteristics</emphasis>.</para>
+<para id="id10748318">Because any 
+<emphasis>linear time-invariant system</emphasis> can be
+characterized as a 
+<emphasis>filter</emphasis>, the design of such systems boils down
+to the design the associated filters. Typically, in the 
+<emphasis>filter design</emphasis> process, we determine the
+coefficients of an FIR or IIR filter that closely approximates the
+desired 
+<emphasis>frequency response</emphasis> specifications. Together
+with Fourier transforms, the 
+<emphasis>z-transform</emphasis> provides an effective tool to
+analyze and design digital filters.</para>
+<para id="id10751387">In many applications, signals are
+conveniently described via 
+<emphasis>statistical models</emphasis> as 
+<emphasis>random signals</emphasis>.  It is remarkable that optimum
+linear filters (in the sense of 
+<emphasis>minimum mean-square error</emphasis>), so called 
+<emphasis>Wiener filters</emphasis>, can be determined using only 
+<emphasis>second-order statistics</emphasis> (<emphasis>autocorrelation</emphasis> and 
+<emphasis>crosscorrelation</emphasis> functions) of a 
+<emphasis>stationary process</emphasis>.  When these statistics
+cannot be specified beforehand or change over time, we can employ 
+<emphasis>adaptive filters</emphasis>, where the filter
+coefficients are adapted to the signal statistics.  The most popular
+algorithm to adaptively adjust the filter coefficients is the 
+<emphasis>least-mean square (LMS)</emphasis> algorithm.</para>
+</section>
+</content>
+</document>

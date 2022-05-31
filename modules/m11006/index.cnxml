@@ -1,0 +1,85 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Application of Interpolation - Oversampling in CD Players</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>8f5f0080-980d-463d-b735-e3bad500b546</md:uuid>
+</metadata>
+
+
+  <content>
+    
+    <section id="sec2">
+      <title>Application of Interpolation- Oversampling in CD Players</title>
+
+      <para id="para3">
+	The digital audio signal on a CD is a
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>44.1</m:cn>
+	    <m:ci>kHz</m:ci>
+	  </m:apply>
+	</m:math> sampled representation of a continuous signal
+	with bandwidth
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>20</m:cn>
+	    <m:ci>kHz</m:ci>
+	  </m:apply>
+	</m:math>. With a standard ZOH-DAC, the analog reconstruction
+	filter would have passband edge at
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>20</m:cn>
+	    <m:ci>kHz</m:ci>
+	  </m:apply>
+	</m:math> and stopband edge at
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>24.1</m:cn>
+	    <m:ci>kHz</m:ci>
+	  </m:apply>
+	</m:math>.  (See <link target-id="fig3" strength="3"/>)  With
+	such a narrow transition band, this would be a difficult (and
+	expensive) filter to build.
+      </para>
+
+      <figure id="fig3">
+	<media id="idp1954304" alt=""><image src="../../media/m10444fig3.png" mime-type="image/png"/></media>
+      </figure>
+
+      <para id="para4">
+	If digital interpolation is used prior to reconstruction, the
+	effective sampling rate can be increased and the
+	reconstruction filter's transition band can be made much
+	wider, resulting in a much simpler (and cheaper) analog
+	filter. <link target-id="fig4" strength="3"/> illustrates the
+	case of interpolation by <m:math><m:cn>4</m:cn></m:math>.  The
+	reconstruction filter has passband edge at
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>20</m:cn>
+	    <m:ci>kHz</m:ci>
+	  </m:apply>
+	</m:math> and stopband edge at
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>156.4</m:cn>
+	    <m:ci>kHz</m:ci>
+	  </m:apply>
+	</m:math>, resulting in a much
+	wider transition band and therefore an easier filter design.
+      </para>
+
+      <figure id="fig4">
+	<media id="idm7752448" alt=""><image src="../../media/m10444fig4.png" mime-type="image/png"/></media>
+      </figure>
+
+
+    </section>
+  </content>
+  
+</document>

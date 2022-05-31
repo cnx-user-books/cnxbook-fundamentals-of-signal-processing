@@ -1,0 +1,171 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+
+  <title>Sub-Band Processing</title>
+
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>c5a66b66-1fe6-494c-a20a-fd8edc18dc14</md:uuid>
+</metadata>
+
+
+  <content>
+    <section id="sec1">
+      <title>Why Filterbanks?</title>
+      
+      <section id="s1_sub1">
+	<title>Sub-band Processing</title>
+	<para id="p1_s1s1">
+	  There exist many applications in modern signal processing
+	  where it is advantageous to separate a signal into different
+	  frequency ranges called <term>sub-bands</term>.  The
+	  spectrum might be partitioned in the uniform manner
+	  illustrated in <link target-id="fig1" strength="3"/>, where the
+	  sub-band width
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:ci><m:msub>
+		<m:mi>Δ</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub></m:ci>
+	      <m:apply>
+		<m:divide/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		</m:apply>
+		<m:ci>M</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:math> 
+	  is identical for each sub-band and the band centers are
+	  uniformly spaced at intervals of
+	  <m:math>
+	    <m:apply>
+	      <m:divide/>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:pi/>
+	      </m:apply>
+	      <m:ci>M</m:ci>
+	    </m:apply>
+	  </m:math>.
+	</para>
+	
+	<figure id="fig1">
+	  <media id="idm2319360" alt=""><image src="../../media/wf_f1.png" mime-type="image/png"/></media>
+	</figure>
+
+	<para id="p1a_s1s1">
+	  Alternatively, the sub-bands might have a logarithmic
+	  spacing like that shown in <link target-id="fig2" strength="3"/>.
+	</para>
+	
+	<figure id="fig2">
+	  <media id="idm2457472" alt=""><image src="../../media/wf_f2.png" mime-type="image/png"/></media>
+	</figure>
+
+	<para id="p1b_s1s1">
+	  For most of our discussion, we will focus on uniformly
+	  spaced sub-bands.
+	</para>
+
+	<para id="p2_s1s1">
+	  The separation into sub-band components is intended to make
+	  further processing more convenient.  Some of the most
+	  popular applications for sub-band decomposition are audio
+	  and video source coding (with the goal of efficient storage
+	  and/or transmission).
+	</para>
+
+	<para id="p3_s1s1">
+	  <link target-id="fig3" strength="3"/> illustrates the use of
+	  sub-band processing in MPEG audio coding.  There a
+	  psychoacoustic model is used to decide how much quantization
+	  error can be tolerated in each sub-band while remaining
+	  below the hearing threshold of a human listener.  In the
+	  sub-bands that can tolerate more error, less bits are used
+	  for coding.  The quantized sub-band signals can then be
+	  decoded and recombined to reconstruct (an approximate
+	  version of) the input signal.  Such processing allows, on
+	  average, a 12-to-1 reduction in bit rate while still
+	  maintaining "CD quality" audio.  The psychoacoustic model
+	  takes into account the <term>spectral masking</term>
+	  phenomenon of the human ear, which says that high energy in
+	  one spectral region will limit the ear's ability to hear
+	  details in nearby spectral regions.  Therefore, when the
+	  energy in one sub-band is high, nearby sub-bands can be
+	  coded with less bits without degrading the perceived quality
+	  of the audio signal.  The MPEG standard specifies
+	  32-channels of sub-band filtering.  Some psychoacoustic
+	  models also take into account "temporal masking" properties
+	  of the human ear, which say that a loud burst of sound will
+	  temporarily overload the ear for short time durations,
+	  making it possible to hide quantization noise in the time
+	  interval after a loud sound burst.
+	</para>
+
+	<figure id="fig3">
+	  <media id="idm10221680" alt=""><image src="../../media/wf_f3.png" mime-type="image/png"/></media>
+	</figure>
+
+	<para id="p4_s1s1">
+	  In typical applications, non-trivial signal processing takes
+	  place between the bank of analysis filters and the bank of
+	  synthesis filters, as shown in <link target-id="fig4" strength="3"/>.  We will focus, however, on filterbank
+	  design rather than on the processing that occurs between the
+	  filterbanks.
+	</para>
+
+	<figure id="fig4">
+	  <media id="idm9127552" alt=""><image src="../../media/wf_f4.png" mime-type="image/png"/></media>
+	</figure>
+
+	<para id="p5_s1s1">
+	  Our goals in filter design are:
+
+	  <list id="list1" list-type="enumerated">
+	    <item>
+	      Good sub-band frequency separation
+	      (<foreign>i.e.</foreign>, good "frequency selectivity").
+	    </item>
+	    <item>
+	      Good reconstruction (<foreign>i.e.</foreign>, 
+	      <m:math>
+		<m:apply>
+		  <m:approx/>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">y</m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn" class="discrete">x</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>n</m:ci>
+		      <m:ci>d</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:math> for some integer delay
+	      <m:math><m:ci>d</m:ci></m:math>) when the sub-band
+	      processing is lossless.
+	    </item>
+	  </list>
+	</para>		      
+	
+	<para id="p6_s1s1">
+	  The first goal is driven by the assumption that the sub-band
+	  processing works <emphasis>best</emphasis> when it is given
+	  access to cleanly separated sub-band signals, while the
+	  second goal is motivated by the idea that the sub-band
+	  filtering should not limit the reconstruction performance
+	  when the sub-band processing (<foreign>e.g.</foreign>, the
+	  coding/decoding) is lossless or nearly lossless.
+	</para>
+      </section>
+      
+    </section>
+    
+  </content>
+</document>

@@ -1,0 +1,193 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Adaptive Equalization</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>24a52089-78b4-4bc7-b1cb-249af1736f4f</md:uuid>
+</metadata>
+
+  <content>
+    <para id="delete_me">
+      <note type="goal" id="idp7269648"><label>Goal</label>
+	Design an approximate inverse filter to cancel out as much
+	distortion as possible.
+      </note>
+      <figure id="figure1">
+	<media id="idp6883216" alt=""><image src="../../media/fig1AdaptiveEqual.png" mime-type="image/png"/></media>
+      </figure>
+      In principle, 
+      <m:math>
+	<m:apply>
+	  <m:approx/>
+	  <m:apply>
+	    <m:times/>
+	    <m:ci>W</m:ci>
+	    <m:ci>H</m:ci>
+	  </m:apply>
+	  <m:ci>
+	    <m:msup>
+	      <m:mi>z</m:mi>
+	      <m:mrow>
+		<m:mo>-</m:mo>
+		<m:mo>Δ</m:mo>
+	      </m:mrow>
+	    </m:msup>
+	  </m:ci>
+	</m:apply>
+      </m:math>, or
+      <m:math>
+	<m:apply>
+	  <m:approx/>
+	  <m:ci>W</m:ci>
+	  <m:apply>
+	    <m:divide/>
+	    <m:ci>
+	      <m:msup>
+		<m:mi>z</m:mi>
+		<m:mrow>
+		  <m:mo>-</m:mo>
+		  <m:mo>Δ</m:mo>
+		</m:mrow>
+	      </m:msup>
+	    </m:ci>
+	    <m:ci>H</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>, so that the overall response of the top path is approximately 
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">δ</m:ci>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci>n</m:ci>
+	    <m:ci>Δ</m:ci>
+	  </m:apply>
+	</m:apply>
+      </m:math>. However, limitations on the form of
+      <m:math><m:ci>W</m:ci></m:math> (FIR) and the presence of noise
+      cause the equalization to be imperfect.
+      </para>
+    <section id="importapp">
+      <title>Important Application</title>
+      <para id="para1">
+	Channel equalization in a digital communication system.
+	
+        <figure id="figure2">
+	  <media id="idm254176" alt=""><image src="../../media/fig2AdaptiveEqual.png" mime-type="image/png"/></media>
+	</figure>
+        If the channel distorts the pulse shape, the matched
+	filter will no longer be matched, intersymbol interference may
+	increase, and the system performance will degrade.
+      </para>
+      <para id="para2">
+	An adaptive filter is often inserted in front of the matched
+	filter to compensate for the channel.
+	
+        <figure id="figure3">
+	  <media id="idp1404496" alt=""><image src="../../media/fig3AdaptiveEqual.png" mime-type="image/png"/></media>
+	</figure>
+         This is, of course, unrealizable, since we do not have access
+            to the original transmitted signal,
+	<m:math>
+	  <m:ci>
+	    <m:msub>
+	      <m:mi>s</m:mi>
+	      <m:mi>k</m:mi>
+	    </m:msub>
+	  </m:ci>
+	</m:math>.
+      </para>
+      <para id="para2a">
+	There are two common solutions to this problem:
+	<list id="list" list-type="enumerated">
+	  <item>Periodically broadcast a known <term>training
+	  signal</term>. The adaptation is switched on only when the
+	  training signal is being broadcast and thus
+	    <m:math>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>s</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msub>
+	      </m:ci>
+	    </m:math> is known.
+	  </item>
+	  <item>Decision-directed feedback: If the overall system is
+	  working well, then the output
+	    <m:math>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>s</m:mi>
+		    <m:mrow>
+		      <m:mi>k</m:mi>
+		      <m:mo>-</m:mo>
+		      <m:msub>
+			<m:mi>Δ</m:mi>
+			<m:mi>0</m:mi>
+		      </m:msub>
+		    </m:mrow>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	    </m:math> should almost always equal
+	    <m:math>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>s</m:mi>
+		  <m:mrow>
+		    <m:mi>k</m:mi>
+		    <m:mo>-</m:mo>
+		    <m:msub>
+		      <m:mi>Δ</m:mi>
+		      <m:mi>0</m:mi>
+		    </m:msub>
+		  </m:mrow>
+		</m:msub>
+	      </m:ci>
+	    </m:math>. We can thus use our received digital
+	    communication signal as the desired signal, since it has
+	    been cleaned of noise (we hope) by the nonlinear threshold
+	    device!
+	    
+	    <figure id="figure4">
+	      <title>Decision-directed equalizer</title>
+	      <media id="idp9259456" alt=""><image src="../../media/fig4AdaptiveEqual.png" mime-type="image/png"/></media>
+	    </figure>
+	    
+	    As long as the error rate in 
+	    <m:math>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#estimate"/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>s</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	    </m:math> is not too high 
+	    (say <m:math>
+	      <m:apply>
+		<m:lt/>
+		<m:cn>75%</m:cn>
+	      </m:apply>
+	    </m:math>), this method works. Otherwise,
+	    <m:math>
+	      <m:ci>
+		<m:msub>
+		  <m:mi>d</m:mi>
+		  <m:mi>k</m:mi>
+		</m:msub>
+	      </m:ci>
+	    </m:math>
+	    is so inaccurate that the adaptive filter can never find
+	    the Wiener solution. This method is widely used in the
+	    telephone system and other digital communication networks.
+	  </item>
+	</list>
+      </para>
+    </section>
+	    
+      
+  </content>
+  
+</document>

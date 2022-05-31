@@ -1,0 +1,1132 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML" xmlns:md="http://cnx.rice.edu/mdml">
+  <title>Discrete-Time, Causal Wiener Filter</title>
+  <metadata><md:content-id>undefined</md:content-id><md:title/><md:uuid>72613ddd-8b3c-4f01-9017-588cdc28f56e</md:uuid>
+</metadata>
+
+  <content>
+    <para id="para1"> 
+      Stochastic
+      <m:math>
+	<m:ci>
+	  <m:msub>
+	    <m:mi>L</m:mi>
+	    <m:mn>2</m:mn>
+	  </m:msub>
+	</m:ci>
+      </m:math>
+      optimal (least squares) FIR filter design problem: Given a
+    wide-sense stationary (WSS) input signal 
+      <m:math>
+	<m:ci>
+	  <m:msub>
+	    <m:mi>x</m:mi>
+	    <m:mi>k</m:mi>
+	  </m:msub>
+	</m:ci>
+      </m:math> and desired signal
+      <m:math>
+	<m:ci>
+	  <m:msub>
+	    <m:mi>d</m:mi>
+	    <m:mi>k</m:mi>
+	  </m:msub>
+	</m:ci>
+      </m:math>
+      (WSS ⇔
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	    <m:apply>
+	      <m:selector/>
+	      <m:ci>y</m:ci>
+	      <m:ci>k</m:ci>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	    <m:apply>
+	      <m:selector/>
+	      <m:ci>y</m:ci>
+	      <m:apply>
+		<m:plus/>
+		<m:ci>k</m:ci>
+		<m:ci>d</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>,
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">
+	      <m:msub>
+		<m:mi>r</m:mi>
+		<m:mi>yz</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>l</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:selector/>
+		<m:ci>y</m:ci>
+		<m:ci>k</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:selector/>
+		<m:ci>z</m:ci>
+		<m:apply>
+		  <m:plus/>
+		  <m:ci>k</m:ci>
+		  <m:ci>l</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>,
+      <m:math>
+	<m:apply>
+	  <m:forall/>
+	  <m:bvar>
+	    <m:ci>k</m:ci>
+	  </m:bvar>
+	  <m:bvar>
+	    <m:ci>l</m:ci>
+	  </m:bvar>
+	  <m:apply>
+	    <m:lt/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>r</m:mi>
+		  <m:mi>yy</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>0</m:cn>
+	    </m:apply>
+	    <m:infinity/>
+	  </m:apply>
+	</m:apply>
+      </m:math>)
+      <figure id="figure1">
+	<media id="idp31088" alt=""><image src="../../media/Discrete-Timefig1.png" mime-type="image/png"/></media>
+      </figure>
+      The Wiener filter is the linear, time-invariant filter
+      minimizing
+      <m:math>
+	<m:apply>
+	  <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	  <m:apply>
+	    <m:power/>
+	    <m:ci>ε</m:ci>
+	    <m:cn>2</m:cn>
+	  </m:apply>
+	</m:apply>
+      </m:math>, the variance of the error.
+    
+    </para>
+    <para id="para2">
+      As posed, this problem seems slightly silly, since 
+      <m:math>
+	<m:ci>
+	  <m:msub>
+	    <m:mi>d</m:mi>
+	    <m:mi>k</m:mi>
+	  </m:msub>
+	</m:ci>
+      </m:math> is already available! However, this idea is useful in
+      a wide cariety of applications.
+    </para>
+    
+    <example id="ex1">
+      <para id="ex1para1">
+	active suspension system design
+	<figure id="figure2">
+	  <media id="idp65040" alt=""><image src="../../media/fig2Discrete-Time.png" mime-type="image/png"/></media>
+	</figure>
+      </para>
+      <note id="idm5077840">optimal system may change with different road conditions or
+	mass in car, so an <term>adaptive</term> system might be
+	desirable.
+      </note>
+    </example>
+    
+    <example id="ex2">
+      <para id="ex2para">
+	System identification (radar, non-destructive testing,
+	adaptive control systems)
+	<figure id="figure3">
+	  <media id="idm5257392" alt=""><image src="../../media/fig3Discrete-Time.png" mime-type="image/png"/></media>
+	</figure>
+      </para>
+    </example>
+
+    <exercise id="exercise1">
+      <problem id="idp3219200">
+	<para id="exerpara1">
+	  Usually one desires that the input signal
+	  <m:math>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>x</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	  </m:math> be "persistently exciting," which, among other things,
+	  implies non-zero energy in all frequency bands. Why is this
+	  desirable?
+	</para>
+      </problem>
+    </exercise>
+
+    <section id="sect1">
+      <title>Determining the optimal length-N causal FIR Weiner
+      filter</title> 
+      <note id="idp1887440"> for convenience, we will analyze only the
+      causal, real-data case; extensions are straightforward.
+      </note>
+      <para id="sect1para1">
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>y</m:mi>
+		<m:mi>k</m:mi>
+	      </m:msub>
+	    </m:ci>
+	    <m:apply>
+	      <m:sum/>
+	      <m:bvar>
+		<m:ci>l</m:ci>
+	      </m:bvar>
+	      <m:lowlimit>
+		<m:cn>0</m:cn>
+	      </m:lowlimit>
+	      <m:uplimit>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>M</m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:uplimit>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>w</m:mi>
+		    <m:mi>l</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>x</m:mi>
+		    <m:mrow>
+		      <m:mi>k</m:mi>
+		      <m:mo>-</m:mo>
+		      <m:mi>l</m:mi>
+		    </m:mrow>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#argmin"/>
+	      <m:domainofapplication>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>w</m:mi>
+		    <m:mi>l</m:mi>
+		  </m:msub>
+		</m:ci>
+	      </m:domainofapplication>
+	      <m:apply>
+		<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+		<m:apply>
+		  <m:power/>
+		  <m:ci>ε</m:ci>
+		  <m:cn>2</m:cn>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	      <m:apply>
+		<m:power/>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>d</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>y</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msub>
+		  </m:ci>
+		</m:apply>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	      <m:apply>
+		<m:power/>
+		<m:apply>
+		  <m:minus/>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>d</m:mi>
+		      <m:mi>k</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar>
+		      <m:ci>l</m:ci>
+		    </m:bvar>
+		    <m:uplimit>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>M</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:uplimit>
+		    <m:lowlimit>
+		      <m:cn>0</m:cn>
+		    </m:lowlimit>
+		    <m:apply>
+		      <m:times/>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>w</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>x</m:mi>
+			  <m:mrow>
+			    <m:mi>k</m:mi>
+			    <m:mo>-</m:mo>
+			    <m:mi>l</m:mi>
+			  </m:mrow>
+			</m:msub>
+		      </m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>d</m:mi>
+			<m:mi>k</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar>
+		      <m:ci>l</m:ci>
+		    </m:bvar>
+		    <m:uplimit>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>M</m:ci>
+			<m:ci>1</m:ci>
+		      </m:apply>
+		    </m:uplimit>
+		    <m:lowlimit>
+		      <m:cn>0</m:cn>
+		    </m:lowlimit>
+		    <m:apply>
+		      <m:times/>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>w</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+			<m:apply>
+			  <m:times/>
+			  <m:ci>
+			    <m:msub>
+			      <m:mi>d</m:mi>
+			      <m:mi>k</m:mi>
+			    </m:msub>
+			  </m:ci>
+			  <m:ci>
+			    <m:msub>
+			      <m:mi>x</m:mi>
+			      <m:mrow>
+				<m:mi>k</m:mi>
+				<m:mo>-</m:mo>
+				<m:mi>l</m:mi>
+			      </m:mrow>
+			    </m:msub>
+			  </m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>l</m:ci>
+		</m:bvar>
+		<m:lowlimit>
+		  <m:cn>0</m:cn>
+		</m:lowlimit>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>m</m:ci>
+		  </m:bvar>
+		  <m:lowlimit>
+		    <m:cn>0</m:cn>
+		  </m:lowlimit>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>M</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:apply>
+		      <m:times/>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>w</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>w</m:mi>
+			  <m:mi>m</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+			<m:apply>
+			  <m:times/>
+			  <m:ci>
+			    <m:msub>
+			      <m:mi>x</m:mi>
+			      <m:mrow>
+				<m:mi>k</m:mi>
+				<m:mo>-</m:mo>
+				<m:mi>l</m:mi>
+			      </m:mrow>
+			    </m:msub>
+			  </m:ci>
+			  <m:ci>
+			    <m:msub>
+			      <m:mi>x</m:mi>
+			      <m:mrow>
+				<m:mi>k</m:mi>
+				<m:mo>-</m:mo>
+				<m:mi>m</m:mi>
+			      </m:mrow>
+			    </m:msub>
+			  </m:ci>
+			</m:apply>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	      <m:apply>
+		<m:power/>
+		<m:ci>ε</m:ci>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:minus/>
+                <m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>dd</m:mi>
+		    </m:msub>
+		  </m:ci>
+                  <m:cn>0</m:cn>
+                </m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:apply>
+		    <m:sum/>
+		    <m:bvar>
+		      <m:ci>l</m:ci>
+		    </m:bvar>
+		    <m:uplimit>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>M</m:ci>
+			<m:cn>1</m:cn>
+		      </m:apply>
+		    </m:uplimit>
+		    <m:lowlimit>
+		      <m:cn>0</m:cn>
+		    </m:lowlimit>
+		    <m:apply>
+		      <m:times/>
+		      <m:ci>
+			<m:msub>
+			  <m:mi>w</m:mi>
+			  <m:mi>l</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:ci type="fn">
+			  <m:msub>
+			    <m:mi>r</m:mi>
+			    <m:mi>dx</m:mi>
+			  </m:msub>
+			</m:ci>
+			<m:ci>l</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>l</m:ci>
+		</m:bvar>
+		<m:uplimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:uplimit>
+		<m:lowlimit>
+		  <m:cn>0</m:cn>
+		</m:lowlimit>
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>m</m:ci>
+		  </m:bvar>
+		  <m:uplimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>M</m:ci>
+		      <m:cn>1</m:cn>
+		    </m:apply>
+		  </m:uplimit>
+		  <m:lowlimit>
+		    <m:cn>0</m:cn>
+		  </m:lowlimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>w</m:mi>
+			<m:mi>l</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>w</m:mi>
+			<m:mi>m</m:mi>
+		      </m:msub>
+		    </m:ci>
+		    <m:apply>
+		      <m:ci type="fn">
+			<m:msub>
+			  <m:mi>r</m:mi>
+			  <m:mi>xx</m:mi>
+			</m:msub>
+		      </m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>l</m:ci>
+			<m:ci>m</m:ci>
+		      </m:apply>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	where
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>r</m:mi>
+		  <m:mi>dd</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:cn>0</m:cn>
+	    </m:apply>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	      <m:apply>
+		<m:power/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>d</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>r</m:mi>
+		  <m:mi>dx</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:ci>l</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>d</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>X</m:mi>
+		    <m:mrow>
+		      <m:mi>k</m:mi>
+		      <m:mo>-</m:mo>
+		      <m:mi>l</m:mi>
+		    </m:mrow>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">
+		<m:msub>
+		  <m:mi>r</m:mi>
+		  <m:mi>xx</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:apply>
+		<m:minus/>
+		<m:ci>l</m:ci>
+		<m:ci>m</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>x</m:mi>
+		    <m:mi>k</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>
+		  <m:msub>
+		    <m:mi>x</m:mi>
+		    <m:mrow>
+		      <m:mi>k</m:mi>
+		      <m:mo>+</m:mo>
+		      <m:mi>l</m:mi>
+		      <m:mo>-</m:mo>
+		      <m:mi>m</m:mi>
+		    </m:mrow>
+		  </m:msub>
+		</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	This can be written in matrix form as
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:csymbol definitionURL="http://cnx.rice.edu/cd/cnxmath.ocd#expectedvalue"/>
+	      <m:apply>
+		<m:power/>
+		<m:ci>ε</m:ci>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>dd</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>0</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci type="vector">P</m:ci>
+		  <m:apply>
+		    <m:transpose/>
+		    <m:ci type="vector">W</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:transpose/>
+		  <m:ci type="vector">W</m:ci>
+		</m:apply>
+		<m:ci type="matrix">R</m:ci>
+		<m:ci type="vector">W</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	where
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci type="vector">P</m:ci>
+	    <m:matrix>
+	      <m:matrixrow>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>dx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>0</m:cn>
+		</m:apply>
+	      </m:matrixrow>
+	      <m:matrixrow>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>dx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:matrixrow>
+	      <m:matrixrow>
+		<m:ci>⋮</m:ci>
+	      </m:matrixrow>
+	      <m:matrixrow>
+		<m:apply>
+		  <m:ci type="fn">
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>dx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:matrixrow>
+	    </m:matrix>
+	  </m:apply>
+	</m:math>
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci type="matrix">R</m:ci>
+	    <m:matrix>
+	      <m:matrixrow>
+		<m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>0</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+		<m:ci>…</m:ci>
+		<m:ci>…</m:ci>
+		<m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:matrixrow>
+	      <m:matrixrow>
+		<m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>0</m:cn>
+		</m:apply>
+		<m:ci>⋱</m:ci>
+		<m:ci>⋱</m:ci>
+		<m:ci>⋮</m:ci>
+	      </m:matrixrow>
+	      <m:matrixrow>
+		<m:ci>⋮</m:ci>
+		<m:ci>⋱</m:ci>
+		<m:ci>⋱</m:ci>
+		<m:ci>⋱</m:ci>
+		<m:ci>⋮</m:ci>
+	      </m:matrixrow>
+	      <m:matrixrow>
+		<m:ci>⋮</m:ci>
+		<m:ci>⋱</m:ci>
+		<m:ci>⋱</m:ci>
+		<m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>0</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+	      </m:matrixrow>
+	      <m:matrixrow>
+		<m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>M</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:apply>
+		<m:ci>…</m:ci>
+		<m:ci>…</m:ci>
+		<m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>1</m:cn>
+		</m:apply>
+		<m:apply>
+		  <m:ci>
+		    <m:msub>
+		      <m:mi>r</m:mi>
+		      <m:mi>xx</m:mi>
+		    </m:msub>
+		  </m:ci>
+		  <m:cn>0</m:cn>
+		</m:apply>
+	      </m:matrixrow>
+	    </m:matrix>
+	  </m:apply>
+	</m:math>
+	To solve for the optimum filter, compute the gradient with
+	respect to the top weights vector <m:math><m:ci type="matrix">W</m:ci></m:math>
+	<m:math display="block">
+	  <m:apply>
+	    <m:mo>≐</m:mo>
+	    <m:ci>∇</m:ci>
+	    <m:matrix>
+	      <m:matrixrow>
+		<m:apply>
+		  <m:partialdiff/>
+		  <m:bvar>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>w</m:mi>
+			<m:mn>0</m:mn>
+		      </m:msub>
+		    </m:ci>
+		  </m:bvar>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>ε</m:ci>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:matrixrow>
+	      <m:matrixrow>
+		<m:apply>
+		  <m:partialdiff/>
+		  <m:bvar>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>w</m:mi>
+			<m:mn>1</m:mn>
+		      </m:msub>
+		    </m:ci>
+		  </m:bvar>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>ε</m:ci>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:matrixrow>
+	      <m:matrixrow>
+		<m:ci>⋮</m:ci>
+	      </m:matrixrow>
+	      <m:matrixrow>
+		<m:apply>
+		  <m:partialdiff/>
+		  <m:bvar>
+		    <m:ci>
+		      <m:msub>
+			<m:mi>w</m:mi>
+			<m:mrow>
+			  <m:mi>M</m:mi>
+			  <m:mo>-</m:mo>
+			  <m:mn>1</m:mn>
+			</m:mrow>
+		      </m:msub>
+		    </m:ci>
+		  </m:bvar>
+		  <m:apply>
+		    <m:power/>
+		    <m:ci>ε</m:ci>
+		    <m:cn>2</m:cn>
+		  </m:apply>
+		</m:apply>
+	      </m:matrixrow>
+	    </m:matrix>
+	  </m:apply>
+	</m:math>
+	<m:math display="block">
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>∇</m:ci>
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:minus/>
+		<m:apply>
+		  <m:times/>
+		  <m:cn>2</m:cn>
+		  <m:ci type="vector">P</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:ci type="matrix">R</m:ci>
+		<m:ci type="vector">W</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	(recall 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:diff/>
+	      <m:bvar>
+		<m:ci type="vector">W</m:ci>
+	      </m:bvar>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:transpose/>
+		  <m:ci type="vector">A</m:ci>
+		</m:apply>
+		<m:ci>W</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:transpose/>
+	      <m:ci type="vector">A</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>,
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:diff/>
+	      <m:bvar>
+		<m:ci type="vector">W</m:ci>
+	      </m:bvar>
+	      <m:apply>
+		<m:times/>
+		<m:ci type="vector">W</m:ci>
+		<m:ci>M</m:ci>
+		<m:ci type="vector">W</m:ci>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:cn>2</m:cn>
+	      <m:ci>M</m:ci>
+	      <m:ci type="vector">W</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	for symmetric <m:math><m:ci>M</m:ci></m:math>) setting the
+	gradient equal to zero ⇒
+	<m:math display="block">
+	  <m:apply>
+	    <m:mo>⇒</m:mo>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:times/>
+		<m:ci type="vector">
+		  <m:msub>
+		    <m:mi>W</m:mi>
+		    <m:mi>opt</m:mi>
+		  </m:msub>
+		</m:ci>
+		<m:ci>R</m:ci>
+	      </m:apply>
+	      <m:ci type="vector">P</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:eq/>
+	      <m:ci type="vector">
+		<m:msub>
+		  <m:mi>W</m:mi>
+		  <m:mi>opt</m:mi>
+		</m:msub>
+	      </m:ci>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:inverse/>
+		  <m:ci>R</m:ci>
+		</m:apply>
+		<m:ci type="vector">P</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+	Since <m:math><m:ci>R</m:ci></m:math> is a correlation matrix,
+	it must be non-negative definite, so this is a minimizer. For
+	<m:math><m:ci>R</m:ci></m:math> positive definite, the
+	minimizer is unique.
+      </para>
+				  
+    </section>
+      
+  </content>
+ </document>
