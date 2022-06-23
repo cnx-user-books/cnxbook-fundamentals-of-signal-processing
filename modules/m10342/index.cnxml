@@ -1,0 +1,478 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML">
+
+  <title>Discrete-Time Signals and Systems</title>
+
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m10342</md:content-id>
+  <md:title>Discrete-Time Signals and Systems</md:title>
+  <md:abstract>(Blank Abstract)</md:abstract>
+  <md:uuid>0f92d10f-a2f1-4fd1-a597-91e64d85a9bc</md:uuid>
+</metadata>
+
+<content>
+
+    <para id="para1">Mathematically, analog signals are functions having as their
+      independent variables continuous quantities, such as space and
+      time.  Discrete-time signals are functions defined on the
+      integers; they are sequences.  As with analog signals, we seek
+      ways of decomposing discrete-time signals into simpler
+      components.  Because this approach leads to a better
+      understanding of signal structure, we can exploit that structure
+      to represent information (create ways of representing
+      information with signals) and to extract information (retrieve
+      the information thus represented).  For symbolic-valued signals,
+      the approach is different: We develop a common representation of
+      all symbolic-valued signals so that we can embody the
+      information they contain in a unified way.  From an information
+      representation perspective, the most important issue becomes,
+      for both real-valued and symbolic-valued signals, efficiency:
+      what is the most parsimonious and compact way to represent
+      information so that it can be extracted later.
+    </para><section id="sec1">
+      <title>Real- and Complex-valued Signals</title>
+
+      <para id="para4"> 
+	A discrete-time signal is represented symbolically as 
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">s</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math>, where 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:ci>n</m:ci>
+	    <m:set>
+	      <m:ci>…</m:ci>
+	      <m:cn>-1</m:cn>
+	      <m:cn>0</m:cn>
+	      <m:cn>1</m:cn>
+	      <m:ci>…</m:ci>
+	    </m:set>
+	  </m:apply>
+	</m:math>.
+       <figure id="fig1">
+	<title>Cosine</title>
+	<media id="id1171515880114" alt="">
+          <image src="../../media/cosine.png" mime-type="image/png"/>
+          <image for="pdf" src="../../media/cosine.eps" mime-type="application/postscript"/>
+        </media>
+	<caption>
+	  The discrete-time cosine signal is plotted as a stem
+	  plot. Can you find the formula for this signal?
+	</caption>
+      </figure>
+	We usually draw discrete-time signals as stem plots to
+	emphasize the fact they are functions defined only on the
+	integers. We can delay a discrete-time signal by an integer
+	just as with analog ones. A signal delayed by <m:math><m:ci>m</m:ci></m:math> samples has the
+	expression
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">s</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>n</m:ci>
+	      <m:ci>m</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>.
+	</para>
+    </section>
+
+
+    <section id="sec2">
+      <title>Complex Exponentials</title>
+
+      <para id="para6">The most important signal is, of course, the <term>complex
+	  exponential sequence</term>.
+
+	<equation id="eq1">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">s</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		  <m:ci>f</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+Note that the frequency variable <m:math><m:ci>f</m:ci></m:math> is dimensionless and that  adding an integer to the frequency of the discrete-time
+	complex exponential has no effect on the signal's value.
+
+	<equation id="eq2">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		  <m:apply>
+		    <m:plus/>
+		    <m:ci>f</m:ci>
+		    <m:ci>m</m:ci>
+		  </m:apply>
+		  <m:ci>n</m:ci>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:times/>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>
+		    <m:cn>2</m:cn>
+		    <m:pi/>
+		    <m:ci>f</m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>
+		    <m:cn>2</m:cn>
+		    <m:pi/>
+		    <m:ci>m</m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		  <m:ci>f</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	This derivation follows because the complex exponential
+	evaluated at an integer multiple of
+
+	<m:math>
+	  <m:apply>
+	    <m:times/>
+	    <m:cn>2</m:cn>
+	    <m:pi/>
+	  </m:apply>
+	</m:math> equals one. Thus, we need only consider frequency to have a value in some unit-length interval.
+      </para>
+    </section>
+
+    
+    <section id="sec3">
+      <title>Sinusoids</title>
+      <para id="para7">Discrete-time sinusoids have the obvious form 
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">s</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply>
+	    <m:apply>
+	      <m:times/>
+	      <m:ci>A</m:ci>
+	      <m:apply>
+		<m:cos/>
+		<m:apply>
+		  <m:plus/>
+		  <m:apply>
+		    <m:times/>
+		    <m:cn>2</m:cn>
+		    <m:pi/>
+		    <m:ci>f</m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply>
+		  <m:ci>φ</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>.  As opposed to analog complex exponentials and
+	sinusoids that can have their frequencies be any real value,
+	frequencies of their discrete-time counterparts yield unique
+	waveforms <emphasis>only</emphasis> when
+	<m:math>
+	  <m:ci>f</m:ci>
+	</m:math> lies in the interval  
+	
+	<m:math>
+	  <m:interval closure="open-closed">
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:divide/>
+		<m:cn>1</m:cn>
+		<m:cn>2</m:cn>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:divide/>
+	      <m:cn>1</m:cn>
+	      <m:cn>2</m:cn>
+	    </m:apply>
+	  </m:interval>
+	</m:math>. This choice of frequency interval is arbitrary; we can also choose the frequency to lie in the interval
+  <m:math>
+    <m:interval closure="closed-open">
+      <m:cn>0</m:cn>
+      <m:cn>1</m:cn>
+    </m:interval>
+  </m:math>.
+  How to choose a unit-length interval for a sinusoid's frequency will become evident later.
+      </para>
+    </section>
+
+
+    <section id="sec4">
+      <title>Unit Sample</title> <para id="para8"> The second-most
+      important discrete-time signal is the <term>unit sample</term>,
+      which is defined to be
+
+	<equation id="eq3">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">δ</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	      <m:piecewise>
+		<m:piece>
+		  <m:cn>1</m:cn>
+		  <m:apply>
+		    <m:eq/>
+		    <m:ci>n</m:ci>
+		    <m:cn>0</m:cn>
+		  </m:apply>
+		</m:piece>
+		<m:otherwise>
+		  <m:cn>0</m:cn>
+		</m:otherwise>
+	      </m:piecewise>
+	    </m:apply>
+	  </m:math>
+	</equation>
+       <figure id="fig2">
+	<title>Unit sample</title>
+	<media id="id1171509051458" alt="">
+          <image src="../../media/unitsample.png" mime-type="image/png"/>
+          <image for="pdf" src="../../media/unitsample.eps" mime-type="application/postscript"/>
+        </media>
+	<caption>The unit sample.</caption>
+      </figure>
+	Examination of a discrete-time signal's plot, like that of the
+	cosine signal shown in <link target-id="fig1" strength="2"/>,
+	reveals that all signals consist of a sequence of delayed and
+	scaled unit samples. Because the value of a sequence at each
+	integer
+	<m:math>
+	  <m:ci>m</m:ci>
+	</m:math> is denoted by  
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">s</m:ci>
+	    <m:ci>m</m:ci>
+	  </m:apply>
+	</m:math> and the unit sample delayed to occur at   
+	<m:math>
+	  <m:ci>m</m:ci>
+	</m:math>
+	is written  
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">δ</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci>n</m:ci>
+	      <m:ci>m</m:ci>
+	    </m:apply>
+	  </m:apply>
+	</m:math>, we can decompose <emphasis>any</emphasis> signal as
+	a sum of unit samples delayed to the appropriate location and
+	scaled by the signal value.
+	
+	<equation id="eq4">
+	  <m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">s</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:sum/>
+		<m:bvar>
+		  <m:ci>m</m:ci>
+		</m:bvar>
+		<m:lowlimit>
+		  <m:apply>
+		    <m:minus/>
+		    <m:infinity/>
+		  </m:apply>
+		</m:lowlimit>
+		<m:uplimit>
+		  <m:infinity/>
+		</m:uplimit>
+		<m:apply>
+		  <m:times/>
+		  <m:apply>
+		    <m:ci type="fn">s</m:ci>
+		    <m:ci>m</m:ci>
+		  </m:apply>
+		  <m:apply>
+		    <m:ci type="fn">δ</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>n</m:ci>
+		      <m:ci>m</m:ci>
+		    </m:apply>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:math>
+	</equation>
+
+	This kind of decomposition is unique to discrete-time signals,
+	and will prove useful subsequently.
+      </para>
+    </section>
+
+    <section id="sec5">
+      <title>Unit Step</title>
+      <para id="para20">The <term>unit step</term> in discrete-time is well-defined at the origin, as opposed to the situation with analog signals.
+
+	<equation id="eq10"><m:math>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">u</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply>
+	    <m:piecewise>
+		 <m:piece>
+		  <m:cn>1</m:cn>
+		  <m:apply>
+		    <m:geq/>
+		    <m:ci>n</m:ci>
+		    <m:cn>0</m:cn>
+		  </m:apply>
+		 </m:piece>
+		 <m:piece>
+		  <m:cn>0</m:cn>
+		  <m:apply>
+		    <m:lt/>
+		    <m:ci>n</m:ci>
+		    <m:cn>0</m:cn>
+		  </m:apply>
+		 </m:piece>
+	     </m:piecewise>
+	    </m:apply>
+	  </m:math>
+	</equation>
+	</para></section>
+
+
+    <section id="sec10">
+      <title>Symbolic Signals</title>
+      <para id="para11">
+	An interesting aspect of discrete-time signals is that their
+	values do not need to be real numbers. We do have real-valued
+	discrete-time signals like the sinusoid, but we also have
+	signals that denote the sequence of characters typed on the
+	keyboard. Such characters certainly aren't real numbers, and
+	as a collection of possible signal values, they have little
+	mathematical structure other than that they are members of a
+	set. More formally, each element of the
+	<emphasis>symbolic-valued</emphasis> signal
+
+	<m:math>
+	  <m:apply>
+	    <m:ci type="fn">s</m:ci>
+	    <m:ci>n</m:ci>
+	  </m:apply>
+	</m:math>
+	
+	takes on one of the values
+	<m:math>
+	  <m:set>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>a</m:mi>
+		<m:mn>1</m:mn>
+	      </m:msub>
+	    </m:ci>
+	    <m:ci>…</m:ci>
+	    <m:ci>
+	      <m:msub>
+		<m:mi>a</m:mi>
+		<m:mi>K</m:mi>
+	      </m:msub>
+	    </m:ci>
+	  </m:set>
+	</m:math>
+
+	which comprise the <term>alphabet</term>
+	<m:math>
+	  <m:ci>A</m:ci> </m:math>.  This technical terminology does
+	not mean we restrict symbols to being members of the English
+	or Greek alphabet. They could represent keyboard characters,
+	bytes (8-bit quantities), integers that convey daily
+	temperature. Whether controlled by software or not,
+	discrete-time systems are ultimately constructed from digital
+	circuits, which consist <emphasis>entirely</emphasis> of
+	analog circuit elements.  Furthermore, the transmission and
+	reception of discrete-time signals, like e-mail, is
+	accomplished with analog signals and systems. Understanding
+	how discrete-time and analog signals and systems intertwine is
+	perhaps the main goal of this course.
+      </para>
+    </section>
+
+    
+    <section id="sec6">
+      <title>Discrete-Time Systems</title>
+      <para id="para10">
+	Discrete-time systems can act on discrete-time signals in ways
+	similar to those found in analog signals and systems. Because
+	of the role of software in discrete-time systems, many more
+	different systems can be envisioned and "constructed" with
+	programs than can be with analog signals. In fact, a special
+	class of analog signals can be converted into discrete-time
+	signals, processed with software, and converted back into an
+	analog signal, all without the incursion of error. For such
+	signals, systems can be easily produced in software, with
+	equivalent analog realizations difficult, if not impossible,
+	to design.  </para>
+    </section>
+
+  </content>
+</document>

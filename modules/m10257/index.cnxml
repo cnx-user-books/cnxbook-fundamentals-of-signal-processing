@@ -1,0 +1,926 @@
+<document xmlns="http://cnx.rice.edu/cnxml" xmlns:m="http://www.w3.org/1998/Math/MathML">
+
+  <title>Filtering in the Frequency Domain</title>
+
+  <metadata xmlns:md="http://cnx.rice.edu/mdml">
+  <md:content-id>m10257</md:content-id>
+  <md:title>Filtering in the Frequency Domain</md:title>
+  <md:abstract>Investigation of different aspects of filtering in the frequency domain, particularly the use of discrete Fourier transforms.</md:abstract>
+  <md:uuid>d724fdd7-0b85-4e75-aa78-c123adb58003</md:uuid>
+</metadata>
+
+<content>
+    <para id="para1">Because we are interested in actual computations
+      rather than analytic calculations, we must consider the details
+      of the discrete Fourier transform. To compute the
+      length-<m:math><m:ci>N</m:ci></m:math> DFT, we assume that the
+      signal has a duration less than or equal to
+      <m:math><m:ci>N</m:ci></m:math>.  Because frequency responses
+      have an explicit <link document="m0510" target-id="dtsinf" strength="3">frequency-domain specification</link> in terms of
+      filter coefficients, we don't have a direct handle on which
+      signal has a Fourier transform equaling a given frequency
+      response.  Finding this signal is quite easy. First of all, note
+      that the discrete-time Fourier transform of a unit sample equals
+      one for all frequencies. Since the input and output of
+      linear, shift-invariant systems are related to each other by
+
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">Y</m:ci>
+	    <m:apply>
+	      <m:exp/>
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>
+		<m:cn>2</m:cn>
+		<m:pi/>
+		<m:ci>f</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:ci type="fn">H</m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		  <m:ci>f</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	    <m:apply>
+	      <m:ci type="fn">X</m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		  <m:ci>f</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>, <emphasis>a unit-sample input, which has
+      <m:math>
+        <m:apply>
+          <m:eq/>
+             <m:apply>
+	      <m:ci type="fn">X</m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		  <m:ci>f</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+            <m:cn>1</m:cn>
+        </m:apply>
+      </m:math>, results in the output's Fourier transform
+	equaling the system's transfer function</emphasis>.
+    </para><exercise id="exer1">
+      <problem id="id1171516598728">
+	<para id="exer1a">
+	  This statement is a very important result. Derive it
+	  yourself.
+	</para>
+      </problem>
+      <solution id="id8849076">
+	<para id="exer1b">
+	  The DTFT of the unit sample equals a constant (equaling
+	  1). Thus, the Fourier transform of the output equals the
+	  transfer function.
+	</para>
+      </solution>
+    </exercise> 
+    
+    <para id="para2">
+      In the time-domain, the output for a unit-sample input is known as the
+      system's <term>unit-sample response</term>, and is denoted by
+    
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">h</m:ci> <m:ci>n</m:ci>
+	</m:apply>
+      </m:math>.  
+      Combining the frequency-domain and time-domain interpretations of a
+      linear, shift-invariant system's unit-sample response, we have that
+      
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">h</m:ci> <m:ci>n</m:ci>
+	</m:apply>
+      </m:math>
+      and the transfer function are Fourier transform pairs
+	<emphasis>in terms of the discrete-time Fourier
+	transform</emphasis>.
+    </para>
+
+
+    <equation id="eq0000"> 
+      <m:math>
+	<!-- this should really be a relation of some kind -->
+	<m:apply>
+	  <m:ci><m:mo>↔</m:mo></m:ci>
+	  <m:apply>
+	    <m:ci type="fn">h</m:ci> <m:ci>n</m:ci>
+	  </m:apply>
+	  <m:apply>
+	    <m:ci type="fn">H</m:ci>
+	    <m:apply>
+	      <m:exp/>
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>
+		<m:cn>2</m:cn>
+		<m:pi/>
+		<m:ci>f</m:ci>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>
+    </equation>
+    
+
+    <para id="para2.1">
+      Returning to the issue of how to use the DFT to perform
+      filtering, we can analytically specify the frequency response,
+      and derive the corresponding
+      length-<m:math><m:ci>N</m:ci></m:math> DFT by sampling the
+      frequency response.
+
+      <equation id="eqn0001"><m:math>
+	  <!-- For all k such that k={0 to N-1}, H(k)=H(e^(j2pi*k/n)). -->
+	  <m:apply>
+	    <m:forall/>
+	    <m:bvar> 
+	      <m:ci>k</m:ci> 
+	    </m:bvar>
+	    <m:condition>
+	      <m:apply>
+		<m:eq/>
+		<m:ci>k</m:ci>
+		<m:set>
+		  <m:cn>0</m:cn>
+		  <m:ci>…</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>N</m:ci>
+		    <m:cn>1</m:cn>
+		  </m:apply>
+		</m:set>
+	      </m:apply>
+	    </m:condition>
+	    <m:apply>
+	      <m:eq/>
+	      <m:apply>
+		<m:ci type="fn">H</m:ci>
+		<m:ci>k</m:ci>
+	      </m:apply>
+	      <m:apply>
+		<m:ci type="fn">H</m:ci>
+		<m:apply>
+		  <m:exp/>
+		  <m:apply>
+		    <m:divide/>
+		    <m:apply>
+		      <m:times/>
+		      <m:imaginaryi/> 
+		      <m:cn>2</m:cn> 
+		      <m:pi/> 
+		      <m:ci>k</m:ci>
+		    </m:apply>
+		    <m:ci>N</m:ci>
+		  </m:apply>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:math>
+      </equation>
+
+      Computing the inverse DFT yields a
+      length-<m:math><m:ci>N</m:ci></m:math> signal <emphasis>no
+      matter what the actual duration of the unit-sample response
+      might be</emphasis>. If the unit-sample response has a duration
+      less than or equal to <m:math><m:ci>N</m:ci></m:math> (it's a
+      FIR filter), computing the inverse DFT of the sampled frequency
+      response indeed yields the unit-sample response. If, however,
+      the duration exceeds <m:math><m:ci>N</m:ci></m:math>, errors are
+      encountered. The nature of these errors is easily explained by
+      appealing to the Sampling Theorem. By sampling in the frequency
+      domain, we have the potential for aliasing in the time domain
+      (sampling in one domain, be it time or frequency, can result in
+      aliasing in the other) unless we sample fast enough. Here, the
+      duration of the unit-sample response determines the minimal
+      sampling rate that prevents aliasing. For FIR systems —
+      they by definition have finite-duration unit sample responses
+      — the number of required DFT samples equals the
+      unit-sample response's duration:
+
+      <m:math>
+	<m:apply>
+	  <m:geq/>
+	  <m:ci>N</m:ci>
+	  <m:ci>q</m:ci>
+	</m:apply>
+      </m:math>.  
+    </para>
+
+
+    <exercise id="exer1.1">
+      <problem id="id6580047">
+	<para id="exer1.1a">
+	  Derive the minimal DFT length for a
+	  length-<m:math><m:ci>q</m:ci></m:math> unit-sample response
+	  using the Sampling Theorem. Because sampling in the
+	  frequency domain causes repetitions of the unit-sample
+	  response in the time domain, sketch the time-domain result
+	  for various choices of the DFT length
+	  <m:math><m:ci>N</m:ci></m:math>. </para>
+      </problem>
+
+      <solution id="id7322748">
+	<para id="exer1.1b">
+	  In sampling a discrete-time signal's Fourier transform
+	  <m:math><m:ci>L</m:ci></m:math> times equally over
+	  <m:math>
+	    <m:interval closure="closed-open">
+	      <m:cn>0</m:cn>
+	      <m:apply>
+		<m:times/>
+		<m:cn>2</m:cn>
+		<m:pi/>
+	      </m:apply>
+	    </m:interval>
+	  </m:math>
+	  to form the DFT, the corresponding signal equals the periodic
+	  repetition of the original signal.
+	  
+
+	  <equation id="eqn1">
+	    <m:math> 
+	      <m:apply>
+		<m:ci><m:mo>↔</m:mo></m:ci>
+		<!-- S(k) leftrightarrow sum as i goes from -infty to infty of s(n-iL) -->
+		<m:apply>
+		  <m:ci type="fn">S</m:ci>
+		  <m:ci>k</m:ci>
+		</m:apply><!-- close fn -->
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>i</m:ci>
+		  </m:bvar>
+		  <m:lowlimit>
+		    <m:apply>
+		      <m:minus/>
+		      <m:infinity/>
+		    </m:apply><!-- close minus -->
+		  </m:lowlimit>
+		  <m:uplimit>
+		    <m:infinity/>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:ci type="fn">s</m:ci>
+		    <m:apply>
+		      <m:minus/>
+		      <m:ci>n</m:ci>
+		      <m:apply>
+                        <m:times/>
+			  <m:ci>i</m:ci>
+			  <m:ci>L</m:ci>
+		      </m:apply><!-- close times -->
+		    </m:apply><!-- close minus -->
+		  </m:apply><!-- close fn -->
+		</m:apply><!-- close sum -->
+	      </m:apply>
+	    </m:math>
+	  </equation> To avoid aliasing (in the time domain), the
+	  transform length must equal or exceed the signal's duration.
+	</para>
+      </solution>
+    </exercise>  
+
+
+    <exercise id="exer1.2">
+      <problem id="id8778078">
+	<para id="exer1.2a">
+	  Express the unit-sample response of a FIR filter in terms of
+	  difference equation coefficients. Note that the
+	  corresponding question for IIR filters is far more difficult
+	  to answer: Consider the <link document="m10251" target-id="p0" strength="3">example</link>.
+	</para>
+      </problem>
+      <solution id="id7084013">
+	<para id="exer1.2b">
+	  The difference equation for an FIR filter has the form
+	
+	  <equation id="eqn2">
+	    <m:math>
+	      <!-- y(n) = sum as m goes from 0 to q of bsubm * x(n-m) -->
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn">y</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply><!-- close fn -->
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>m</m:ci>
+		  </m:bvar>
+		  <m:lowlimit>
+		    <m:cn>0</m:cn>
+		  </m:lowlimit>
+		  <m:uplimit>
+		    <m:ci>q</m:ci>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci><m:msub>
+			<m:mi>b</m:mi>
+			<m:mi>m</m:mi>
+		      </m:msub></m:ci>
+		    <m:apply>
+		      <m:ci type="fn">x</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>n</m:ci>
+			<m:ci>m</m:ci>
+		      </m:apply><!-- close minus -->
+		    </m:apply><!-- close fn -->
+		  </m:apply><!-- close times -->
+		</m:apply><!-- close sum -->
+	      </m:apply><!-- close eq -->
+	    </m:math></equation>
+
+	  The unit-sample response equals
+	  
+
+	  <equation id="eqn3"><m:math>
+	      <!-- h(n) = sum as m goes from 0 to q of bsubm * delta(n-m) -->
+	      <m:apply>
+		<m:eq/>
+		<m:apply>
+		  <m:ci type="fn">h</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply><!-- close fn -->
+		<m:apply>
+		  <m:sum/>
+		  <m:bvar>
+		    <m:ci>m</m:ci>
+		  </m:bvar>
+		  <m:lowlimit>
+		    <m:cn>0</m:cn>
+		  </m:lowlimit>
+		  <m:uplimit>
+		    <m:ci>q</m:ci>
+		  </m:uplimit>
+		  <m:apply>
+		    <m:times/>
+		    <m:ci><m:msub>
+			<m:mi>b</m:mi>
+			<m:mi>m</m:mi>
+		      </m:msub></m:ci>
+		    <m:apply>
+		      <m:ci type="fn">δ</m:ci>
+		      <m:apply>
+			<m:minus/>
+			<m:ci>n</m:ci>
+			<m:ci>m</m:ci>
+		      </m:apply><!-- close minus -->
+		    </m:apply><!-- close fn -->
+		  </m:apply><!-- close times -->
+		</m:apply><!-- close sum -->
+	      </m:apply><!-- close eq -->
+	    </m:math>
+	  </equation>
+
+	  which corresponds to the representation described in <link document="m10251" target-id="ex2001" strength="3">a
+	  problem</link> of a length-<m:math><m:ci>q</m:ci></m:math>
+	  boxcar filter.
+	</para>
+      </solution>
+    </exercise>
+
+    <para id="para2.2"> For IIR systems, we cannot use the DFT to find
+      the system's unit-sample response: aliasing of the unit-sample
+      response will <emphasis>always</emphasis> occur. Consequently,
+      we can only implement an IIR filter accurately in the time
+      domain with the system's difference
+      equation. <emphasis>Frequency-domain implementations are
+      restricted to FIR filters.</emphasis>
+    </para>
+
+    <para id="para2.3"> 
+      Another issue arises in frequency-domain filtering that is
+      related to time-domain aliasing, this time when we consider the
+      output. Assume we have an input signal having duration 
+      <m:math>
+	<m:ci><m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub></m:ci>
+      </m:math>
+      that we pass through a FIR filter having a
+      length-<m:math>
+	<m:apply>
+	  <m:plus/>
+	  <m:ci>q</m:ci>
+	  <m:cn>1</m:cn>
+	</m:apply>
+      </m:math>
+      unit-sample response. What is the duration of the output signal? The
+      difference equation for this filter is 
+
+
+      <equation id="eqn0002"><m:math>
+	  <!-- y(n) = bsub0 * x(n) + ... + bsubq * x(n-q) -->
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:ci type="fn">y</m:ci>
+	      <m:ci>n</m:ci>
+	    </m:apply><!-- close fn -->
+	    <m:apply>
+	      <m:plus/>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub> <m:mi>b</m:mi><m:mn>0</m:mn> </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:ci type="fn">x</m:ci>
+		  <m:ci>n</m:ci>
+		</m:apply><!-- close fn -->
+	      </m:apply><!-- close times -->
+	      <m:ci>…</m:ci>
+	      <m:apply>
+		<m:times/>
+		<m:ci>
+		  <m:msub> <m:mi>b</m:mi> <m:mi>q</m:mi> </m:msub>
+		</m:ci>
+		<m:apply>
+		  <m:ci type="fn">x</m:ci>
+		  <m:apply>
+		    <m:minus/>
+		    <m:ci>n</m:ci>
+		    <m:ci>q</m:ci>
+		  </m:apply><!-- close minus -->
+		</m:apply><!-- close fn -->
+	      </m:apply><!-- close times -->
+	    </m:apply><!-- close plus -->
+	  </m:apply><!-- close eq -->
+	</m:math></equation>
+
+      This equation says that the output depends on current and past
+      input values, with the input value
+      <m:math><m:ci>q</m:ci></m:math> samples previous defining the
+      extent of the filter's <emphasis>memory</emphasis> of past input
+      values. For example, the output at index
+
+      <m:math>
+	<m:ci> <m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub> </m:ci>
+      </m:math>
+      depends on
+
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">x</m:ci>
+	  <m:ci> <m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub> </m:ci>
+	</m:apply><!-- close fn -->
+      </m:math>
+      (which equals zero), 
+
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">x</m:ci>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci> <m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub> </m:ci>
+	    <m:cn>1</m:cn>
+	  </m:apply><!-- close minus -->
+	</m:apply><!-- close fn -->
+      </m:math>, through
+
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">x</m:ci>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci> <m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub> </m:ci>
+	    <m:ci>q</m:ci>
+	  </m:apply><!-- close minus -->
+	</m:apply><!-- close fn -->
+      </m:math>.  Thus, the output returns to zero only after the last input value passes
+      through the filter's memory. As the input signal's last value occurs at
+      index
+
+      <m:math>
+	<m:apply>
+	  <m:minus/>
+	  <m:ci> <m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub> </m:ci>
+	  <m:cn>1</m:cn>
+	</m:apply><!-- close minus -->
+      </m:math>, the last nonzero output value occurs when
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci>n</m:ci>
+	    <m:ci>q</m:ci>
+	  </m:apply><!-- close minus -->
+	  <m:apply>
+	    <m:minus/>
+	    <m:ci> <m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub> </m:ci>
+	    <m:cn>1</m:cn>
+	  </m:apply><!-- close minus -->
+	</m:apply><!-- close eq -->
+      </m:math>
+      or
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:ci>n</m:ci>
+	  <m:apply>
+	    <m:plus/>
+	    <m:ci>q</m:ci>
+	    <m:apply>
+	      <m:minus/>
+	      <m:ci> <m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub> </m:ci>
+	      <m:cn>1</m:cn>
+	    </m:apply><!-- close minus -->
+	  </m:apply><!-- close plus -->
+	</m:apply><!-- close eq -->
+      </m:math>. Thus, the output signal's duration equals
+      <m:math>
+	<m:apply>
+	  <m:plus/>
+	  <m:ci>q</m:ci>
+	  <m:ci> <m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub> </m:ci>
+	</m:apply><!-- close plus -->
+      </m:math>.
+    </para>
+
+
+    <exercise id="exer1.3">
+      <problem id="id7806144">
+	<para id="exer1.3a">
+	  In words, we express this result as "The output's
+	  duration equals the input's duration plus the filter's duration minus
+	  one.". Demonstrate the accuracy of this statement.</para>
+      </problem>
+      
+      <solution id="id2397298">
+	<para id="exer1.3b">
+	  The unit-sample response's duration is 
+	  <m:math>
+	    <m:apply>
+	      <m:plus/>
+	      <m:ci>q</m:ci>
+	      <m:cn>1</m:cn>
+	    </m:apply><!-- close plus -->
+	  </m:math>
+	  and the signal's
+	  
+	  <m:math>
+	    <m:ci> <m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub> </m:ci>
+	  </m:math>. Thus the statement is correct.</para>
+      </solution>
+    </exercise>
+
+    <para id="para2.4"> The main theme of this result is that a
+      filter's output extends longer than either its input or its
+      unit-sample response. Thus, to avoid aliasing when we use DFTs,
+      the dominant factor is not the duration of input or of the
+      unit-sample response, but of the output. Thus, the number of
+      values at which we must evaluate the frequency response's DFT
+      must be at least
+      
+      <m:math>
+	<m:apply>
+	  <m:plus/>
+	  <m:ci>q</m:ci>
+	  <m:ci> <m:msub> <m:mi>N</m:mi> <m:mi>x</m:mi> </m:msub> </m:ci>
+	</m:apply><!-- close plus -->
+      </m:math>
+      and we must compute the same length DFT of the input. To
+      accommodate a shorter signal than DFT length, we simply
+      <term>zero-pad</term> the input: Ensure that for indices
+      extending beyond the signal's duration that the signal is
+      zero. Frequency-domain filtering, diagrammed in <link target-id="fig1001" strength="3"/>, is accomplished by storing the
+      filter's frequency response as the DFT
+      
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">H</m:ci>
+	  <m:ci>k</m:ci>
+	</m:apply><!-- close fn -->
+      </m:math>, computing the input's DFT 
+      
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">X</m:ci>
+	  <m:ci>k</m:ci>
+	</m:apply><!-- close fn -->
+      </m:math>, multiplying them to create the output's DFT
+      <!-- a dot &#x00B7; -->
+      
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">Y</m:ci>
+	    <m:ci>k</m:ci>
+	  </m:apply><!-- close fn -->
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:ci type="fn">H</m:ci>
+	      <m:ci>k</m:ci>
+	    </m:apply><!-- close fn -->
+	    <m:apply>
+	      <m:ci type="fn">X</m:ci>
+	      <m:ci>k</m:ci>
+	    </m:apply><!-- close fn -->
+	  </m:apply><!-- close times -->
+	</m:apply><!-- close eq -->
+      </m:math>, and computing the inverse DFT of the result to yield
+      
+      <m:math>
+	<m:apply>
+	  <m:ci type="fn">y</m:ci>
+	  <m:ci>n</m:ci>
+	</m:apply><!-- close fn -->
+      </m:math>.
+    </para>                          
+    
+    
+    <figure id="fig1001">
+      <media id="id7500267" alt="">
+        <image src="../../media/sys13.png" mime-type="image/png"/>
+        <image for="pdf" src="../../media/sys13.eps" mime-type="application/postscript"/>
+      </media>
+      <caption>To filter a signal in the frequency domain, first compute the
+	DFT of the input, multiply the result by the sampled frequency
+	response, and finally compute the inverse DFT of the product. The
+	DFT's length <emphasis>must</emphasis> be at least the sum of
+	the input's and unit-sample response's duration minus
+	one. We calculate these discrete Fourier transforms using the fast
+	Fourier transform algorithm, of course.
+      </caption>
+    </figure>
+
+    <para id="para3.1">Before detailing this procedure, let's clarify
+      why so many new issues arose in trying to develop a
+      frequency-domain implementation of linear filtering. The
+      frequency-domain relationship between a filter's input
+      and output is <emphasis>always</emphasis> true:
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">Y</m:ci>
+	    <m:apply>
+	      <m:exp/>
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>
+		<m:cn>2</m:cn>
+		<m:pi/>
+		<m:ci>f</m:ci>
+	      </m:apply><!-- close times -->
+	    </m:apply><!-- close power -->
+	  </m:apply><!-- close fn -->
+	  <m:apply>
+	    <m:times/>
+	    <m:apply>
+	      <m:ci type="fn">H</m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		  <m:ci>f</m:ci>
+		</m:apply><!-- close times -->
+	      </m:apply><!-- close power -->
+	    </m:apply><!-- close fn -->
+	    <m:apply>
+	      <m:ci type="fn">X</m:ci>
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:times/>
+		  <m:imaginaryi/>
+		  <m:cn>2</m:cn>
+		  <m:pi/>
+		  <m:ci>f</m:ci>
+		</m:apply>
+	      </m:apply>
+	    </m:apply>
+	  </m:apply>
+	</m:apply>
+      </m:math>.  The Fourier transforms in this result are
+      discrete-time Fourier transforms; for example,
+      <m:math>
+	<m:apply>
+	  <m:eq/>
+	  <m:apply>
+	    <m:ci type="fn">X</m:ci>
+	    <m:apply>
+	      <m:exp/>
+	      <m:apply>
+		<m:times/>
+		<m:imaginaryi/>
+		<m:cn>2</m:cn>
+		<m:pi/>
+		<m:ci>f</m:ci>
+	      </m:apply><!-- close times -->
+	    </m:apply><!-- close power -->
+	  </m:apply><!-- close fn -->
+	  <m:apply>
+	    <m:sum/>
+	    <m:domainofapplication>
+	      <m:ci>n</m:ci>
+	    </m:domainofapplication>
+	    <m:apply>
+	      <m:times/>
+	      <m:apply>
+		<m:ci type="fn">x</m:ci>
+		<m:ci>n</m:ci>
+	      </m:apply><!-- close fn -->
+	      <m:apply>
+		<m:exp/>
+		<m:apply>
+		  <m:minus/>
+		  <m:apply>
+		    <m:times/>
+		    <m:imaginaryi/>
+		    <m:cn>2</m:cn>
+		    <m:pi/>
+		    <m:ci>f</m:ci>
+		    <m:ci>n</m:ci>
+		  </m:apply><!-- close times -->
+		</m:apply><!-- close minus -->
+	      </m:apply><!-- close power -->
+	    </m:apply><!-- close times -->
+	  </m:apply><!-- close sum -->
+	</m:apply>
+      </m:math>.  Unfortunately, using this relationship to perform
+      filtering is restricted to the situation when we have analytic
+      formulas for the frequency response and the input signal. The
+      reason why we had to "invent" the discrete Fourier transform
+      (DFT) has the same origin: The spectrum resulting from the
+      discrete-time Fourier transform depends on the
+      <emphasis>continuous</emphasis> frequency variable
+      <m:math><m:ci>f</m:ci></m:math>. That's fine for analytic
+      calculation, but computationally we would have to make an
+      uncountably infinite number of computations.  <note id="id1171514671440" type="note">Did you know that two kinds of infinities can be
+      meaningfully defined? A <term>countably infinite</term> quantity
+      means that it can be associated with a limiting process
+      associated with integers.  An <term>uncountably infinite</term>
+      quantity cannot be so associated.  The number of rational
+      numbers is countably infinite (the numerator and denominator
+      correspond to locating the rational by row and column; the total
+      number so-located can be counted, voila!); the number of
+      irrational numbers is uncountably infinite. Guess which is
+      "bigger?"</note> The DFT computes the Fourier transform at a
+      finite set of frequencies — samples the true spectrum
+      — which can lead to aliasing in the time-domain unless we
+      sample sufficiently fast. The sampling interval here is
+      <m:math>
+	<m:apply>
+	  <m:divide/>
+	  <m:cn>1</m:cn>
+	  <m:ci>K</m:ci>
+	</m:apply><!-- close divide -->
+      </m:math>
+      for a length-<m:math><m:ci>K</m:ci></m:math> DFT: faster
+      sampling to avoid aliasing thus requires a longer transform
+      calculation. Since the longest signal among the input,
+      unit-sample response and output is the output, it is that
+      signal's duration that determines the transform length. We
+      simply extend the other two signals with zeros (zero-pad) to
+      compute their DFTs.
+    </para><example id="exa2000">
+      <para id="para1b"> Suppose we want to average daily stock prices
+	taken over last year to yield a running weekly average
+	(average over five trading sessions).  The filter we want is a
+	length-5 averager (as shown in the <link document="m10251" target-id="fig1002" strength="3">unit-sample response</link>),
+	and the input's duration is 253 (365 calendar days minus
+	weekend days and holidays). The output duration will be
+	<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:minus/>
+	      <m:apply>
+		<m:plus/>
+		<m:cn>253</m:cn>
+		<m:cn>5</m:cn>
+	      </m:apply><!-- close plus -->
+	      <m:cn>1</m:cn>
+	    </m:apply><!-- close minus -->
+	    <m:cn>257</m:cn>
+	  </m:apply>
+	</m:math>, and this determines the transform length we need to
+	use. Because we want to use the FFT, we are restricted to
+	power-of-two transform lengths. We need to choose any FFT
+	length that exceeds the required DFT length. As it turns out,
+	256 is a power of two (<m:math>
+	  <m:apply>
+	    <m:eq/>
+	    <m:apply>
+	      <m:power/>
+	      <m:cn>2</m:cn>
+	      <m:cn>8</m:cn>
+	    </m:apply><!-- close power -->
+	    <m:cn>256</m:cn>
+	  </m:apply>
+	</m:math>), and this length just undershoots our required
+	length. To use frequency domain techniques, we must use
+	length-512 fast Fourier transforms.
+      </para>
+
+      <figure id="fig1002">
+	<media id="id5514254" alt="">
+          <image src="../../media/sig23.png" mime-type="image/png"/>
+          <image for="pdf" src="../../media/sig23.eps" mime-type="application/postscript"/>
+        </media>
+	<caption>
+	  The blue line shows the Dow Jones Industrial Average from
+	  1997, and the red one the length-5 boxcar-filtered result
+	  that provides a running weekly of this market index. Note
+	  the "edge" effects in the filtered output.
+	</caption>
+      </figure>
+
+      <para id="para2b">
+	<link target-id="fig1002" strength="3"/> shows the input and the
+	filtered output. The MATLAB programs that compute the filtered
+	output in the time and frequency domains are
+      </para>
+
+      <code id="id1171512741890" display="block">
+	Time Domain 
+	h = [1 1 1 1 1]/5; 
+	y = filter(h,1,[djia zeros(1,4)]);
+
+	Frequency Domain
+	h = [1 1 1 1 1]/5; 
+	DJIA = fft(djia, 512);
+	H = fft(h, 512);
+	Y = H.*X;
+	y = ifft(Y);
+      </code>
+
+      <para id="para3">
+	<note id="id5742746" type="note">The <code>filter</code> program has the
+	  feature that the length of its output equals the length of
+	  its input.  To force it to produce a signal having the
+	  proper length, the program zero-pads the input
+	  appropriately.</note> MATLAB's <code>fft</code> function
+	  automatically zero-pads its input if the specified transform
+	  length (its second argument) exceeds the signal's
+	  length. The frequency domain result will have a small
+	  imaginary component — largest value is <m:math><m:cn type="e-notation">2.2<m:sep/>-11</m:cn></m:math> —
+	  because of the inherent finite precision nature of computer
+	  arithmetic. Because of the unfortunate misfit between signal
+	  lengths and favored FFT lengths, the number of arithmetic
+	  operations in the time-domain implementation is far less
+	  than those required by the frequency domain version: 514
+	  versus 62,271. If the input signal had been one sample
+	  shorter, the frequency-domain computations would have been
+	  more than a factor of two less (28,696), but far more than
+	  in the time-domain implementation.
+      </para>
+
+      <para id="para4"> An interesting signal processing aspect of
+	this example is demonstrated at the beginning and end of the
+	output. The ramping up and down that occurs can be traced to
+	assuming the input is zero before it begins and after it
+	ends. The filter "sees" these initial and final values as the
+	difference equation passes over the input. These artifacts can
+	be handled in two ways: we can just ignore the edge effects or
+	the data from previous and succeeding years' last and first
+	week, respectively, can be placed at the ends.
+      </para>
+    </example>
+
+  </content>
+</document>
