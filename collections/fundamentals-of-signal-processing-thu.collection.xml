@@ -1,12 +1,13 @@
-<col:collection xmlns="http://cnx.rice.edu/collxml" xmlns:md="http://cnx.rice.edu/mdml" xmlns:col="http://cnx.rice.edu/collxml" xml:lang="en">
+<?xml version="1.0"?>
+<col:collection xmlns="http://cnx.rice.edu/collxml" xmlns:md="http://cnx.rice.edu/mdml" xmlns:col="http://cnx.rice.edu/collxml" xml:lang="en" authors="Minh N. Do">
   <metadata xmlns:md="http://cnx.rice.edu/mdml" mdml-version="0.5">
     <md:content-id>col10446</md:content-id>
     <md:title>Fundamentals of Signal Processing(thu)</md:title>
     <md:language>en</md:language>
     <md:license url="http://creativecommons.org/licenses/by/2.0/">Creative Commons Attribution License</md:license>
     <md:uuid>29412a43-432d-4a1c-bd9b-9c42a67af8c8</md:uuid>
-<md:slug>fundamentals-of-signal-processing-thu</md:slug>
-</metadata>
+    <md:slug>fundamentals-of-signal-processing-thu</md:slug>
+  </metadata>
   <col:content>
     <col:module document="m13673"/>
     <col:subcollection>
